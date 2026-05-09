@@ -110,7 +110,7 @@ export default function ExtraoralPage() {
       <main className="mx-auto flex w-full max-w-4xl flex-col gap-8 px-6 py-10 sm:px-8">
         <header className="flex flex-col gap-2">
           <Link
-            href="./"
+            href="../"
             className="text-xs uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
           >
             ← Home

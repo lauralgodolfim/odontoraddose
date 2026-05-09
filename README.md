@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Odonto RadDose
 
-## Getting Started
+Radiation-dose calculators for dental imaging equipment. Built as an
+installable, offline-capable web app (Next.js SPA + PWA, fully client-side).
 
-First, run the development server:
+The project digitises the calculations from a long-standing dental QC
+workbook (`public/Modelos_CQ.xltx`, sheet `doses`) so technicians can compute
+and validate dose values from a phone or browser instead of editing the
+spreadsheet by hand.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Status
+
+Work in progress. Calculators ship one at a time as they are translated from
+the source workbook.
+
+| Calculator | Route        | Status     |
+| ---------- | ------------ | ---------- |
+| Extraoral — P<sub>KA</sub> (DAP) | `/extraoral` | Implemented |
+| Intraoral, panoramic, mammography, CT, fluoroscopy, etc. | — | Planned |
+
+### Extraoral — P<sub>KA</sub> (DAP)
+
+Computes the kerma–area product from a P<sub>KL</sub> chamber reading and
+compares it against the value reported by the machine, per Brazilian
+**IN 56/2019** tolerance.
+
+```
+Corrected P_KL  = Measured P_KL × (D_focus-detector / D_focus-receptor)²
+Dose-area P_KA  = Corrected P_KL × field height
+Calculated P_KA = Dose-area P_KA × correction factor
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Validation against the machine-reported P<sub>KA</sub>:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Deviation | Verdict |
+| --------- | ------- |
+| ≤ 20 %    | Pass    |
+| 20 – 40 % | Fail    |
+| &gt; 40 % | Restricted |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech stack
 
-## Learn More
+- **Next.js 16** with the App Router and Turbopack
+- **React 19**
+- **TypeScript** in strict mode
+- **Tailwind CSS v4**
+- **Static export** (`output: "export"`, `trailingSlash: true`) — the build
+  produces a fully static bundle that can be served from any CDN, a sub-path,
+  or even `file://`
+- **PWA**: a small `public/sw.js` is registered in production for offline use,
+  alongside `manifest.webmanifest`
 
-To learn more about Next.js, take a look at the following resources:
+Because everything runs client-side, no patient data ever leaves the device.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Getting started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run lint     # eslint
+npm run build    # static export → ./out
+```
 
-## Deploy on Vercel
+The static bundle in `./out` is what gets deployed.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/app/
+  layout.tsx          Root layout, fonts, PWA metadata, SW registration
+  page.tsx            Home / calculator index
+  globals.css         Tailwind entry + theme tokens
+  sw-register.tsx     Service-worker registration (production only)
+  extraoral/page.tsx  Extraoral P_KA calculator
+public/
+  Modelos_CQ.xltx     Source QC workbook (calculations are ported from here)
+  manifest.webmanifest
+  icon.svg
+  sw.js
+```
+
+## Notes for contributors
+
+- This Next.js version has breaking changes versus older majors. Before
+  writing new code, consult `node_modules/next/dist/docs/` for the relevant
+  guide and heed deprecation notices.
+- New calculators should be added as a sibling route under `src/app/` (e.g.
+  `src/app/intraoral/page.tsx`) and linked from the home page.
+- Use **relative URLs** (`../`, `./foo`) for in-app navigation and assets so
+  the bundle stays portable across sub-path and `file://` deployments.
+- Keep calculators client-only (`"use client"`); the app is a static export
+  and has no server runtime.

@@ -35,7 +35,7 @@ export default function Home() {
               className="h-14 w-14 rounded-2xl shadow-sm ring-1 ring-radiation-400/40 sm:h-20 sm:w-20"
             />
             <h1 className="text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl dark:text-zinc-50">
-              Odonto RadDose
+              RadQC Suite
             </h1>
           </div>
           <p className="max-w-xl text-lg leading-7 text-zinc-600 dark:text-zinc-400">

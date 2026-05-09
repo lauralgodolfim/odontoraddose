@@ -1,5 +1,5 @@
-const CACHE = "odonto-raddose-v1";
-const SHELL = ["./", "./manifest.webmanifest", "./icon.svg"];
+const CACHE = "radqc-suite-v1";
+const SHELL = ["./", "./manifest.webmanifest", "./favicon.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)));

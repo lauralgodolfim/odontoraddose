@@ -1,4 +1,4 @@
-# Odonto RadDose
+# RadQC Suite
 
 Radiation-dose and QC calculators for medical imaging equipment. Built as an
 installable, offline-capable web app (Next.js SPA + PWA, fully client-side).

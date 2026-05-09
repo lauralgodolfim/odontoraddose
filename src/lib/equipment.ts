@@ -36,4 +36,4 @@ export const defaultEquipment: Equipment = {
   dosimeterBrand: "Unfors",
 };
 
-export const EQUIPMENT_STORAGE_KEY = "odonto-raddose:equipment";
+export const EQUIPMENT_STORAGE_KEY = "radqc-suite:equipment";

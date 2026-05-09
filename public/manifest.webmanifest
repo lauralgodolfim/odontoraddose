@@ -1,6 +1,6 @@
 {
-  "name": "Odonto RadDose",
-  "short_name": "RadDose",
+  "name": "RadQC Suite",
+  "short_name": "RadQC",
   "description": "Radiation-dose and quality-control calculators for medical imaging equipment.",
   "start_url": "./",
   "scope": "./",

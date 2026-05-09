@@ -15,12 +15,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Odonto RadDose",
-  description: "Radiation dose calculator for odontologic equipment.",
+  title: "RadQC Suite",
+  description:
+    "Radiation-dose and quality-control calculators for medical imaging equipment.",
   manifest: "./manifest.webmanifest",
   icons: { icon: "./favicon.png", apple: "./favicon.png" },
-  applicationName: "Odonto RadDose",
-  appleWebApp: { capable: true, title: "Odonto RadDose", statusBarStyle: "black-translucent" },
+  applicationName: "RadQC Suite",
+  appleWebApp: { capable: true, title: "RadQC Suite", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = {

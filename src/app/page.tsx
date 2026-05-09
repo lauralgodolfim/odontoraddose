@@ -24,14 +24,41 @@ export default function Home() {
           <span className="rounded-full border border-zinc-200 px-3 py-1 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
             Work in progress
           </span>
-          <h1 className="text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl dark:text-zinc-50">
-            Odonto RadDose
-          </h1>
-          <p className="max-w-md text-lg leading-7 text-zinc-600 dark:text-zinc-400">
-            Radiation dose and quality-control calculators for medical imaging
-            equipment, ported from the standard CQ workbook.
+          <div className="flex items-center gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="./favicon.png"
+              alt=""
+              width={72}
+              height={72}
+              className="h-14 w-14 rounded-2xl shadow-sm sm:h-20 sm:w-20"
+            />
+            <h1 className="text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl dark:text-zinc-50">
+              Odonto RadDose
+            </h1>
+          </div>
+          <p className="max-w-xl text-lg leading-7 text-zinc-600 dark:text-zinc-400">
+            Radiation-dose and quality-control calculators for radiography,
+            CT, mammography, fluoroscopy, ultrasound and MRI. Validated
+            against Brazilian IN 54–91, ACR, AAPM and IEC references.
           </p>
-          <EquipmentBadge />
+          <p className="max-w-xl text-sm leading-6 text-zinc-500 dark:text-zinc-500">
+            Runs entirely in your browser — measurements stay on the device,
+            and the app works offline once installed.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <EquipmentBadge />
+            <Link
+              href="./audit"
+              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-600 transition hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+            >
+              <span className="font-medium uppercase tracking-wider">Audit</span>
+              <span aria-hidden className="text-zinc-300 dark:text-zinc-700">
+                ·
+              </span>
+              <span>Coverage summary</span>
+            </Link>
+          </div>
         </header>
 
         {phases.map((phase) => (

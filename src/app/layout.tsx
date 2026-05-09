@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "Odonto RadDose",
   description: "Radiation dose calculator for odontologic equipment.",
   manifest: "./manifest.webmanifest",
-  icons: { icon: "./icon.svg", apple: "./icon.svg" },
+  icons: { icon: "./favicon.png", apple: "./favicon.png" },
   applicationName: "Odonto RadDose",
   appleWebApp: { capable: true, title: "Odonto RadDose", statusBarStyle: "black-translucent" },
 };

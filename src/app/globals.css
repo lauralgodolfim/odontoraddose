@@ -24,3 +24,33 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@media print {
+  /* Hide navigation chrome, action buttons, and inputs that aren't useful on
+     a printed report. The data we want is the labels + computed values. */
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+  /* Inputs render flat, without a focus ring or background, in printed reports. */
+  input,
+  select,
+  textarea {
+    border: none !important;
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  a {
+    text-decoration: none !important;
+    color: black !important;
+  }
+}

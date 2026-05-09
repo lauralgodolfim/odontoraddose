@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#0a0a0a"/>
-  <g transform="translate(256 256)" fill="#fde047">
-    <circle r="36"/>
-    <path d="M0 -64 A64 64 0 0 1 55.4 -32 L27.7 -16 A32 32 0 0 0 0 -32 Z"/>
-    <path d="M55.4 32 A64 64 0 0 1 -55.4 32 L-27.7 16 A32 32 0 0 0 27.7 16 Z"/>
-    <path d="M-55.4 -32 A64 64 0 0 1 0 -64 L0 -32 A32 32 0 0 0 -27.7 -16 Z"/>
-  </g>
-</svg>

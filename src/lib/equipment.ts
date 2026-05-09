@@ -7,7 +7,7 @@ import type { Rectifier } from "@/lib/tables/hvl";
 export type DosimeterBrand = "Unfors" | "Fluke" | "Raysafe";
 
 /**
- * Equipment metadata captured by the Cabeçalho sheet of Modelos_CQ.xltx.
+ * Equipment metadata captured by the Header sheet of Modelos_CQ.xltx.
  * Most fields are informational and feed the printed report (LAUDO);
  * `rectifier` and `dosimeterBrand` are the only fields that change calc
  * formulas.

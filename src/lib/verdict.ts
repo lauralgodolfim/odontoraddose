@@ -1,12 +1,24 @@
 export type Verdict = "pass" | "fail" | "restricted";
 
+/**
+ * - `two-sided` (default): symmetric — failures count in both directions
+ *   from the expected value. Use for accuracy/reproducibility checks.
+ * - `cap`: upper bound — only deviations *above* the expected value count.
+ *   Use when "expected" is the maximum permitted (e.g. CTDIvol cap).
+ * - `floor`: lower bound — only deviations *below* the expected value
+ *   count. Use when "expected" is the minimum required (e.g. HVL minimum).
+ */
+export type ToleranceKind = "two-sided" | "cap" | "floor";
+
 export type Tolerance = {
-  /** Absolute deviation above which the result fails (e.g. 0.2 = 20%). */
+  /** Threshold above which the result fails (e.g. 0.2 = 20%). */
   fail: number;
-  /** Absolute deviation above which the result is restricted (e.g. 0.4 = 40%). */
+  /** Threshold above which the result is restricted (e.g. 0.4 = 40%). */
   restricted: number;
   /** Regulation or standard reference (e.g. "IN 56/2019"). */
   reference: string;
+  /** Defaults to "two-sided" if omitted. */
+  kind?: ToleranceKind;
 };
 
 export const IN_56_PKA: Tolerance = {
@@ -22,9 +34,13 @@ export const IN_56_KVP: Tolerance = {
 };
 
 export function classifyDeviation(deviation: number, t: Tolerance): Verdict {
-  const a = Math.abs(deviation);
-  if (a > t.restricted) return "restricted";
-  if (a > t.fail) return "fail";
+  const kind = t.kind ?? "two-sided";
+  let metric: number;
+  if (kind === "two-sided") metric = Math.abs(deviation);
+  else if (kind === "cap") metric = Math.max(deviation, 0);
+  else metric = Math.max(-deviation, 0);
+  if (metric > t.restricted) return "restricted";
+  if (metric > t.fail) return "fail";
   return "pass";
 }
 

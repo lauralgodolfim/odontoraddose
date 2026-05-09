@@ -47,7 +47,7 @@ export default function EquipmentPage() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Section title="QC parameters">
             <Field
-              label="Rectifier (retificação)"
+              label="Rectifier"
               hint="Used by HVL minimum and beam-quality formulas."
             >
               <select

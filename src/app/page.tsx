@@ -1,10 +1,26 @@
 import Link from "next/link";
 
+import { EquipmentBadge } from "@/components/EquipmentBadge";
+import {
+  type Calculator,
+  type CalculatorPhase,
+  calculators,
+  phaseLabels,
+} from "@/lib/calculators";
+
 export default function Home() {
+  const byPhase = new Map<CalculatorPhase, Calculator[]>();
+  for (const c of calculators) {
+    const list = byPhase.get(c.phase) ?? [];
+    list.push(c);
+    byPhase.set(c.phase, list);
+  }
+  const phases = Array.from(byPhase.keys()).sort((a, b) => a - b);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-center gap-8 py-24 px-8 text-center">
-        <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col flex-1 bg-zinc-50 font-sans dark:bg-black">
+      <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-16 sm:px-8">
+        <header className="flex flex-col items-center gap-4 text-center">
           <span className="rounded-full border border-zinc-200 px-3 py-1 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
             Work in progress
           </span>
@@ -12,33 +28,66 @@ export default function Home() {
             Odonto RadDose
           </h1>
           <p className="max-w-md text-lg leading-7 text-zinc-600 dark:text-zinc-400">
-            Radiation dose calculator for odontologic equipment. Calculators
-            and reference data will appear here as the project grows.
+            Radiation dose and quality-control calculators for medical imaging
+            equipment, ported from the standard CQ workbook.
           </p>
-        </div>
-        <nav className="flex w-full flex-col items-stretch gap-3 text-left">
-          <Link
-            href="./extraoral"
-            className="group flex items-center justify-between gap-4 rounded-lg border border-zinc-200 bg-white px-5 py-4 text-left transition hover:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-100"
-          >
-            <span className="flex flex-col">
-              <span className="text-base font-semibold text-zinc-950 dark:text-zinc-50">
-                Extraoral — PKA (DAP)
-              </span>
-              <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                Compute P<sub>KA</sub> from the measured P<sub>KL</sub> and
-                validate it against the machine-reported value.
-              </span>
-            </span>
-            <span
-              aria-hidden
-              className="text-xl text-zinc-400 transition group-hover:translate-x-0.5 group-hover:text-zinc-900 dark:group-hover:text-zinc-100"
-            >
-              →
-            </span>
-          </Link>
-        </nav>
+          <EquipmentBadge />
+        </header>
+
+        {phases.map((phase) => (
+          <section key={phase} className="flex flex-col gap-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              {phaseLabels[phase]}
+            </h2>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {byPhase.get(phase)!.map((c) => (
+                <CalculatorCard key={c.slug} calc={c} />
+              ))}
+            </div>
+          </section>
+        ))}
       </main>
     </div>
+  );
+}
+
+function CalculatorCard({ calc }: { calc: Calculator }) {
+  const isImplemented = calc.status === "implemented";
+  const inner = (
+    <>
+      <span className="flex flex-col">
+        <span className="text-base font-semibold text-zinc-950 dark:text-zinc-50">
+          {calc.title}
+        </span>
+        <span className="text-sm text-zinc-600 dark:text-zinc-400">
+          {calc.description}
+        </span>
+      </span>
+      <span
+        aria-hidden
+        className={`text-xl ${
+          isImplemented
+            ? "text-zinc-400 transition group-hover:translate-x-0.5 group-hover:text-zinc-900 dark:group-hover:text-zinc-100"
+            : "text-zinc-300 dark:text-zinc-700"
+        }`}
+      >
+        {isImplemented ? "→" : "·"}
+      </span>
+    </>
+  );
+  if (!isImplemented) {
+    return (
+      <div className="flex items-center justify-between gap-4 rounded-lg border border-dashed border-zinc-200 bg-white/40 px-5 py-4 text-left opacity-60 dark:border-zinc-800 dark:bg-zinc-950/40">
+        {inner}
+      </div>
+    );
+  }
+  return (
+    <Link
+      href={`./${calc.slug}`}
+      className="group flex items-center justify-between gap-4 rounded-lg border border-zinc-200 bg-white px-5 py-4 text-left transition hover:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-100"
+    >
+      {inner}
+    </Link>
   );
 }

@@ -13,14 +13,14 @@ export function Stat({
     <div
       className={`flex flex-col gap-1 rounded-lg border p-4 ${
         emphasis
-          ? "border-zinc-900 bg-zinc-900 text-zinc-50 dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
-          : "border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950"
+          ? "border-radiation-400/70 bg-radiation-400/10 text-radiation-100 dark:border-radiation-400 dark:bg-radiation-400/10 dark:text-radiation-100"
+          : "border-zinc-200 bg-white dark:border-radiation-400/20 dark:bg-zinc-950"
       }`}
     >
       <span
         className={`text-[11px] font-medium uppercase tracking-wider ${
           emphasis
-            ? "text-zinc-300 dark:text-zinc-700"
+            ? "text-radiation-300 dark:text-radiation-300"
             : "text-zinc-500 dark:text-zinc-400"
         }`}
       >
@@ -32,7 +32,7 @@ export function Stat({
       <span
         className={`text-xs ${
           emphasis
-            ? "text-zinc-300 dark:text-zinc-700"
+            ? "text-radiation-200 dark:text-radiation-200"
             : "text-zinc-500 dark:text-zinc-400"
         }`}
       >

@@ -21,7 +21,7 @@ export default function Home() {
     <div className="flex flex-col flex-1 bg-zinc-50 font-sans dark:bg-black">
       <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-16 sm:px-8">
         <header className="flex flex-col items-center gap-4 text-center">
-          <span className="rounded-full border border-zinc-200 px-3 py-1 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+          <span className="rounded-full border border-radiation-400/40 bg-radiation-400/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-radiation-300">
             Work in progress
           </span>
           <div className="flex items-center gap-4">
@@ -31,7 +31,7 @@ export default function Home() {
               alt=""
               width={72}
               height={72}
-              className="h-14 w-14 rounded-2xl shadow-sm sm:h-20 sm:w-20"
+              className="h-14 w-14 rounded-2xl shadow-sm ring-1 ring-radiation-400/40 sm:h-20 sm:w-20"
             />
             <h1 className="text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl dark:text-zinc-50">
               Odonto RadDose
@@ -50,10 +50,12 @@ export default function Home() {
             <EquipmentBadge />
             <Link
               href="./audit"
-              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-600 transition hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:border-zinc-100 dark:hover:text-zinc-100"
+              className="inline-flex items-center gap-2 rounded-full border border-radiation-400/40 bg-zinc-950/40 px-3 py-1 text-xs text-zinc-400 transition hover:border-radiation-400 hover:text-radiation-300"
             >
-              <span className="font-medium uppercase tracking-wider">Audit</span>
-              <span aria-hidden className="text-zinc-300 dark:text-zinc-700">
+              <span className="font-medium uppercase tracking-wider text-radiation-400">
+                Audit
+              </span>
+              <span aria-hidden className="text-radiation-400/40">
                 ·
               </span>
               <span>Coverage summary</span>
@@ -63,7 +65,7 @@ export default function Home() {
 
         {phases.map((phase) => (
           <section key={phase} className="flex flex-col gap-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-radiation-300">
               {phaseLabels[phase]}
             </h2>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -94,7 +96,7 @@ function CalculatorCard({ calc }: { calc: Calculator }) {
         aria-hidden
         className={`text-xl ${
           isImplemented
-            ? "text-zinc-400 transition group-hover:translate-x-0.5 group-hover:text-zinc-900 dark:group-hover:text-zinc-100"
+            ? "text-radiation-400/60 transition group-hover:translate-x-0.5 group-hover:text-radiation-400"
             : "text-zinc-300 dark:text-zinc-700"
         }`}
       >
@@ -112,7 +114,7 @@ function CalculatorCard({ calc }: { calc: Calculator }) {
   return (
     <Link
       href={`./${calc.slug}`}
-      className="group flex items-center justify-between gap-4 rounded-lg border border-zinc-200 bg-white px-5 py-4 text-left transition hover:border-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-100"
+      className="group flex items-center justify-between gap-4 rounded-lg border border-zinc-200 bg-white px-5 py-4 text-left transition hover:border-radiation-400 dark:border-radiation-400/20 dark:bg-zinc-950 dark:hover:border-radiation-400 dark:hover:bg-radiation-400/5"
     >
       {inner}
     </Link>

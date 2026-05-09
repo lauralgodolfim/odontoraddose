@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 export const inputCls =
-  "w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-100 dark:focus:ring-zinc-100";
+  "w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-radiation-400 focus:ring-1 focus:ring-radiation-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-radiation-400 dark:focus:ring-radiation-400";
 
 export function Section({
   title,
@@ -11,8 +11,8 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-300">
+    <section className="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-white p-4 dark:border-radiation-400/25 dark:bg-zinc-950">
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-700 dark:text-radiation-300">
         {title}
       </h2>
       <div className="flex flex-col gap-3">{children}</div>

@@ -72,7 +72,7 @@ export default function LeakagePage() {
         <header className="flex flex-col gap-2">
           <Link
             href="../../"
-            className="text-xs uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
+            className="text-xs uppercase tracking-wider text-radiation-400/70 hover:text-radiation-300"
           >
             ← Home
           </Link>
@@ -151,7 +151,7 @@ export default function LeakagePage() {
             <button
               type="button"
               onClick={() => setForm(initial)}
-              className="mt-2 self-start rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+              className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
             >
               Clear
             </button>
@@ -187,7 +187,7 @@ export default function LeakagePage() {
           </section>
         )}
 
-        <footer className="border-t border-zinc-200 pt-4 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-500">
+        <footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
           <p>Rate at distance = chamber dose × 3600 / exposure time</p>
           <p>Rate at 1 m = rate at distance × (distance / 100)²</p>
           <p className="mt-1">

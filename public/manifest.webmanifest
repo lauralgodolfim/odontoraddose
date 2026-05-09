@@ -1,13 +1,13 @@
 {
   "name": "Odonto RadDose",
   "short_name": "RadDose",
-  "description": "Radiation dose calculator for odontologic equipment.",
+  "description": "Radiation-dose and quality-control calculators for medical imaging equipment.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0a0a0a",
-  "theme_color": "#0a0a0a",
+  "theme_color": "#ebb244",
   "icons": [
     {
       "src": "./favicon.png",

@@ -29,7 +29,7 @@ export default function EquipmentPage() {
         <header className="flex flex-col gap-2">
           <Link
             href="../"
-            className="text-xs uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
+            className="text-xs uppercase tracking-wider text-radiation-400/70 hover:text-radiation-300"
           >
             ← Home
           </Link>
@@ -191,7 +191,7 @@ export default function EquipmentPage() {
             <button
               type="button"
               onClick={reset}
-              className="mt-2 self-start rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+              className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
             >
               Reset to defaults
             </button>

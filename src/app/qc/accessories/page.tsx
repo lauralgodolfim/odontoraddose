@@ -80,7 +80,7 @@ export default function AcessoriosPage() {
         <header className="flex flex-col gap-2">
           <Link
             href="../../"
-            className="text-xs uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
+            className="text-xs uppercase tracking-wider text-radiation-400/70 hover:text-radiation-300"
           >
             ← Home
           </Link>
@@ -140,7 +140,7 @@ export default function AcessoriosPage() {
           </section>
         ) : null}
 
-        <footer className="border-t border-zinc-200 pt-4 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-500">
+        <footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
           <p>
             Visual inspection: look for tears, peeling, or deformation that
             interferes with proper coverage.

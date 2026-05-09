@@ -1,3 +1,4 @@
+import { ArrowRight, Circle } from "lucide-react";
 import Link from "next/link";
 
 import { EquipmentBadge } from "@/components/EquipmentBadge";
@@ -92,16 +93,17 @@ function CalculatorCard({ calc }: { calc: Calculator }) {
           {calc.description}
         </span>
       </span>
-      <span
-        aria-hidden
-        className={`text-xl ${
-          isImplemented
-            ? "text-radiation-400/60 transition group-hover:translate-x-0.5 group-hover:text-radiation-400"
-            : "text-zinc-300 dark:text-zinc-700"
-        }`}
-      >
-        {isImplemented ? "→" : "·"}
-      </span>
+      {isImplemented ? (
+        <ArrowRight
+          aria-hidden
+          className="h-5 w-5 text-radiation-400/60 transition group-hover:translate-x-0.5 group-hover:text-radiation-400"
+        />
+      ) : (
+        <Circle
+          aria-hidden
+          className="h-2 w-2 fill-current text-zinc-300 dark:text-zinc-700"
+        />
+      )}
     </>
   );
   if (!isImplemented) {

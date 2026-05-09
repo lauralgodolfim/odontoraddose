@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -29,9 +30,9 @@ export default function AuditPage() {
         <header className="flex flex-col gap-2">
           <Link
             href="../"
-            className="text-xs uppercase tracking-wider text-radiation-400/70 hover:text-radiation-300"
+            className="inline-flex items-center gap-1 text-xs uppercase tracking-wider text-radiation-400/70 hover:text-radiation-300"
           >
-            ← Home
+            <ArrowLeft aria-hidden className="h-3 w-3" /> Home
           </Link>
           <h1 className="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl dark:text-zinc-50">
             Audit

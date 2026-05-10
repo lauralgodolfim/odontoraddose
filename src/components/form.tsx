@@ -37,7 +37,7 @@ export function Field({
 			</span>
 			{children}
 			{hint ? (
-				<span className="text-[11px] text-zinc-500 dark:text-zinc-500">
+				<span className="text-[11px] text-zinc-400 dark:text-zinc-400">
 					{hint}
 				</span>
 			) : null}

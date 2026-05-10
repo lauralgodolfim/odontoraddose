@@ -1,4 +1,10 @@
 {
+  "browserslist": [
+    "Chrome >= 110",
+    "Edge >= 110",
+    "Firefox >= 110",
+    "Safari >= 16.4"
+  ],
   "dependencies": {
     "lucide-react": "^1",
     "next": "^16",
@@ -22,7 +28,8 @@
     "dev": "next dev",
     "format": "biome format --write",
     "lint": "biome lint",
-    "start": "next start"
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
   },
   "version": "0.1.0"
 }

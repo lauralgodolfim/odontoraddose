@@ -52,7 +52,7 @@ export default function AuditPage() {
 								<h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
 									{phaseLabels[phase]}
 								</h2>
-								<span className="text-xs text-zinc-500 dark:text-zinc-500">
+								<span className="text-xs text-zinc-400 dark:text-zinc-400">
 									{list.filter((c) => c.status === "implemented").length} /{" "}
 									{list.length} implemented
 								</span>
@@ -82,16 +82,17 @@ export default function AuditPage() {
 													{c.status === "implemented" ? (
 														<Link
 															href={`../${c.slug}`}
+															prefetch={false}
 															className="font-medium text-zinc-950 hover:underline dark:text-zinc-50"
 														>
 															{c.title}
 														</Link>
 													) : (
-														<span className="font-medium text-zinc-500 dark:text-zinc-500">
+														<span className="font-medium text-zinc-400 dark:text-zinc-400">
 															{c.title}
 														</span>
 													)}
-													<p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-500">
+													<p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-400">
 														{c.description}
 													</p>
 												</td>

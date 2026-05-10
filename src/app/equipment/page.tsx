@@ -184,7 +184,7 @@ export default function EquipmentPage() {
 					</Section>
 
 					<Section title="Reset">
-						<p className="text-xs text-zinc-500 dark:text-zinc-500">
+						<p className="text-xs text-zinc-400 dark:text-zinc-400">
 							Clear all stored equipment fields and reset the QC parameters to
 							defaults (AF rectifier, Unfors dosimeter).
 						</p>

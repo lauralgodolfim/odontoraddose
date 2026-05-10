@@ -28,10 +28,12 @@ export default function Home() {
 					</span>
 					<div className="flex items-center gap-4">
 						<Image
-							src="./favicon.png"
+							src="./logo.png"
 							alt=""
-							width={72}
-							height={72}
+							width={192}
+							height={192}
+							priority
+							sizes="(min-width: 640px) 80px, 56px"
 							className="h-14 w-14 rounded-2xl shadow-sm ring-1 ring-radiation-400/40 sm:h-20 sm:w-20"
 						/>
 						<h1 className="text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl dark:text-zinc-50">
@@ -43,7 +45,7 @@ export default function Home() {
 						mammography, fluoroscopy, ultrasound and MRI. Validated against
 						Brazilian IN 54–91, ACR, AAPM and IEC references.
 					</p>
-					<p className="max-w-xl text-sm leading-6 text-zinc-500 dark:text-zinc-500">
+					<p className="max-w-xl text-sm leading-6 text-zinc-400 dark:text-zinc-400">
 						Runs entirely in your browser — measurements stay on the device, and
 						the app works offline once installed.
 					</p>
@@ -51,6 +53,7 @@ export default function Home() {
 						<EquipmentBadge />
 						<Link
 							href="./audit"
+							prefetch={false}
 							className="inline-flex items-center gap-2 rounded-full border border-radiation-400/40 bg-zinc-950/40 px-3 py-1 text-xs text-zinc-400 transition hover:border-radiation-400 hover:text-radiation-300"
 						>
 							<span className="font-medium uppercase tracking-wider text-radiation-400">
@@ -116,6 +119,7 @@ function CalculatorCard({ calc }: { calc: Calculator }) {
 	return (
 		<Link
 			href={`./${calc.slug}`}
+			prefetch={false}
 			className="group flex items-center justify-between gap-4 rounded-lg border border-zinc-200 bg-white px-5 py-4 text-left transition hover:border-radiation-400 dark:border-radiation-400/20 dark:bg-zinc-950 dark:hover:border-radiation-400 dark:hover:bg-radiation-400/5"
 		>
 			{inner}

@@ -13,27 +13,27 @@ export type DosimeterBrand = "Unfors" | "Fluke" | "Raysafe";
  * formulas.
  */
 export type Equipment = {
-  // QC parameters (calc-affecting)
-  rectifier: Rectifier;
-  dosimeterBrand: DosimeterBrand;
+	// QC parameters (calc-affecting)
+	rectifier: Rectifier;
+	dosimeterBrand: DosimeterBrand;
 
-  // Identification (informational, used for reports)
-  client?: string;
-  location?: string;
-  serviceDate?: string;
-  responsible?: string;
-  generatorBrand?: string;
-  generatorModel?: string;
-  generatorSerial?: string;
-  generatorAnvisa?: string;
-  kvNominal?: string;
-  maNominal?: string;
-  certificate?: string;
+	// Identification (informational, used for reports)
+	client?: string;
+	location?: string;
+	serviceDate?: string;
+	responsible?: string;
+	generatorBrand?: string;
+	generatorModel?: string;
+	generatorSerial?: string;
+	generatorAnvisa?: string;
+	kvNominal?: string;
+	maNominal?: string;
+	certificate?: string;
 };
 
 export const defaultEquipment: Equipment = {
-  rectifier: "af",
-  dosimeterBrand: "Unfors",
+	rectifier: "af",
+	dosimeterBrand: "Unfors",
 };
 
 export const EQUIPMENT_STORAGE_KEY = "radqc-suite:equipment";

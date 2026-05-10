@@ -10,15 +10,15 @@
  * patient's skin.
  */
 export type Backscatter = {
-  /** Focus–film distance the factor is calibrated for (cm). */
-  ffdCm: number;
-  /** Backscatter factor (dimensionless). */
-  factor: number;
+	/** Focus–film distance the factor is calibrated for (cm). */
+	ffdCm: number;
+	/** Backscatter factor (dimensionless). */
+	factor: number;
 };
 
 export const intraoralBackscatter = {
-  ffd20: { ffdCm: 20, factor: 1.167 } satisfies Backscatter,
-  ffd27_5: { ffdCm: 27.5, factor: 1.208 } satisfies Backscatter,
+	ffd20: { ffdCm: 20, factor: 1.167 } satisfies Backscatter,
+	ffd27_5: { ffdCm: 27.5, factor: 1.208 } satisfies Backscatter,
 } as const;
 
 export type IntraoralFfd = keyof typeof intraoralBackscatter;

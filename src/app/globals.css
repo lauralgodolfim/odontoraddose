@@ -1,73 +1,75 @@
+/** biome-ignore-all lint/complexity/noImportantStyles: print rules must override Tailwind utility classes */
+
 @import "tailwindcss";
 
 /* Class-based dark variant: <html class="dark"> activates `dark:` utilities. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Radiation amber — pulled from the radiation symbol on the favicon
+	/* Radiation amber — pulled from the radiation symbol on the favicon
      (#ebb244) and extended to a 9-step ramp for borders, fills and text. */
-  --color-radiation-50: #fdf7e6;
-  --color-radiation-100: #fbecbe;
-  --color-radiation-200: #f6d886;
-  --color-radiation-300: #f1c45b;
-  --color-radiation-400: #ebb244;
-  --color-radiation-500: #d59c2c;
-  --color-radiation-600: #ad7e22;
-  --color-radiation-700: #856016;
-  --color-radiation-800: #5e430f;
+	--color-radiation-50: #fdf7e6;
+	--color-radiation-100: #fbecbe;
+	--color-radiation-200: #f6d886;
+	--color-radiation-300: #f1c45b;
+	--color-radiation-400: #ebb244;
+	--color-radiation-500: #d59c2c;
+	--color-radiation-600: #ad7e22;
+	--color-radiation-700: #856016;
+	--color-radiation-800: #5e430f;
 }
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  color-scheme: dark;
+	--background: #0a0a0a;
+	--foreground: #ededed;
+	color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+	background: var(--background);
+	color: var(--foreground);
+	font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
 /* Anchor selection colour to the radiation accent. */
 ::selection {
-  background: var(--color-radiation-400);
-  color: #0a0a0a;
+	background: var(--color-radiation-400);
+	color: #0a0a0a;
 }
 
 @media print {
-  /* Hide navigation chrome, action buttons, and inputs that aren't useful on
+	/* Hide navigation chrome, action buttons, and inputs that aren't useful on
      a printed report. The data we want is the labels + computed values. */
-  .no-print {
-    display: none !important;
-  }
-  body {
-    background: white !important;
-    color: black !important;
-  }
-  main {
-    max-width: none !important;
-    padding: 0 !important;
-  }
-  /* Inputs render flat, without a focus ring or background, in printed reports. */
-  input,
-  select,
-  textarea {
-    border: none !important;
-    background: transparent !important;
-    color: black !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-  }
-  a {
-    text-decoration: none !important;
-    color: black !important;
-  }
+	.no-print {
+		display: none !important;
+	}
+	body {
+		background: white !important;
+		color: black !important;
+	}
+	main {
+		max-width: none !important;
+		padding: 0 !important;
+	}
+	/* Inputs render flat, without a focus ring or background, in printed reports. */
+	input,
+	select,
+	textarea {
+		border: none !important;
+		background: transparent !important;
+		color: black !important;
+		box-shadow: none !important;
+		padding: 0 !important;
+	}
+	a {
+		text-decoration: none !important;
+		color: black !important;
+	}
 }

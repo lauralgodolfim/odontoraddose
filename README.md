@@ -4,7 +4,7 @@ Radiation-dose and QC calculators for medical imaging equipment. Built as an
 installable, offline-capable web app (Next.js SPA + PWA, fully client-side).
 
 The project digitises the calculations from a medical-physics QC workbook
-(`public/Modelos_CQ.xltx`) so technicians can compute and validate dose and
+(`docs/Modelos_CQ.xltx`) so technicians can compute and validate dose and
 QC values from a phone or browser instead of editing the spreadsheet by
 hand.
 
@@ -273,8 +273,10 @@ slice ±0.7 mm, slice position ±5 mm, PIU ≥ 87.5%, PSG ≤ 2.5%, low-contrast
 
 - **Next.js 16** with the App Router and Turbopack
 - **React 19**
-- **TypeScript** in strict mode
+- **TypeScript 6** in strict mode
 - **Tailwind CSS v4**
+- **Biome 2** for linting and formatting
+- **lucide-react** for icons
 - **Static export** (`output: "export"`, `trailingSlash: true`) — the build
   produces a fully static bundle that can be served from any CDN, a sub-path,
   or even `file://`
@@ -287,9 +289,12 @@ Because everything runs client-side, no patient data ever leaves the device.
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run lint     # eslint
-npm run build    # static export → ./out
+npm run dev        # http://localhost:3000
+npm run lint       # biome lint
+npm run format     # biome format --write
+npm run check      # biome check (lint + format)
+npm run typecheck  # tsc --noEmit
+npm run build      # static export → ./out
 ```
 
 The static bundle in `./out` is what gets deployed.
@@ -319,10 +324,13 @@ src/lib/
   equipment.ts            Equipment type + storage key
   tables/                 Reference tables ported from the workbook
 public/
-  Modelos_CQ.xltx         Source QC workbook
   manifest.webmanifest
-  icon.svg
   sw.js
+  favicon.ico
+  favicon.png
+  logo.png
+docs/
+  Modelos_CQ.xltx         Source QC workbook
 ```
 
 ## Notes for contributors

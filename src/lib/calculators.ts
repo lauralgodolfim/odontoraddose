@@ -30,7 +30,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Entrance skin dose at the cone tip with backscatter, optionally compared against a local protocol limit.",
 		phase: 1,
-		status: "implemented",
+		status: "planned",
 		category: "dose",
 	},
 	{
@@ -39,7 +39,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Weighted CTDI from center + peripheral readings, scaled to CTDIvol, then DLP and effective dose.",
 		phase: 1,
-		status: "implemented",
+		status: "planned",
 		category: "dose",
 	},
 	{
@@ -48,7 +48,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Per-exam entrance skin dose for conventional radiography against IN 90/2021 Annex II references.",
 		phase: 1,
-		status: "implemented",
+		status: "planned",
 		category: "dose",
 	},
 	{
@@ -57,7 +57,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Mean glandular dose with g·c and S-factor lookup; IN 54 conformity by PMMA thickness.",
 		phase: 1,
-		status: "implemented",
+		status: "planned",
 		category: "dose",
 	},
 	{
@@ -66,7 +66,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Entrance dose-rate during fluoroscopy with IN 91 / RDC 330 caps for manual / automatic / high-rate modes.",
 		phase: 1,
-		status: "implemented",
+		status: "planned",
 		category: "dose",
 	},
 	{
@@ -75,7 +75,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Per-shot kVp deviation and reproducibility across the shot series; IN 56 tolerances.",
 		phase: 2,
-		status: "implemented",
+		status: "planned",
 		category: "qc",
 	},
 	{
@@ -84,7 +84,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Compare measured HVL against the IN 56 minimum for kVp and rectifier type.",
 		phase: 2,
-		status: "implemented",
+		status: "planned",
 		category: "qc",
 	},
 	{
@@ -93,7 +93,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Tube output normalised to 1 m and reference kVp; compared to the IN 56 / IN 90 conventional range.",
 		phase: 2,
-		status: "implemented",
+		status: "planned",
 		category: "qc",
 	},
 	{
@@ -102,7 +102,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Per-shot timer accuracy and reproducibility across the shot series; IN 56 tolerances.",
 		phase: 2,
-		status: "implemented",
+		status: "planned",
 		category: "qc",
 	},
 	{
@@ -111,7 +111,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Leakage dose-rate at 1 m from the tube housing under maximum-load conditions.",
 		phase: 3,
-		status: "implemented",
+		status: "planned",
 		category: "safety",
 	},
 	{
@@ -120,7 +120,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Pass/fail scoring for lead aprons, thyroid collars, and gonadal shields.",
 		phase: 3,
-		status: "implemented",
+		status: "planned",
 		category: "safety",
 	},
 	{
@@ -129,7 +129,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Light-box luminance and uniformity, plus diagnostic-monitor luminance and ambient illuminance.",
 		phase: 3,
-		status: "implemented",
+		status: "planned",
 		category: "safety",
 	},
 	{
@@ -138,7 +138,7 @@ export const calculators: Calculator[] = [
 		description:
 			"CT-number accuracy (water = 0 HU), uniformity, and noise from a water phantom.",
 		phase: 4,
-		status: "implemented",
+		status: "planned",
 		category: "imaging",
 	},
 	{
@@ -147,7 +147,7 @@ export const calculators: Calculator[] = [
 		description:
 			"ACR phantom scoring (fibres, masses, speck groups) with the ≥ 4/3/3 acceptance thresholds.",
 		phase: 4,
-		status: "implemented",
+		status: "planned",
 		category: "imaging",
 	},
 	{
@@ -156,7 +156,7 @@ export const calculators: Calculator[] = [
 		description:
 			"Probe QC against per-probe baselines: penetration, axial/lateral resolution, dead zone, plus pass/fail visual checks.",
 		phase: 4,
-		status: "implemented",
+		status: "planned",
 		category: "imaging",
 	},
 	{
@@ -165,7 +165,7 @@ export const calculators: Calculator[] = [
 		description:
 			"ACR phantom QC: geometric accuracy, slice thickness, SNR, PIU, PSG, low-contrast.",
 		phase: 4,
-		status: "implemented",
+		status: "planned",
 		category: "imaging",
 	},
 ];

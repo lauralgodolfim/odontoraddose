@@ -16,7 +16,7 @@ All routes are statically prerendered and run entirely in the browser.
 
 | Route | Calculator | Standard |
 | ----- | ---------- | -------- |
-| `/extraoral` | P<sub>KA</sub> (DAP) | IN 56/2019 |
+| `/extraoral` | P<sub>KA</sub> (DAP) + DFOV (CBCT) | IN 56/2019 + DIN 6868-161 |
 | `/intraoral` | ESD at the cone tip | local protocol |
 | `/tomography` | CTDIw → CTDIvol → DLP → E | IN 55 |
 | `/conventional` | Per-exam ESD | IN 90/2021 Annex II |
@@ -62,8 +62,11 @@ All routes are statically prerendered and run entirely in the browser.
 
 #### `/extraoral` — P<sub>KA</sub> (DAP)
 
-Inputs: focus–detector distance, focus–receptor distance, field height,
-correction factor, measured P<sub>KL</sub> (mGy·cm), machine-reported
+The `/extraoral` route is split into two tabs: **P_KA (DAP)** for panoramic /
+cephalometric units, and **DFOV (CBCT)** for cone-beam CT.
+
+**P_KA tab.** Inputs: focus–detector distance, focus–receptor distance, field
+height, correction factor, measured P<sub>KL</sub> (mGy·cm), machine-reported
 P<sub>KA</sub>.
 
 ```
@@ -73,6 +76,19 @@ P_KA           = Corrected P_KL × field height × correction factor
 
 Validation: |P<sub>KA,calc</sub> / P<sub>KA,machine</sub> − 1| against the
 IN 56/2019 band — ≤ 20% pass, 20–40% fail, &gt; 40% restricted.
+
+**DFOV (CBCT) tab.** Inputs: incident kerma K<sub>a,i</sub>(FDD) in mGy,
+focus–isocenter `a`, focus–measurement-point `b`, scanned-volume horizontal
+diameter `c`, radiation-field horizontal diameter at the measurement point
+`d`, manufacturer reference DFOV.
+
+```
+DFOV = K_a,i(FDD) × (b / a) × (d / c)    [mGy]
+```
+
+Validation: |DFOV<sub>calc</sub> / DFOV<sub>ref</sub> − 1| against the same
+20% / 40% band, per DIN 6868-161. A separate action-level card flags whether
+the computed DFOV meets the DIN 6868-161 threshold of ≥ 50 mGy.
 
 #### `/intraoral` — ESD at the cone tip
 

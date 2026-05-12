@@ -33,6 +33,12 @@ export const IN_56_KVP: Tolerance = {
 	reference: "IN 56/2019",
 };
 
+export const DIN_6868_161_DFOV: Tolerance = {
+	fail: 0.2,
+	restricted: 0.4,
+	reference: "DIN 6868-161",
+};
+
 export function classifyDeviation(deviation: number, t: Tolerance): Verdict {
 	const kind = t.kind ?? "two-sided";
 	let metric: number;

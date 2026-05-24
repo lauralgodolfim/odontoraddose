@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 import { useEquipment } from "./EquipmentProvider";
 
@@ -11,6 +12,16 @@ export function EquipmentSelector({
 }) {
 	const { equipments, selection, select } = useEquipment();
 	const selectedId = selection[calculatorSlug] ?? "";
+
+	// Bump on every change after first mount so the wrapper re-mounts and
+	// re-plays the flash keyframe.
+	const prevIdRef = useRef(selectedId);
+	const [flashKey, setFlashKey] = useState(0);
+	useEffect(() => {
+		if (prevIdRef.current === selectedId) return;
+		prevIdRef.current = selectedId;
+		setFlashKey((k) => k + 1);
+	}, [selectedId]);
 
 	if (equipments.length === 0) {
 		return (
@@ -27,7 +38,10 @@ export function EquipmentSelector({
 	}
 
 	return (
-		<div className="inline-flex items-center gap-2 rounded-md border border-radiation-400/30 bg-zinc-950/40 px-3 py-1.5 text-xs">
+		<div
+			key={flashKey}
+			className="inline-flex animate-selector-flash items-center gap-2 rounded-md border border-radiation-400/30 bg-zinc-950/40 px-3 py-1.5 text-xs"
+		>
 			<span className="uppercase tracking-wider text-radiation-400">
 				Equipment
 			</span>

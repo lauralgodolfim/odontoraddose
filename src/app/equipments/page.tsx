@@ -100,9 +100,9 @@ export default function EquipmentPage() {
 								return (
 									<li
 										key={eq.id}
-										className={`flex items-center justify-between gap-3 rounded-lg border px-4 py-3 transition ${
+										className={`flex animate-list-enter items-center justify-between gap-3 rounded-lg border px-4 py-3 transition ${
 											isActive
-												? "border-radiation-400 bg-radiation-400/10"
+												? "animate-row-glow border-radiation-400 bg-radiation-400/10"
 												: "border-zinc-200 bg-white hover:border-radiation-400/40 dark:border-radiation-400/20 dark:bg-zinc-950"
 										}`}
 									>
@@ -136,7 +136,10 @@ export default function EquipmentPage() {
 				</section>
 
 				{active ? (
-					<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+					<div
+						key={active.id}
+						className="grid animate-fade-up grid-cols-1 gap-6 md:grid-cols-2"
+					>
 						<Section title="Identification">
 							<Field label="Name" hint="Displayed in selectors and lists.">
 								<input

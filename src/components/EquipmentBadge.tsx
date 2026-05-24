@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { useCountUp } from "@/lib/useCountUp";
 import { useEquipment } from "./EquipmentProvider";
 
 export function EquipmentBadge() {
@@ -19,7 +20,20 @@ export function EquipmentBadge() {
 			<span aria-hidden className="text-radiation-400/40">
 				·
 			</span>
-			<span>{count === 0 ? "None saved" : `${count} saved`}</span>
+			<span className="tabular-nums">
+				{count === 0 ? (
+					"None saved"
+				) : (
+					<>
+						<AnimatedCount value={count} /> saved
+					</>
+				)}
+			</span>
 		</Link>
 	);
+}
+
+function AnimatedCount({ value }: { value: number }) {
+	const display = useCountUp(value);
+	return <>{Math.round(display)}</>;
 }

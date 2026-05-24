@@ -8,7 +8,7 @@ import { EquipmentBadge } from "@/components/EquipmentBadge";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
-import { fmt, parse } from "@/lib/num";
+import { parse } from "@/lib/num";
 import {
 	type IntraoralFfd,
 	intraoralBackscatter,
@@ -245,11 +245,11 @@ export default function IntraoralPage() {
 					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 						<Stat
 							label="Dose at cone tip"
-							value={fmt(result.doseAtConeTip)}
+							value={result.doseAtConeTip}
 							unit="mGy (free in air)"
 						/>
-						<Stat label="ESD" value={fmt(result.esd)} unit="mGy" emphasis />
-						<Stat label="Dose rate" value={fmt(result.doseRate)} unit="mGy/s" />
+						<Stat label="ESD" value={result.esd} unit="mGy" emphasis />
+						<Stat label="Dose rate" value={result.doseRate} unit="mGy/s" />
 						<ValidationCard
 							observed={result.esd}
 							observedLabel="Calc"

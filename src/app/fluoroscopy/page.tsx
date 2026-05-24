@@ -8,7 +8,7 @@ import { EquipmentBadge } from "@/components/EquipmentBadge";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
-import { fmt, parse } from "@/lib/num";
+import { parse } from "@/lib/num";
 import type { Tolerance } from "@/lib/verdict";
 
 /** IN 91 / RDC 330 dose-rate caps at the entrance reference point. */
@@ -233,12 +233,12 @@ export default function FluoroscopyPage() {
 					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						<Stat
 							label="Rate at chamber"
-							value={fmt(result.ratePerMinAtChamber)}
+							value={result.ratePerMinAtChamber}
 							unit="mGy/min"
 						/>
 						<Stat
 							label="Rate at entrance"
-							value={fmt(result.rateAtSkin)}
+							value={result.rateAtSkin}
 							unit="mGy/min"
 							emphasis
 						/>

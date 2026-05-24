@@ -8,7 +8,7 @@ import { EquipmentBadge } from "@/components/EquipmentBadge";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
-import { fmt, parse } from "@/lib/num";
+import { parse } from "@/lib/num";
 import {
 	type CtRegion,
 	ctdiVolMaxByRegion,
@@ -360,17 +360,17 @@ export default function TomographyPage() {
 				{result ? (
 					<>
 						<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-							<Stat label="CTDIw" value={fmt(result.ctdiW)} unit="mGy" />
+							<Stat label="CTDIw" value={result.ctdiW} unit="mGy" />
 							<Stat
 								label="CTDIvol"
-								value={fmt(result.ctdiVol)}
+								value={result.ctdiVol}
 								unit="mGy"
 								emphasis
 							/>
-							<Stat label="DLP" value={fmt(result.dlp)} unit="mGy·cm" />
+							<Stat label="DLP" value={result.dlp} unit="mGy·cm" />
 							<Stat
 								label="Effective dose"
-								value={fmt(result.effectiveDose)}
+								value={result.effectiveDose}
 								unit="mSv"
 							/>
 						</section>

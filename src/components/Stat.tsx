@@ -1,3 +1,8 @@
+"use client";
+
+import { fmt } from "@/lib/num";
+import { useCountUp } from "@/lib/useCountUp";
+
 export function Stat({
 	label,
 	value,
@@ -5,7 +10,7 @@ export function Stat({
 	emphasis = false,
 }: {
 	label: string;
-	value: string;
+	value: number | string | null;
 	unit: string;
 	emphasis?: boolean;
 }) {
@@ -27,7 +32,11 @@ export function Stat({
 				{label}
 			</span>
 			<span className="font-mono text-2xl font-semibold tabular-nums">
-				{value}
+				{typeof value === "number" ? (
+					<AnimatedValue value={value} />
+				) : (
+					(value ?? fmt(value))
+				)}
 			</span>
 			<span
 				className={`text-xs ${
@@ -40,4 +49,9 @@ export function Stat({
 			</span>
 		</div>
 	);
+}
+
+function AnimatedValue({ value }: { value: number }) {
+	const display = useCountUp(value);
+	return <>{fmt(Number.isFinite(value) ? display : value)}</>;
 }

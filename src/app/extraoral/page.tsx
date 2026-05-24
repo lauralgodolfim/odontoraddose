@@ -365,20 +365,20 @@ export default function ExtraoralPage() {
 						</form>
 
 						{pkaResult ? (
-							<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 								<Stat
 									label="Corrected P_KL"
-									value={fmt(pkaResult.pklCorrected)}
+									value={pkaResult.pklCorrected}
 									unit="mGy·cm"
 								/>
 								<Stat
 									label="Dose–area P_KA"
-									value={fmt(pkaResult.pkaArea)}
+									value={pkaResult.pkaArea}
 									unit="mGy·cm²"
 								/>
 								<Stat
 									label="Calculated P_KA"
-									value={fmt(pkaResult.pkaCalc)}
+									value={pkaResult.pkaCalc}
 									unit="mGy·cm²"
 									emphasis
 								/>
@@ -495,10 +495,10 @@ export default function ExtraoralPage() {
 						</form>
 
 						{dapResult ? (
-							<section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2">
 								<Stat
 									label="Measured P_KA"
-									value={fmt(dapResult.measured)}
+									value={dapResult.measured}
 									unit="mGy·cm²"
 									emphasis
 								/>
@@ -625,10 +625,10 @@ export default function ExtraoralPage() {
 						</form>
 
 						{dfovResult ? (
-							<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 								<Stat
 									label="DFOV"
-									value={fmt(dfovResult.dfov)}
+									value={dfovResult.dfov}
 									unit="mGy"
 									emphasis
 								/>

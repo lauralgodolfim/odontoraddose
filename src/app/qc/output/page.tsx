@@ -7,7 +7,7 @@ import { useMemo, useState } from "react";
 import { EquipmentBadge } from "@/components/EquipmentBadge";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
-import { fmt, parse } from "@/lib/num";
+import { parse } from "@/lib/num";
 import { type Verdict, verdictMeta } from "@/lib/verdict";
 
 type FormState = {
@@ -198,7 +198,7 @@ export default function OutputPage() {
 					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						<Stat
 							label="Tube output"
-							value={fmt(result.tubeOutput)}
+							value={result.tubeOutput}
 							unit="μGy/mAs · m²"
 							emphasis
 						/>

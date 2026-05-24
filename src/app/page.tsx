@@ -1,7 +1,7 @@
-import { ArrowRight, Circle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { CalculatorCard } from "@/components/CalculatorCard";
 import { EquipmentBadge } from "@/components/EquipmentBadge";
 import {
 	type Calculator,
@@ -81,48 +81,5 @@ export default function Home() {
 				))}
 			</main>
 		</div>
-	);
-}
-
-function CalculatorCard({ calc }: { calc: Calculator }) {
-	const isImplemented = calc.status === "implemented";
-	const inner = (
-		<>
-			<span className="flex flex-col">
-				<span className="text-base font-semibold text-zinc-950 dark:text-zinc-50">
-					{calc.title}
-				</span>
-				<span className="text-sm text-zinc-600 dark:text-zinc-400">
-					{calc.description}
-				</span>
-			</span>
-			{isImplemented ? (
-				<ArrowRight
-					aria-hidden
-					className="h-5 w-5 text-radiation-400/60 transition group-hover:translate-x-0.5 group-hover:text-radiation-400"
-				/>
-			) : (
-				<Circle
-					aria-hidden
-					className="h-2 w-2 fill-current text-zinc-300 dark:text-zinc-700"
-				/>
-			)}
-		</>
-	);
-	if (!isImplemented) {
-		return (
-			<div className="flex items-center justify-between gap-4 rounded-lg border border-dashed border-zinc-200 bg-white/40 px-5 py-4 text-left opacity-60 dark:border-zinc-800 dark:bg-zinc-950/40">
-				{inner}
-			</div>
-		);
-	}
-	return (
-		<Link
-			href={`./${calc.slug}`}
-			prefetch={false}
-			className="group flex items-center justify-between gap-4 rounded-lg border border-zinc-200 bg-white px-5 py-4 text-left transition hover:border-radiation-400 dark:border-radiation-400/20 dark:bg-zinc-950 dark:hover:border-radiation-400 dark:hover:bg-radiation-400/5"
-		>
-			{inner}
-		</Link>
 	);
 }

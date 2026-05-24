@@ -174,7 +174,7 @@ export default function TimerPage() {
 				{result ? (
 					<>
 						<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-							<Stat label="Mean measured" value={fmt(result.avg)} unit="s" />
+							<Stat label="Mean measured" value={result.avg} unit="s" />
 							<Stat
 								label="Reproducibility"
 								value={`${(result.reproducibility * 100).toFixed(1)}%`}

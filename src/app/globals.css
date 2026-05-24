@@ -17,6 +17,40 @@
 	--color-radiation-600: #ad7e22;
 	--color-radiation-700: #856016;
 	--color-radiation-800: #5e430f;
+
+	--animate-fade-up: fadeUp 280ms cubic-bezier(0.16, 1, 0.3, 1);
+	--animate-alert-pulse: alertPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes alertPulse {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.35);
+	}
+	50% {
+		box-shadow: 0 0 0 6px rgba(244, 63, 94, 0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
 }
 
 :root {

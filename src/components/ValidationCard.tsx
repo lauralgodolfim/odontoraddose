@@ -29,8 +29,11 @@ export function ValidationCard({
 	const deviation = observed / expected - 1;
 	const verdict = classifyDeviation(deviation, tolerance);
 	const meta = verdictMeta[verdict];
+	const pulse = verdict === "restricted" ? " animate-alert-pulse" : "";
 	return (
-		<div className={`flex flex-col gap-1 rounded-lg border p-4 ${meta.tone}`}>
+		<div
+			className={`flex flex-col gap-1 rounded-lg border p-4 ${meta.tone}${pulse}`}
+		>
 			<span className="text-[11px] font-medium uppercase tracking-wider">
 				{tolerance.reference}
 			</span>

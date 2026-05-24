@@ -8,7 +8,7 @@ import { EquipmentBadge } from "@/components/EquipmentBadge";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
-import { fmt, parse } from "@/lib/num";
+import { parse } from "@/lib/num";
 import type { Tolerance } from "@/lib/verdict";
 
 type FormState = {
@@ -253,7 +253,7 @@ export default function MriPage() {
 
 				<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					{result.snr !== null ? (
-						<Stat label="SNR" value={fmt(result.snr)} unit="" emphasis />
+						<Stat label="SNR" value={result.snr} unit="" emphasis />
 					) : null}
 					{geom !== null ? (
 						<ValidationCard

@@ -8,7 +8,7 @@ import { EquipmentBadge } from "@/components/EquipmentBadge";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
-import { fmt, parse } from "@/lib/num";
+import { parse } from "@/lib/num";
 import type { Tolerance } from "@/lib/verdict";
 
 type FormState = {
@@ -241,7 +241,7 @@ export default function DisplaysPage() {
 					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						<Stat
 							label="Light box mean"
-							value={fmt(lbResult.mean)}
+							value={lbResult.mean}
 							unit="cd/m²"
 							emphasis
 						/>
@@ -273,11 +273,11 @@ export default function DisplaysPage() {
 
 				{monResult.max !== null && monResult.min !== null ? (
 					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-						<Stat label="L max" value={fmt(monResult.max)} unit="cd/m²" />
-						<Stat label="L min" value={fmt(monResult.min)} unit="cd/m²" />
+						<Stat label="L max" value={monResult.max} unit="cd/m²" />
+						<Stat label="L min" value={monResult.min} unit="cd/m²" />
 						<Stat
 							label="L max / L min"
-							value={fmt(monResult.ratio)}
+							value={monResult.ratio}
 							unit=""
 							emphasis
 						/>

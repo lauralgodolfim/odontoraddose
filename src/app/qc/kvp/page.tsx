@@ -147,7 +147,7 @@ export default function KvpPage() {
 				{result ? (
 					<>
 						<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-							<Stat label="Mean kVp" value={fmt(result.avg)} unit="kVp" />
+							<Stat label="Mean kVp" value={result.avg} unit="kVp" />
 							<Stat
 								label="Reproducibility"
 								value={`${(result.reproducibility * 100).toFixed(1)}%`}

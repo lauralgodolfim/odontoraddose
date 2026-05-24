@@ -8,7 +8,7 @@ import { EquipmentBadge } from "@/components/EquipmentBadge";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
-import { fmt, parse } from "@/lib/num";
+import { parse } from "@/lib/num";
 import { conventionalExams } from "@/lib/tables/conventional";
 import { radiationQualityFactor } from "@/lib/tables/dosimetry";
 import type { Tolerance } from "@/lib/verdict";
@@ -246,10 +246,10 @@ export default function ConventionalPage() {
 					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						<Stat
 							label="Focus–skin distance"
-							value={fmt(result.skinFocusDistance)}
+							value={result.skinFocusDistance}
 							unit="cm"
 						/>
-						<Stat label="ESD" value={fmt(result.esd)} unit="mGy" emphasis />
+						<Stat label="ESD" value={result.esd} unit="mGy" emphasis />
 						<ValidationCard
 							observed={result.esd}
 							observedLabel="Calc"

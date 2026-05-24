@@ -57,7 +57,7 @@ export function CalculatorCard({ calc }: { calc: Calculator }) {
 				className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 				style={{
 					background:
-						"radial-gradient(280px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(235, 178, 68, 0.12), transparent 60%)",
+						"radial-gradient(320px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(235, 178, 68, 0.22), transparent 65%)",
 				}}
 			/>
 			{inner}

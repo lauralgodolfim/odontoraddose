@@ -16,7 +16,7 @@ All routes are statically prerendered and run entirely in the browser.
 
 | Route | Calculator | Standard |
 | ----- | ---------- | -------- |
-| `/extraoral` | P<sub>KA</sub> (DAP) + DFOV (CBCT) | IN 56/2019 + DIN 6868-161 |
+| `/extraoral` | P<sub>KA</sub> (DAP) + DFOV (CBCT) | IN 94 + DIN 6868-161 |
 | `/intraoral` | ESD at the cone tip | local protocol |
 | `/tomography` | CTDIw → CTDIvol → DLP → E | IN 55 |
 | `/conventional` | Per-exam ESD | IN 90/2021 Annex II |
@@ -75,7 +75,7 @@ P_KA           = Corrected P_KL × field height × correction factor
 ```
 
 Validation: |P<sub>KA,calc</sub> / P<sub>KA,machine</sub> − 1| against the
-IN 56/2019 band — ≤ 20% pass, 20–40% fail, &gt; 40% restricted.
+IN 94 band — ≤ 20% pass, 20–40% fail, &gt; 40% restricted.
 
 **DFOV (CBCT) tab.** Inputs: incident kerma K<sub>a,i</sub>(FDD) in mGy,
 focus–isocenter `a`, focus–measurement-point `b`, scanned-volume horizontal

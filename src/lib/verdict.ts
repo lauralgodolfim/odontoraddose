@@ -21,10 +21,10 @@ export type Tolerance = {
 	kind?: ToleranceKind;
 };
 
-export const IN_56_PKA: Tolerance = {
+export const IN_94_PKA: Tolerance = {
 	fail: 0.2,
 	restricted: 0.4,
-	reference: "IN 56/2019",
+	reference: "IN 94",
 };
 
 export const IN_56_KVP: Tolerance = {

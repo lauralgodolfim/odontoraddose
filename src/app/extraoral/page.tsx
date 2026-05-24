@@ -8,7 +8,7 @@ import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
 import { fmt, parse } from "@/lib/num";
-import { DIN_6868_161_DFOV, IN_56_PKA } from "@/lib/verdict";
+import { DIN_6868_161_DFOV, IN_94_PKA } from "@/lib/verdict";
 
 const TABS = [
 	{ id: "pka", label: "P_KA (DAP)" },
@@ -132,7 +132,7 @@ export default function ExtraoralPage() {
 					</h1>
 					<p className="text-sm text-zinc-600 dark:text-zinc-400">
 						Dose calculators for extraoral dental imaging: panoramic /
-						cephalometric P<sub>KA</sub> (IN 56/2019) and CBCT DFOV (DIN
+						cephalometric P<sub>KA</sub> (IN 94) and CBCT DFOV (DIN
 						6868-161).
 					</p>
 				</header>
@@ -335,7 +335,7 @@ export default function ExtraoralPage() {
 									expected={pkaResult.pkaMach}
 									expectedLabel="Machine"
 									unit="mGy·cm²"
-									tolerance={IN_56_PKA}
+									tolerance={IN_94_PKA}
 									emptyHint="Enter the machine-reported P_KA to compare."
 								/>
 							</section>
@@ -356,7 +356,7 @@ export default function ExtraoralPage() {
 								height × correction factor
 							</p>
 							<p className="mt-1">
-								IN 56/2019 tolerance: ≤ 20% pass; 20%–40% fail; &gt; 40%
+								IN 94 tolerance: ≤ 20% pass; 20%–40% fail; &gt; 40%
 								restriction.
 							</p>
 						</footer>

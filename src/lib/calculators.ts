@@ -17,9 +17,9 @@ export type Calculator = {
 export const calculators: Calculator[] = [
 	{
 		slug: "extraoral",
-		title: "Extraoral — PKA / DFOV CBCT",
+		title: "Extraoral — PKA / DAP / DFOV CBCT",
 		description:
-			"PKA from measured PKL (IN 56/2019) plus DFOV for CBCT against manufacturer reference and DIN 6868-161.",
+			"PKA indicator accuracy and representative DAP comparison (IN 94), plus CBCT DFOV vs reference and the DIN 6868-161 action level.",
 		phase: 1,
 		status: "implemented",
 		category: "dose",

@@ -8,26 +8,48 @@ import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
 import { fmt, parse } from "@/lib/num";
-import { DIN_6868_161_DFOV, IN_94_PKA } from "@/lib/verdict";
+import { DIN_6868_161_DFOV, IN_94_PKA, type Tolerance } from "@/lib/verdict";
 
 const TABS = [
-	{ id: "pka", label: "P_KA (DAP)" },
+	{ id: "pka", label: "Indicator accuracy" },
+	{ id: "dap", label: "Representative DAP" },
 	{ id: "dfov", label: "DFOV (CBCT)" },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
 
-type PkaFormState = {
+type PkaInputs = {
+	pklMeasured: string;
+	dFocusDetector: string;
+	dFocusReceptor: string;
+	fieldHeight: string;
+	correctionFactor: string;
+};
+
+function computePka(form: PkaInputs) {
+	const pkl = parse(form.pklMeasured);
+	const dDet = parse(form.dFocusDetector);
+	const dRec = parse(form.dFocusReceptor);
+	const height = parse(form.fieldHeight);
+	const factor = parse(form.correctionFactor) ?? 1;
+
+	if (pkl === null || dDet === null || dRec === null || height === null) {
+		return null;
+	}
+	if (dRec === 0) return null;
+
+	const pklCorrected = pkl * (dDet / dRec) ** 2;
+	const pkaArea = pklCorrected * height;
+	const pkaCalc = pkaArea * factor;
+	return { pklCorrected, pkaArea, pkaCalc };
+}
+
+type PkaFormState = PkaInputs & {
 	exam: string;
 	mode: string;
 	kvp: string;
 	mA: string;
 	s: string;
-	dFocusReceptor: string;
-	dFocusDetector: string;
-	fieldHeight: string;
 	beamWidth: string;
-	correctionFactor: string;
-	pklMeasured: string;
 	pkaMachine: string;
 };
 
@@ -44,6 +66,22 @@ const pkaInitial: PkaFormState = {
 	correctionFactor: "1",
 	pklMeasured: "",
 	pkaMachine: "",
+};
+
+type DapFormState = {
+	exam: string;
+	pkaMeasured: string;
+	pkaReference: string;
+	failPct: string;
+	restrictedPct: string;
+};
+
+const dapInitial: DapFormState = {
+	exam: "",
+	pkaMeasured: "",
+	pkaReference: "",
+	failPct: "20",
+	restrictedPct: "40",
 };
 
 type DfovFormState = {
@@ -69,26 +107,32 @@ const DFOV_ACTION_LEVEL_MGY = 50;
 export default function ExtraoralPage() {
 	const [tab, setTab] = useState<TabId>("pka");
 	const [pkaForm, setPkaForm] = useState<PkaFormState>(pkaInitial);
+	const [dapForm, setDapForm] = useState<DapFormState>(dapInitial);
 	const [dfovForm, setDfovForm] = useState<DfovFormState>(dfovInitial);
 
 	const pkaResult = useMemo(() => {
-		const pkl = parse(pkaForm.pklMeasured);
-		const dDet = parse(pkaForm.dFocusDetector);
-		const dRec = parse(pkaForm.dFocusReceptor);
-		const height = parse(pkaForm.fieldHeight);
-		const factor = parse(pkaForm.correctionFactor) ?? 1;
+		const base = computePka(pkaForm);
+		if (!base) return null;
 		const pkaMach = parse(pkaForm.pkaMachine);
-
-		if (pkl === null || dDet === null || dRec === null || height === null) {
-			return null;
-		}
-		if (dRec === 0) return null;
-
-		const pklCorrected = pkl * (dDet / dRec) ** 2;
-		const pkaArea = pklCorrected * height;
-		const pkaCalc = pkaArea * factor;
-		return { pklCorrected, pkaArea, pkaCalc, pkaMach };
+		return { ...base, pkaMach };
 	}, [pkaForm]);
+
+	const dapResult = useMemo(() => {
+		const measured = parse(dapForm.pkaMeasured);
+		if (measured === null) return null;
+		const reference = parse(dapForm.pkaReference);
+		return { measured, reference };
+	}, [dapForm.pkaMeasured, dapForm.pkaReference]);
+
+	const dapTolerance = useMemo<Tolerance>(() => {
+		const fail = parse(dapForm.failPct) ?? 20;
+		const restricted = parse(dapForm.restrictedPct) ?? 40;
+		return {
+			fail: fail / 100,
+			restricted: restricted / 100,
+			reference: "IN 94",
+		};
+	}, [dapForm.failPct, dapForm.restrictedPct]);
 
 	const dfovResult = useMemo(() => {
 		const ka = parse(dfovForm.ka);
@@ -112,6 +156,11 @@ export default function ExtraoralPage() {
 		(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
 			setPkaForm((f) => ({ ...f, [key]: e.target.value }));
 
+	const updateDap =
+		(key: keyof DapFormState) =>
+		(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+			setDapForm((f) => ({ ...f, [key]: e.target.value }));
+
 	const updateDfov =
 		(key: keyof DfovFormState) =>
 		(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
@@ -131,9 +180,13 @@ export default function ExtraoralPage() {
 						Extraoral
 					</h1>
 					<p className="text-sm text-zinc-600 dark:text-zinc-400">
-						Dose calculators for extraoral dental imaging: panoramic /
-						cephalometric P<sub>KA</sub> (IN 94) and CBCT DFOV (DIN
-						6868-161).
+						Three QC checks for extraoral imaging.{" "}
+						<strong>Indicator accuracy</strong> — verify the equipment&apos;s
+						reported P<sub>KA</sub> against a measurement (IN 94).{" "}
+						<strong>Representative DAP</strong> — compare a measured P
+						<sub>KA</sub> to the manufacturer reference (IN 94, editable
+						tolerance). <strong>DFOV</strong> — validate CBCT dose against the
+						reference and the DIN 6868-161 action level.
 					</p>
 				</header>
 
@@ -163,7 +216,7 @@ export default function ExtraoralPage() {
 					})}
 				</div>
 
-				{tab === "pka" ? (
+				{tab === "pka" && (
 					<>
 						<form
 							onSubmit={(e) => e.preventDefault()}
@@ -291,7 +344,7 @@ export default function ExtraoralPage() {
 								</Field>
 							</Section>
 
-							<Section title="Manufacturer reference">
+							<Section title="Equipment indicator">
 								<Field label="Machine-reported P_KA [mGy·cm²]">
 									<input
 										type="number"
@@ -356,12 +409,130 @@ export default function ExtraoralPage() {
 								height × correction factor
 							</p>
 							<p className="mt-1">
-								IN 94 tolerance: ≤ 20% pass; 20%–40% fail; &gt; 40%
-								restriction.
+								IN 94 tolerance: ≤ 20% pass; 20%–40% fail; &gt; 40% restriction.
 							</p>
 						</footer>
 					</>
-				) : (
+				)}
+
+				{tab === "dap" && (
+					<>
+						<form
+							onSubmit={(e) => e.preventDefault()}
+							className="grid grid-cols-1 gap-6 md:grid-cols-2"
+						>
+							<Section title="Comparison">
+								<Field label="Exam">
+									<input
+										type="text"
+										value={dapForm.exam}
+										onChange={updateDap("exam")}
+										placeholder="e.g. Panoramic"
+										className={inputCls}
+									/>
+								</Field>
+								<Field
+									label="Measured P_KA [mGy·cm²]"
+									hint="DAP measured with the chamber or computed from the indicator tab."
+								>
+									<input
+										type="number"
+										inputMode="decimal"
+										value={dapForm.pkaMeasured}
+										onChange={updateDap("pkaMeasured")}
+										className={inputCls}
+									/>
+								</Field>
+								<Field
+									label="Manufacturer reference P_KA [mGy·cm²]"
+									hint="Representative DAP from the equipment manual."
+								>
+									<input
+										type="number"
+										inputMode="decimal"
+										value={dapForm.pkaReference}
+										onChange={updateDap("pkaReference")}
+										className={inputCls}
+									/>
+								</Field>
+							</Section>
+
+							<Section title="Tolerance">
+								<div className="grid grid-cols-2 gap-3">
+									<Field
+										label="Fail threshold [%]"
+										hint="Deviation above this counts as fail."
+									>
+										<input
+											type="number"
+											inputMode="decimal"
+											value={dapForm.failPct}
+											onChange={updateDap("failPct")}
+											className={inputCls}
+										/>
+									</Field>
+									<Field
+										label="Restriction threshold [%]"
+										hint="Deviation above this counts as restriction."
+									>
+										<input
+											type="number"
+											inputMode="decimal"
+											value={dapForm.restrictedPct}
+											onChange={updateDap("restrictedPct")}
+											className={inputCls}
+										/>
+									</Field>
+								</div>
+								<button
+									type="button"
+									onClick={() => setDapForm(dapInitial)}
+									className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
+								>
+									Clear
+								</button>
+							</Section>
+						</form>
+
+						{dapResult ? (
+							<section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+								<Stat
+									label="Measured P_KA"
+									value={fmt(dapResult.measured)}
+									unit="mGy·cm²"
+									emphasis
+								/>
+								<ValidationCard
+									observed={dapResult.measured}
+									observedLabel="Measured"
+									expected={dapResult.reference}
+									expectedLabel="Reference"
+									unit="mGy·cm²"
+									tolerance={dapTolerance}
+									emptyHint="Enter the manufacturer reference P_KA to compare."
+								/>
+							</section>
+						) : (
+							<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+								Enter the measured P<sub>KA</sub> to see the comparison.
+							</section>
+						)}
+
+						<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
+							<p>
+								Deviation = |P<sub>KA,measured</sub> / P<sub>KA,reference</sub>{" "}
+								− 1|. Compares against the manufacturer reference (Valor
+								representativo de dose, IN 94).
+							</p>
+							<p className="mt-1">
+								Default IN 94 thresholds (20% fail / 40% restriction) are
+								editable to match site-specific tolerances.
+							</p>
+						</footer>
+					</>
+				)}
+
+				{tab === "dfov" && (
 					<>
 						<form
 							onSubmit={(e) => e.preventDefault()}
@@ -474,9 +645,9 @@ export default function ExtraoralPage() {
 							</section>
 						) : (
 							<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
-								Enter K<sub>a,i</sub>, focus–isocenter (a), focus–measurement (b),
-								scanned-volume diameter (c) and radiation-field diameter (d) to
-								see the calculation.
+								Enter K<sub>a,i</sub>, focus–isocenter (a), focus–measurement
+								(b), scanned-volume diameter (c) and radiation-field diameter
+								(d) to see the calculation.
 							</section>
 						)}
 

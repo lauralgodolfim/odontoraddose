@@ -16,7 +16,7 @@ All routes are statically prerendered and run entirely in the browser.
 
 | Route | Calculator | Standard |
 | ----- | ---------- | -------- |
-| `/extraoral` | P<sub>KA</sub> (DAP) + DFOV (CBCT) | IN 94 + DIN 6868-161 |
+| `/extraoral` | P<sub>KA</sub> indicator + DAP reference + DFOV (CBCT) | IN 94 + DIN 6868-161 |
 | `/intraoral` | ESD at the cone tip | local protocol |
 | `/tomography` | CTDIw → CTDIvol → DLP → E | IN 55 |
 | `/conventional` | Per-exam ESD | IN 90/2021 Annex II |
@@ -60,22 +60,39 @@ All routes are statically prerendered and run entirely in the browser.
 
 ### Dose
 
-#### `/extraoral` — P<sub>KA</sub> (DAP)
+#### `/extraoral` — P<sub>KA</sub>, DAP, DFOV (CBCT)
 
-The `/extraoral` route is split into two tabs: **P_KA (DAP)** for panoramic /
-cephalometric units, and **DFOV (CBCT)** for cone-beam CT.
+Three QC checks for extraoral dental imaging:
 
-**P_KA tab.** Inputs: focus–detector distance, focus–receptor distance, field
-height, correction factor, measured P<sub>KL</sub> (mGy·cm), machine-reported
-P<sub>KA</sub>.
+- **Indicator accuracy** — does the equipment's reported P<sub>KA</sub> match a
+  value computed from a P<sub>KL</sub> measurement? Panoramic / cephalometric,
+  IN 94.
+- **Representative DAP** — is a measured P<sub>KA</sub> close to the
+  manufacturer's representative value for the protocol? IN 94 with editable
+  tolerance for site-specific procedures.
+- **DFOV (CBCT)** — does cone-beam dose meet the manufacturer reference and the
+  DIN 6868-161 action level?
+
+Both P<sub>KA</sub> tabs share the same calculation:
 
 ```
 Corrected P_KL = P_KL × (D_focus-detector / D_focus-receptor)²
 P_KA           = Corrected P_KL × field height × correction factor
 ```
 
-Validation: |P<sub>KA,calc</sub> / P<sub>KA,machine</sub> − 1| against the
-IN 94 band — ≤ 20% pass, 20–40% fail, &gt; 40% restricted.
+**Indicator accuracy tab.** Inputs: focus–detector distance, focus–receptor
+distance, field height, correction factor, measured P<sub>KL</sub> (mGy·cm),
+machine-reported P<sub>KA</sub>. Validation:
+|P<sub>KA,calc</sub> / P<sub>KA,machine</sub> − 1| against the IN 94 band —
+≤ 20% pass, 20–40% fail, &gt; 40% restricted. Corresponds to *Exatidão do
+Indicador de Dose* in the source spreadsheet.
+
+**Representative DAP tab.** Simple comparison form — no geometry inputs.
+Takes a measured P<sub>KA</sub> (entered directly, or carried over from the
+indicator tab) and a manufacturer reference P<sub>KA</sub>, then reports
+|P<sub>KA,measured</sub> / P<sub>KA,reference</sub> − 1| against an editable
+20% / 40% IN 94 tolerance. Corresponds to *Valor representativo de dose
+(DAP)* in the source spreadsheet.
 
 **DFOV (CBCT) tab.** Inputs: incident kerma K<sub>a,i</sub>(FDD) in mGy,
 focus–isocenter `a`, focus–measurement-point `b`, scanned-volume horizontal

@@ -4,8 +4,8 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { EquipmentBadge } from "@/components/EquipmentBadge";
-import { useEquipment } from "@/components/EquipmentProvider";
+import { useSelectedEquipment } from "@/components/EquipmentProvider";
+import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
@@ -39,13 +39,13 @@ const rectifierLabels: Record<Rectifier, string> = {
 };
 
 export default function HvlPage() {
-	const { equipment } = useEquipment();
+	const equipment = useSelectedEquipment("qc/hvl");
 	const [form, setForm] = useState<FormState>(initial);
 
 	const rectifier: Rectifier =
 		form.rectifierOverride !== ""
 			? form.rectifierOverride
-			: equipment.rectifier;
+			: (equipment?.rectifier ?? "af");
 
 	const result = useMemo(() => {
 		const kvp = parse(form.kvp);
@@ -80,7 +80,7 @@ export default function HvlPage() {
 						between tabulated kVp rows.
 					</p>
 					<div className="pt-1">
-						<EquipmentBadge />
+						<EquipmentSelector calculatorSlug="qc/hvl" />
 					</div>
 				</header>
 
@@ -100,7 +100,7 @@ export default function HvlPage() {
 						</Field>
 						<Field
 							label="Rectifier"
-							hint={`Default from equipment settings: ${rectifierLabels[equipment.rectifier]}.`}
+							hint={`Default from selected equipment: ${rectifierLabels[equipment?.rectifier ?? "af"]}.`}
 						>
 							<select
 								value={form.rectifierOverride}

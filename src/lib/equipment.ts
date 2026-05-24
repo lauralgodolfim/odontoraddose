@@ -13,6 +13,9 @@ export type DosimeterBrand = "Unfors" | "Fluke" | "Raysafe";
  * formulas.
  */
 export type Equipment = {
+	id: string;
+	name: string;
+
 	// QC parameters (calc-affecting)
 	rectifier: Rectifier;
 	dosimeterBrand: DosimeterBrand;
@@ -31,9 +34,30 @@ export type Equipment = {
 	certificate?: string;
 };
 
-export const defaultEquipment: Equipment = {
+export const defaultEquipmentFields: Omit<Equipment, "id" | "name"> = {
 	rectifier: "af",
 	dosimeterBrand: "Unfors",
 };
 
-export const EQUIPMENT_STORAGE_KEY = "radqc-suite:equipment";
+export function createEquipment(name = "New equipment"): Equipment {
+	return {
+		id: makeId(),
+		name,
+		...defaultEquipmentFields,
+	};
+}
+
+function makeId(): string {
+	if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+		return crypto.randomUUID();
+	}
+	return `eq-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+/** localStorage key for the equipments list. */
+export const EQUIPMENTS_STORAGE_KEY = "radqc-suite:equipments";
+/** localStorage key for the per-calculator selection map ({ slug: equipmentId }). */
+export const EQUIPMENT_SELECTION_STORAGE_KEY =
+	"radqc-suite:equipment-selection";
+/** Legacy key for the single-equipment model. Migrated on first read. */
+export const LEGACY_EQUIPMENT_STORAGE_KEY = "radqc-suite:equipment";

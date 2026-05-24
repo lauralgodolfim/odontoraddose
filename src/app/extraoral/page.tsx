@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
@@ -188,6 +189,9 @@ export default function ExtraoralPage() {
 						tolerance). <strong>DFOV</strong> — validate CBCT dose against the
 						reference and the DIN 6868-161 action level.
 					</p>
+					<div className="pt-1">
+						<EquipmentSelector calculatorSlug="extraoral" />
+					</div>
 				</header>
 
 				<div

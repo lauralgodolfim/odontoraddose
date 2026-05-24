@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { EquipmentBadge } from "@/components/EquipmentBadge";
+import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Section } from "@/components/form";
 import { type Verdict, verdictMeta } from "@/lib/verdict";
 
@@ -95,7 +95,7 @@ export default function AcessoriosPage() {
 						thinning of the lead lining).
 					</p>
 					<div className="pt-1">
-						<EquipmentBadge />
+						<EquipmentSelector calculatorSlug="qc/accessories" />
 					</div>
 				</header>
 

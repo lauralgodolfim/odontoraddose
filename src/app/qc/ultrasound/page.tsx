@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { EquipmentBadge } from "@/components/EquipmentBadge";
+import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
 import { parse } from "@/lib/num";
 import { type Verdict, verdictMeta } from "@/lib/verdict";
@@ -116,7 +116,7 @@ export default function UltrasoundPage() {
 						a deviation under 20% passes, 20–40% fails, &gt; 40% is restricted.
 					</p>
 					<div className="pt-1">
-						<EquipmentBadge />
+						<EquipmentSelector calculatorSlug="qc/ultrasound" />
 					</div>
 				</header>
 

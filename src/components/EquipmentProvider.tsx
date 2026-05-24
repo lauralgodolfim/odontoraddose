@@ -10,110 +10,245 @@ import {
 } from "react";
 
 import {
-	defaultEquipment,
-	EQUIPMENT_STORAGE_KEY,
+	createEquipment,
+	EQUIPMENT_SELECTION_STORAGE_KEY,
+	EQUIPMENTS_STORAGE_KEY,
 	type Equipment,
+	LEGACY_EQUIPMENT_STORAGE_KEY,
 } from "@/lib/equipment";
 
+type SelectionMap = Record<string, string>;
+
 type EquipmentContextValue = {
-	equipment: Equipment;
-	update: (patch: Partial<Equipment>) => void;
-	reset: () => void;
+	equipments: Equipment[];
+	add: (name?: string) => Equipment;
+	update: (id: string, patch: Partial<Equipment>) => void;
+	remove: (id: string) => void;
+	getById: (id: string | null | undefined) => Equipment | null;
+	selection: SelectionMap;
+	getSelected: (calculatorSlug: string) => Equipment | null;
+	select: (calculatorSlug: string, equipmentId: string | null) => void;
 };
 
 const EquipmentContext = createContext<EquipmentContextValue | null>(null);
 
-// Module-level cache so getSnapshot returns a stable reference when the
-// underlying raw string hasn't changed (required by useSyncExternalStore).
-let cachedRaw: string | null = "<uninitialised>";
-let cachedSnapshot: Equipment = defaultEquipment;
-const listeners = new Set<() => void>();
+let cachedEquipmentsRaw: string | null = "<uninit>";
+let cachedEquipments: Equipment[] = [];
+let cachedSelectionRaw: string | null = "<uninit>";
+let cachedSelection: SelectionMap = {};
+const equipmentsListeners = new Set<() => void>();
+const selectionListeners = new Set<() => void>();
 
-function readSnapshot(): Equipment {
-	if (typeof window === "undefined") return defaultEquipment;
+function migrateLegacy(): Equipment[] | null {
+	try {
+		const legacy = window.localStorage.getItem(LEGACY_EQUIPMENT_STORAGE_KEY);
+		if (legacy === null) return null;
+		const parsed = JSON.parse(legacy) as Partial<Equipment>;
+		const migrated: Equipment = {
+			...createEquipment(parsed.client || parsed.location || "Equipment 1"),
+			...parsed,
+		};
+		window.localStorage.setItem(
+			EQUIPMENTS_STORAGE_KEY,
+			JSON.stringify([migrated]),
+		);
+		window.localStorage.removeItem(LEGACY_EQUIPMENT_STORAGE_KEY);
+		return [migrated];
+	} catch {
+		return null;
+	}
+}
+
+function readEquipments(): Equipment[] {
+	if (typeof window === "undefined") return [];
 	let raw: string | null = null;
 	try {
-		raw = window.localStorage.getItem(EQUIPMENT_STORAGE_KEY);
+		raw = window.localStorage.getItem(EQUIPMENTS_STORAGE_KEY);
 	} catch {
-		return defaultEquipment;
+		return cachedEquipments;
 	}
-	if (raw === cachedRaw) return cachedSnapshot;
-	cachedRaw = raw;
 	if (raw === null) {
-		cachedSnapshot = defaultEquipment;
-		return cachedSnapshot;
+		const migrated = migrateLegacy();
+		if (migrated) {
+			cachedEquipmentsRaw = JSON.stringify(migrated);
+			cachedEquipments = migrated;
+			return cachedEquipments;
+		}
+	}
+	if (raw === cachedEquipmentsRaw) return cachedEquipments;
+	cachedEquipmentsRaw = raw;
+	if (raw === null) {
+		cachedEquipments = [];
+		return cachedEquipments;
 	}
 	try {
-		cachedSnapshot = {
-			...defaultEquipment,
-			...(JSON.parse(raw) as Partial<Equipment>),
-		};
+		const parsed = JSON.parse(raw) as Equipment[];
+		cachedEquipments = Array.isArray(parsed) ? parsed : [];
 	} catch {
-		cachedSnapshot = defaultEquipment;
+		cachedEquipments = [];
 	}
-	return cachedSnapshot;
+	return cachedEquipments;
 }
 
-function readServerSnapshot(): Equipment {
-	return defaultEquipment;
+function readSelection(): SelectionMap {
+	if (typeof window === "undefined") return {};
+	let raw: string | null = null;
+	try {
+		raw = window.localStorage.getItem(EQUIPMENT_SELECTION_STORAGE_KEY);
+	} catch {
+		return cachedSelection;
+	}
+	if (raw === cachedSelectionRaw) return cachedSelection;
+	cachedSelectionRaw = raw;
+	if (raw === null) {
+		cachedSelection = {};
+		return cachedSelection;
+	}
+	try {
+		const parsed = JSON.parse(raw) as SelectionMap;
+		cachedSelection = parsed && typeof parsed === "object" ? parsed : {};
+	} catch {
+		cachedSelection = {};
+	}
+	return cachedSelection;
 }
 
-function subscribe(listener: () => void) {
-	listeners.add(listener);
+function writeEquipments(next: Equipment[]) {
+	cachedEquipments = next;
+	try {
+		cachedEquipmentsRaw = JSON.stringify(next);
+		window.localStorage.setItem(EQUIPMENTS_STORAGE_KEY, cachedEquipmentsRaw);
+	} catch {
+		// ignore
+	}
+	for (const l of equipmentsListeners) l();
+}
+
+function writeSelection(next: SelectionMap) {
+	cachedSelection = next;
+	try {
+		cachedSelectionRaw = JSON.stringify(next);
+		window.localStorage.setItem(
+			EQUIPMENT_SELECTION_STORAGE_KEY,
+			cachedSelectionRaw,
+		);
+	} catch {
+		// ignore
+	}
+	for (const l of selectionListeners) l();
+}
+
+function subscribeEquipments(listener: () => void) {
+	equipmentsListeners.add(listener);
 	const onStorage = (e: StorageEvent) => {
-		if (e.key === EQUIPMENT_STORAGE_KEY) listener();
+		if (e.key === EQUIPMENTS_STORAGE_KEY) listener();
 	};
 	window.addEventListener("storage", onStorage);
 	return () => {
-		listeners.delete(listener);
+		equipmentsListeners.delete(listener);
 		window.removeEventListener("storage", onStorage);
 	};
 }
 
-function notify() {
-	for (const l of listeners) l();
+function subscribeSelection(listener: () => void) {
+	selectionListeners.add(listener);
+	const onStorage = (e: StorageEvent) => {
+		if (e.key === EQUIPMENT_SELECTION_STORAGE_KEY) listener();
+	};
+	window.addEventListener("storage", onStorage);
+	return () => {
+		selectionListeners.delete(listener);
+		window.removeEventListener("storage", onStorage);
+	};
 }
 
-function writeSnapshot(next: Equipment) {
-	cachedSnapshot = next;
-	try {
-		cachedRaw = JSON.stringify(next);
-		window.localStorage.setItem(EQUIPMENT_STORAGE_KEY, cachedRaw);
-	} catch {
-		// ignore
-	}
-	notify();
-}
-
-function clearSnapshot() {
-	cachedSnapshot = defaultEquipment;
-	cachedRaw = null;
-	try {
-		window.localStorage.removeItem(EQUIPMENT_STORAGE_KEY);
-	} catch {
-		// ignore
-	}
-	notify();
-}
+const SERVER_EQUIPMENTS: Equipment[] = [];
+const SERVER_SELECTION: SelectionMap = {};
 
 export function EquipmentProvider({ children }: { children: ReactNode }) {
-	const equipment = useSyncExternalStore(
-		subscribe,
-		readSnapshot,
-		readServerSnapshot,
+	const equipments = useSyncExternalStore(
+		subscribeEquipments,
+		readEquipments,
+		() => SERVER_EQUIPMENTS,
+	);
+	const selection = useSyncExternalStore(
+		subscribeSelection,
+		readSelection,
+		() => SERVER_SELECTION,
 	);
 
-	const update = useCallback((patch: Partial<Equipment>) => {
-		writeSnapshot({ ...readSnapshot(), ...patch });
+	const add = useCallback((name?: string): Equipment => {
+		const list = readEquipments();
+		const eq = createEquipment(name ?? `Equipment ${list.length + 1}`);
+		writeEquipments([...list, eq]);
+		return eq;
 	}, []);
 
-	const reset = useCallback(() => {
-		clearSnapshot();
+	const update = useCallback((id: string, patch: Partial<Equipment>) => {
+		const list = readEquipments();
+		writeEquipments(
+			list.map((e) => (e.id === id ? { ...e, ...patch, id: e.id } : e)),
+		);
 	}, []);
+
+	const remove = useCallback((id: string) => {
+		const list = readEquipments();
+		writeEquipments(list.filter((e) => e.id !== id));
+		const sel = readSelection();
+		const cleaned: SelectionMap = {};
+		for (const [slug, eqId] of Object.entries(sel)) {
+			if (eqId !== id) cleaned[slug] = eqId;
+		}
+		if (Object.keys(cleaned).length !== Object.keys(sel).length) {
+			writeSelection(cleaned);
+		}
+	}, []);
+
+	const getById = useCallback(
+		(id: string | null | undefined): Equipment | null => {
+			if (!id) return null;
+			return equipments.find((e) => e.id === id) ?? null;
+		},
+		[equipments],
+	);
+
+	const getSelected = useCallback(
+		(calculatorSlug: string): Equipment | null => {
+			const id = selection[calculatorSlug];
+			if (!id) return null;
+			return equipments.find((e) => e.id === id) ?? null;
+		},
+		[equipments, selection],
+	);
+
+	const select = useCallback(
+		(calculatorSlug: string, equipmentId: string | null) => {
+			const sel = readSelection();
+			if (equipmentId === null) {
+				if (!(calculatorSlug in sel)) return;
+				const next = { ...sel };
+				delete next[calculatorSlug];
+				writeSelection(next);
+				return;
+			}
+			if (sel[calculatorSlug] === equipmentId) return;
+			writeSelection({ ...sel, [calculatorSlug]: equipmentId });
+		},
+		[],
+	);
 
 	const value = useMemo<EquipmentContextValue>(
-		() => ({ equipment, update, reset }),
-		[equipment, update, reset],
+		() => ({
+			equipments,
+			add,
+			update,
+			remove,
+			getById,
+			selection,
+			getSelected,
+			select,
+		}),
+		[equipments, add, update, remove, getById, selection, getSelected, select],
 	);
 
 	return (
@@ -132,4 +267,10 @@ export function useEquipment(): EquipmentContextValue {
 		);
 	}
 	return ctx;
+}
+
+/** Convenience hook: returns the equipment selected for a calculator slug. */
+export function useSelectedEquipment(calculatorSlug: string): Equipment | null {
+	const { getSelected } = useEquipment();
+	return getSelected(calculatorSlug);
 }

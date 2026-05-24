@@ -3,8 +3,7 @@
 Radiation-dose and QC calculators for medical imaging equipment. Built as an
 installable, offline-capable web app (Next.js SPA + PWA, fully client-side).
 
-The project digitises the calculations from a medical-physics QC workbook
-(`docs/Modelos_CQ.xltx`) so technicians can compute and validate dose and
+The project digitises the calculations so technicians can compute and validate dose and
 QC values from a phone or browser instead of editing the spreadsheet by
 hand.
 
@@ -53,7 +52,7 @@ All routes are statically prerendered and run entirely in the browser.
 
 | Route | Purpose |
 | ----- | ------- |
-| `/equipment` | Per-equipment context (rectifier, dosimeter brand, identifying metadata) — saved locally on the device |
+| `/equipments` | List + form CRUD for saved equipments (rectifier, dosimeter brand, identifying metadata) — stored locally on the device, with per-calculator selection |
 | `/audit` | Coverage summary across all calculators |
 
 ## What each calculator computes
@@ -195,8 +194,8 @@ Validation: per-shot ±10% accuracy (IN 56), ±5% reproducibility.
 
 #### `/qc/hvl` — Half-value layer
 
-Inputs: kVp, optional rectifier override (defaults from `/equipment`),
-measured HVL.
+Inputs: kVp, optional rectifier override (defaults from the equipment
+selected via `/equipments`), measured HVL.
 
 Lookup: linear interpolation of IN 56/2019 Annex 2 minimum-HVL table by kVp
 × rectifier (50–130 kVp; mono / tri / AF). Validation: pass if measured ≥
@@ -302,6 +301,47 @@ Validation (ACR MRI Quality Control Manual): geometry ±2 mm of 190 mm,
 slice ±0.7 mm, slice position ±5 mm, PIU ≥ 87.5%, PSG ≤ 2.5%, low-contrast
 ≥ 9 spokes (1.5T) or ≥ 37 (3T).
 
+## Equipment management
+
+The `/equipments` route is the single place to manage saved equipments
+(panoramic units, CT scanners, mammographs, etc.) and the QC parameters
+attached to each. Everything is stored in the browser via `localStorage`;
+nothing leaves the device.
+
+Each entry holds an `id`, a display `name`, the QC-affecting parameters
+(`rectifier`, `dosimeterBrand`), and identifying metadata used in printed
+reports (client, location, generator brand / model / serial, kV-mA
+nominal, certificate, responsible, service date).
+
+**CRUD.** The page shows a list of saved equipments with row-level select
+and delete actions plus an "Add new" button. Selecting a row opens its
+fields in the form below. Edits write through to `localStorage`
+immediately — there is no save button.
+
+**Per-calculator selection.** Each calculator route remembers its own
+equipment selection. The header on every calculator page renders a small
+dropdown (`EquipmentSelector`) that writes the chosen `id` into a
+selection map keyed by route slug. Two calculators can point at different
+equipments simultaneously, and the choice persists across reloads.
+
+Today the HVL calculator is the only one that consumes equipment fields
+in its math — it reads `rectifier` from the selected equipment as the
+default for its rectifier override (falling back to AF when nothing is
+selected). The other calculators show the selector for future report
+attribution and won't change formulas based on the choice yet.
+
+**Storage layout.**
+
+```
+radqc-suite:equipments          Equipment[]            (list of saved equipments)
+radqc-suite:equipment-selection { [slug]: id }         (per-calculator selection)
+radqc-suite:equipment           legacy single object   (migrated on first read)
+```
+
+The legacy key from the previous single-equipment model is migrated on
+first load — the old object becomes a one-item list, the legacy key is
+removed, and existing data is preserved.
+
 ## Tech stack
 
 - **Next.js 16** with the App Router and Turbopack
@@ -341,20 +381,24 @@ src/app/
   globals.css             Tailwind entry + theme tokens + print styles
   sw-register.tsx         Service-worker registration (production only)
   audit/page.tsx          Coverage / status summary
-  equipment/page.tsx      Per-equipment QC context settings
+  equipments/page.tsx     List + form CRUD for saved equipments
   <slug>/page.tsx         One file per calculator route
 src/components/
-  EquipmentProvider.tsx   localStorage-backed context (useSyncExternalStore)
-  EquipmentBadge.tsx      Shows current rectifier / dosimeter on each page
+  EquipmentProvider.tsx   localStorage-backed equipments list + per-calculator
+                          selection map (useSyncExternalStore, two stores)
+  EquipmentSelector.tsx   Per-calculator equipment dropdown shown in headers
+  EquipmentBadge.tsx      Pill linking to /equipments; shows saved count
+  CalculatorCard.tsx      Home-page calculator card with cursor-tracked spotlight
   form.tsx                Field, Section, inputCls
-  Stat.tsx                Result card
-  ValidationCard.tsx      Verdict card; takes a Tolerance
+  Stat.tsx                Result card with animated count-up
+  ValidationCard.tsx      Verdict card; takes a Tolerance; pulses on Restricted
   PrintButton.tsx         Triggers window.print()
 src/lib/
   num.ts                  parse(), fmt() with locale
   verdict.ts              Verdict, Tolerance (two-sided/cap/floor), classifyDeviation
   calculators.ts          Single registry that drives the home page + audit
-  equipment.ts            Equipment type + storage key
+  equipment.ts            Equipment type, createEquipment() factory, storage keys
+  useCountUp.ts           RAF-based count-up hook used by Stat
   tables/                 Reference tables ported from the workbook
 public/
   manifest.webmanifest

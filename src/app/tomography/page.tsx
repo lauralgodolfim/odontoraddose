@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { EquipmentBadge } from "@/components/EquipmentBadge";
+import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
@@ -160,7 +160,7 @@ export default function TomographyPage() {
 						IN 55.
 					</p>
 					<div className="pt-1">
-						<EquipmentBadge />
+						<EquipmentSelector calculatorSlug="tomography" />
 					</div>
 				</header>
 

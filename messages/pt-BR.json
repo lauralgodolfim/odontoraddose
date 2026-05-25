@@ -1,0 +1,719 @@
+{
+	"common": {
+		"home": "Início",
+		"clear": "Limpar",
+		"equipment": "Equipamento",
+		"addOne": "Adicionar →",
+		"none": "— nenhum —",
+		"untitled": "(sem título)",
+		"selectEquipmentAria": "Selecionar equipamento para esta calculadora",
+		"printReport": "Imprimir laudo",
+		"workInProgress": "Em desenvolvimento",
+		"language": "Idioma",
+		"continue": "Continuar →"
+	},
+	"languages": {
+		"pt-BR": "Português (BR)",
+		"en": "English"
+	},
+	"home": {
+		"title": "RadQC Suite",
+		"description": "Calculadoras de dose e controle de qualidade para radiografia, TC, mamografia, fluoroscopia, ultrassonografia e RM. Validadas contra as referências brasileiras IN 54–91, ACR, AAPM e IEC.",
+		"privacy": "Executa inteiramente no seu navegador — as medições permanecem no dispositivo e o aplicativo funciona offline após instalado.",
+		"auditBadge": "Auditoria",
+		"auditBadgeSub": "Resumo de cobertura"
+	},
+	"meta": {
+		"title": "RadQC Suite",
+		"description": "Calculadoras de dose de radiação e controle de qualidade para equipamentos de imagem médica."
+	},
+	"phaseLabels": {
+		"0": "Infraestrutura",
+		"1": "Calculadoras de dose",
+		"2": "CQ fundamental",
+		"3": "Segurança e ambiente",
+		"4": "CQ estendido"
+	},
+	"categoryLabels": {
+		"dose": "Dose",
+		"qc": "CQ",
+		"safety": "Segurança",
+		"imaging": "CQ de imagem"
+	},
+	"status": {
+		"implemented": "implementado",
+		"planned": "planejado"
+	},
+	"calculators": {
+		"extraoral": {
+			"title": "Extraoral — PKA / DAP / DFOV CBCT",
+			"description": "Exatidão do indicador de PKA e comparação do DAP representativo (IN 94), além do DFOV de CBCT vs referência e o nível de ação DIN 6868-161."
+		},
+		"intraoral": {
+			"title": "Intraoral — DEP",
+			"description": "Dose de entrada na pele na ponta do cone com retroespalhamento, opcionalmente comparada a um limite de protocolo local."
+		},
+		"tomography": {
+			"title": "Tomografia (CBCT/TC) — CTDI / DLP / E",
+			"description": "CTDI ponderado a partir das leituras central e periféricas, escalado para CTDIvol, e então DLP e dose efetiva."
+		},
+		"conventional": {
+			"title": "Convencional — DEP",
+			"description": "Dose de entrada na pele por exame para radiografia convencional, comparada às referências do Anexo II da IN 90/2021."
+		},
+		"mammography": {
+			"title": "Mamografia — DGM",
+			"description": "Dose glandular média com consulta de g·c e fator S; conformidade IN 54 por espessura de PMMA."
+		},
+		"fluoroscopy": {
+			"title": "Fluoroscopia",
+			"description": "Taxa de dose de entrada durante a fluoroscopia com os limites IN 91 / RDC 330 para os modos manual / automático / alta taxa."
+		},
+		"qc/kvp": {
+			"title": "Exatidão de kVp",
+			"description": "Variação de kVp por disparo e reprodutibilidade ao longo da série; tolerâncias IN 56."
+		},
+		"qc/hvl": {
+			"title": "CSR — camada semi-redutora",
+			"description": "Compara a CSR medida com o mínimo IN 56 para o kVp e tipo de retificador."
+		},
+		"qc/output": {
+			"title": "Rendimento do tubo",
+			"description": "Rendimento do tubo normalizado para 1 m e kVp de referência; comparado à faixa convencional IN 56 / IN 90."
+		},
+		"qc/timer": {
+			"title": "Tempo de exposição",
+			"description": "Exatidão do temporizador por disparo e reprodutibilidade ao longo da série; tolerâncias IN 56."
+		},
+		"qc/leakage": {
+			"title": "Radiação de fuga",
+			"description": "Taxa de dose de fuga a 1 m da carcaça do tubo sob condições de carga máxima."
+		},
+		"qc/accessories": {
+			"title": "Aventais plumbíferos e acessórios",
+			"description": "Pontuação aprovado/reprovado para aventais plumbíferos, protetores de tireoide e gonadais."
+		},
+		"qc/displays": {
+			"title": "Negatoscópio e luminância de monitor",
+			"description": "Luminância e uniformidade do negatoscópio, além de luminância de monitor diagnóstico e iluminância ambiente."
+		},
+		"qc/ct-number": {
+			"title": "Número TC e uniformidade",
+			"description": "Exatidão do número TC (água = 0 HU), uniformidade e ruído a partir de simulador de água."
+		},
+		"qc/mammography-phantom": {
+			"title": "Simulador de mamografia",
+			"description": "Pontuação do simulador ACR (fibras, massas, grupos de microcalcificações) com limites de aceitação ≥ 4/3/3."
+		},
+		"qc/ultrasound": {
+			"title": "Ultrassonografia",
+			"description": "CQ de transdutores contra linhas de base por transdutor: penetração, resolução axial/lateral, zona morta, além de verificações visuais aprovado/reprovado."
+		},
+		"qc/mri": {
+			"title": "RM",
+			"description": "CQ de simulador ACR: exatidão geométrica, espessura de corte, SNR, PIU, PSG, baixo contraste."
+		}
+	},
+	"verdict": {
+		"pass": "Conforme",
+		"passSub": "Variação ≤ {threshold} — dentro da tolerância {reference}.",
+		"fail": "Não conforme",
+		"failSub": "Variação entre {failThreshold} e {restrictedThreshold} — fora da tolerância {reference}.",
+		"restricted": "Restrição",
+		"restrictedSub": "Variação acima de {threshold} — nível de restrição (RDC 611/2022)."
+	},
+	"validation": {
+		"label": "Avaliação",
+		"deviation": "Variação {value}%",
+		"observedVsExpected": "{observedLabel} {observed} vs {expectedLabel} {expected} {unit}"
+	},
+	"equipmentBadge": {
+		"noneSaved": "Nenhum salvo",
+		"saved": "salvos"
+	},
+	"audit": {
+		"title": "Auditoria",
+		"description": "Resumo de cobertura de todas as calculadoras portadas da planilha Modelos_CQ. {implemented} de {total} implementadas; {planned} planejadas.",
+		"calculator": "Calculadora",
+		"category": "Categoria",
+		"status": "Situação",
+		"implementedOfTotal": "{implemented} / {total} implementadas",
+		"footer": "Cada calculadora executa inteiramente no navegador; nada é enviado a um servidor. Use o botão de impressão nas páginas individuais para gerar um PDF estilo LAUDO para arquivamento."
+	},
+	"equipments": {
+		"title": "Equipamentos",
+		"description": "Gerencie os equipamentos salvos. Cada calculadora pode selecionar independentemente qual usar. Armazenados localmente neste dispositivo — nada é enviado a um servidor. O tipo de retificador afeta as fórmulas das calculadoras; o restante é informativo e aparece nos laudos impressos.",
+		"savedCount": "Equipamentos salvos ({count})",
+		"addNew": "Adicionar novo",
+		"empty": "Nenhum equipamento salvo ainda. Clique em <strong>Adicionar novo</strong> para criar.",
+		"selectPrompt": "Selecione um equipamento na lista para editar seus campos.",
+		"deleteAria": "Excluir {name}",
+		"defaultName": "equipamento",
+		"sections": {
+			"identification": "Identificação",
+			"qcParameters": "Parâmetros de CQ",
+			"generator": "Gerador",
+			"extraoralReferences": "Referências extraorais"
+		},
+		"fields": {
+			"name": "Nome",
+			"nameHint": "Exibido em seletores e listas.",
+			"namePlaceholder": "ex.: Panorâmico — sala 3",
+			"client": "Cliente",
+			"location": "Local / sala",
+			"serviceDate": "Data de serviço",
+			"responsible": "Responsável",
+			"rectifier": "Retificador",
+			"rectifierHint": "Usado pelas fórmulas de CSR mínimo e qualidade de feixe.",
+			"dosimeterBrand": "Marca do dosímetro",
+			"dosimeterBrandPlaceholder": "ex.: Unfors",
+			"certificate": "Certificado (multímetro)",
+			"certificatePlaceholder": "ex.: X2",
+			"brand": "Marca",
+			"model": "Modelo",
+			"serial": "Série",
+			"anvisa": "Registro Anvisa",
+			"kvNominal": "kV nominal",
+			"maNominal": "mA nominal",
+			"referencePka": "P_KA de referência do fabricante [mGy·cm²]",
+			"referencePkaHint": "Dose representativa do manual do equipamento (referência IN 94).",
+			"referenceDfov": "DFOV de referência do fabricante [mGy]",
+			"referenceDfovHint": "DFOV de referência do manual do CBCT.",
+			"fieldHeight": "Altura do campo [cm]",
+			"fieldHeightHint": "Altura colimada do feixe para o protocolo padrão.",
+			"beamWidth": "Largura varrida do feixe [cm]",
+			"beamWidthHint": "Largura colimada do feixe para o protocolo padrão."
+		},
+		"rectifiers": {
+			"mono": "Mono",
+			"monoDesc": "Monofásico (60 Hz)",
+			"tri": "Tri",
+			"triDesc": "Trifásico (120 Hz / 6 pulsos)",
+			"af": "AF",
+			"afDesc": "Alta frequência / contínuo"
+		}
+	},
+	"extraoral": {
+		"title": "Extraoral",
+		"description": "Três verificações de CQ para imagem extraoral. <strong>Exatidão do indicador</strong> — verificar o P<sub>KA</sub> reportado pelo equipamento contra uma medição (IN 94). <strong>DAP representativo</strong> — comparar um P<sub>KA</sub> medido à referência do fabricante (IN 94, tolerância editável). <strong>DFOV</strong> — validar a dose de CBCT contra a referência e o nível de ação DIN 6868-161.",
+		"tabs": {
+			"pka": "PKA estimado",
+			"dap": "PKA medido",
+			"dfov": "DFOV (CBCT)",
+			"aria": "Calculadoras extraorais"
+		},
+		"sections": {
+			"identification": "Identificação",
+			"beamGeometry": "Geometria do feixe",
+			"measurement": "Medição",
+			"equipmentIndicator": "Indicador do equipamento",
+			"comparison": "Comparação",
+			"tolerance": "Tolerância",
+			"beamAndGeometry": "Feixe e geometria",
+			"fieldOfView": "Campo de visão",
+			"manufacturerReference": "Referência do fabricante"
+		},
+		"fields": {
+			"exam": "Exame",
+			"examPlaceholder": "ex.: Panorâmico",
+			"mode": "Modo de operação",
+			"modePlaceholder": "ex.: Adulto padrão",
+			"kvp": "kVp",
+			"mA": "mA",
+			"s": "s",
+			"dFocusReceptor": "Distância foco–receptor [cm]",
+			"dFocusReceptorHint": "Distância do foco ao receptor de imagem do paciente.",
+			"dFocusDetector": "Distância foco–detector [cm]",
+			"dFocusDetectorHint": "Distância do foco à câmara durante a medição.",
+			"fieldHeight": "Altura do campo [cm]",
+			"fieldHeightDefault": "Padrão do equipamento: {value} cm.",
+			"beamWidth": "Largura varrida do feixe [cm]",
+			"beamWidthDefault": "Padrão do equipamento: {value} cm. Informativo — P_KL já está integrado nessa largura.",
+			"beamWidthHint": "Informativo — P_KL já está integrado nessa largura.",
+			"pklMeasured": "P_KL medido [mGy·cm]",
+			"correctionFactor": "Fator de correção",
+			"correctionFactorHint": "Mantenha em 1 quando nenhum fator for declarado.",
+			"pkaMachine": "P_KA reportado pela máquina [mGy·cm²]",
+			"pkaMeasured": "P_KA medido [mGy·cm²]",
+			"pkaMeasuredHint": "DAP medido com a câmara ou calculado na aba de indicador.",
+			"pkaReference": "P_KA de referência do fabricante [mGy·cm²]",
+			"pkaReferenceDefault": "Padrão do equipamento: {value} mGy·cm². DAP representativo do manual.",
+			"pkaReferenceHint": "DAP representativo do manual do equipamento.",
+			"failPct": "Limite de não conformidade [%]",
+			"failPctHint": "Variação acima disso conta como não conforme.",
+			"restrictedPct": "Limite de restrição [%]",
+			"restrictedPctHint": "Variação acima disso conta como restrição.",
+			"ka": "Kerma incidente K_a,i(FDD) [mGy]",
+			"kaHint": "Kerma medido na entrada do detector.",
+			"a": "a — Foco–isocentro [cm]",
+			"aHint": "Distância do foco ao isocentro.",
+			"b": "b — Foco–ponto de medição [cm]",
+			"bHint": "Distância do foco ao ponto de medição.",
+			"c": "c — Diâmetro horizontal do volume escaneado [cm]",
+			"cHint": "Diâmetro horizontal do volume escaneado.",
+			"d": "d — Diâmetro do campo de radiação na medição [cm]",
+			"dHint": "Diâmetro horizontal do campo de radiação no ponto de medição.",
+			"reference": "DFOV de referência [mGy]",
+			"referenceDefault": "Padrão do equipamento: {value} mGy."
+		},
+		"stats": {
+			"correctedPkl": "P_KL corrigido",
+			"doseAreaPka": "P_KA dose–área",
+			"calculatedPka": "P_KA calculado",
+			"measuredPka": "P_KA medido",
+			"dfov": "DFOV"
+		},
+		"validation": {
+			"calc": "Calc",
+			"machine": "Máquina",
+			"measured": "Medido",
+			"reference": "Referência",
+			"hintMachine": "Insira o P_KA indicado pelo equipamento para comparar.",
+			"hintReference": "Insira o P_KA de referência do fabricante para comparar.",
+			"hintDfovRef": "Insira o DFOV de referência do fabricante para comparar."
+		},
+		"empty": {
+			"pka": "Insira o P<sub>KL</sub> medido, distâncias foco–receptor e foco–detector, e a altura do campo para ver o cálculo.",
+			"dap": "Insira o P<sub>KA</sub> medido para ver a comparação.",
+			"dfov": "Insira K<sub>a,i</sub>, foco–isocentro (a), foco–medição (b), diâmetro do volume escaneado (c) e diâmetro do campo de radiação (d) para ver o cálculo."
+		},
+		"footer": {
+			"pkaFormula1": "P<sub>KL</sub> corrigido = P<sub>KL</sub> medido × (D<sub>foco–detector</sub> / D<sub>foco–receptor</sub>)²",
+			"pkaFormula2": "P<sub>KA</sub> calculado = P<sub>KL</sub> corrigido × altura do campo × fator de correção",
+			"pkaTolerance": "Tolerância IN 94: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
+			"dapFormula": "Variação = |P<sub>KA,medido</sub> / P<sub>KA,referência</sub> − 1|. Compara com a referência do fabricante (Valor representativo de dose, IN 94).",
+			"dapTolerance": "Limites padrão IN 94 (20% não conforme / 40% restrição) são editáveis para ajustar a tolerâncias do local.",
+			"dfovFormula": "DFOV = K_a,i(FDD) × (b / a) × (d / c)",
+			"dfovTolerance": "Variação DIN 6868-161 vs referência: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
+			"dfovAction": "Nível de ação (DIN 6868-161): DFOV ≥ {threshold} mGy — conforme; abaixo disso, ação de qualidade de imagem necessária."
+		},
+		"actionLevel": {
+			"label": "Nível de ação DIN 6868-161",
+			"compliant": "Conforme",
+			"belowActionLevel": "Abaixo do nível de ação",
+			"threshold": "Limite: DFOV ≥ {threshold} mGy conforme DIN 6868-161."
+		}
+	},
+	"intraoral": {
+		"title": "Intraoral — DEP",
+		"description": "Dose de entrada na pele na ponta do cone. A dose na câmara é escalada à distância da ponta do cone via lei do inverso do quadrado, e então multiplicada pelo fator de retroespalhamento do tecido.",
+		"sections": {
+			"identification": "Identificação",
+			"geometry": "Geometria",
+			"measurement": "Medição",
+			"reference": "Referência (opcional)"
+		},
+		"fields": {
+			"exam": "Exame",
+			"examPlaceholder": "ex.: Periapical adulto",
+			"kvp": "kVp",
+			"mA": "mA",
+			"timeS": "Tempo [s]",
+			"dFocusChamber": "Distância foco–câmara [cm]",
+			"dFocusChamberHint": "Distância do foco à câmara durante a medição.",
+			"dFocusConeTip": "Distância foco–ponta do cone [cm]",
+			"dFocusConeTipHint": "Distância do foco à saída do localizador (onde fica a pele do paciente).",
+			"chamberDose": "Dose na câmara [mGy]",
+			"backscatter": "Fator de retroespalhamento (FR)",
+			"backscatterHint": "Da referência do IPEN: 1,167 para FFD 20 cm, 1,208 para FFD 27,5 cm.",
+			"ffd20": "FFD 20 cm — FR 1,167",
+			"ffd275": "FFD 27,5 cm — FR 1,208",
+			"custom": "Personalizado",
+			"customFr": "FR personalizado",
+			"referenceEsd": "DEP de referência [mGy]",
+			"referenceEsdHint": "Limite de protocolo local ou dose de referência IN 56 para comparação."
+		},
+		"stats": {
+			"doseAtConeTip": "Dose na ponta do cone",
+			"doseAtConeTipUnit": "mGy (livre no ar)",
+			"esd": "DEP",
+			"doseRate": "Taxa de dose"
+		},
+		"validation": {
+			"calc": "Calc",
+			"ref": "Ref",
+			"emptyHint": "Insira uma DEP de referência para comparar."
+		},
+		"empty": "Insira a dose na câmara, distância foco–câmara e distância foco–ponta do cone para ver o cálculo da DEP.",
+		"footer": {
+			"l1": "Dose na ponta do cone = dose na câmara × (D<sub>foco–câmara</sub> / D<sub>foco–ponta do cone</sub>)²",
+			"l2": "DEP = dose na ponta do cone × fator de retroespalhamento (FR)",
+			"l3": "Fatores de retroespalhamento de Andrade & da Penha (IPEN): 1,167 a 20 cm FFD; 1,208 a 27,5 cm FFD."
+		},
+		"toleranceReference": "Protocolo local"
+	},
+	"conventional": {
+		"title": "Convencional — DEP",
+		"description": "Dose de entrada na pele para radiografia convencional. A leitura da câmara é corrigida pelo fator de qualidade de radiação e escalada para a pele do paciente via lei do inverso do quadrado, e então comparada à dose de referência do Anexo II da IN 90/2021 para aquele exame.",
+		"sections": {
+			"exam": "Exame",
+			"geometry": "Geometria",
+			"measurement": "Medição"
+		},
+		"fields": {
+			"exam": "Exame",
+			"station": "Estação (onde o exame é realizado)",
+			"stationWallStand": "Bucky mural",
+			"stationTable": "Mesa",
+			"thickness": "Espessura do paciente [cm]",
+			"thicknessHint": "Padrão IN 90 para {exam}: {thickness} cm. Deixe em branco para usar o padrão.",
+			"dFocusDetector": "Distância foco–detector [cm]",
+			"dFocusDetectorHint": "Distância do foco à câmara durante a medição.",
+			"fid": "FID — Distância foco–receptor de imagem [cm]",
+			"fidHint": "Distância em que o exame foi realizado.",
+			"dTableReceptor": "Distância mesa–receptor [cm]",
+			"dTableReceptorHint": "Distância do tampo da mesa ao receptor de imagem.",
+			"dWallStandReceptor": "Distância Bucky mural–receptor [cm]",
+			"dWallStandReceptorHint": "Distância do Bucky mural ao receptor de imagem.",
+			"chamberDose": "Dose na câmara [mGy]",
+			"radiationFactor": "Fator de qualidade de radiação",
+			"radiationFactorHint": "1,2 para convencional, 1,4 para mamografia, 1,3 para odontológico."
+		},
+		"stats": {
+			"focusSkin": "Distância foco–pele",
+			"esd": "DEP"
+		},
+		"validation": {
+			"calc": "Calc",
+			"cap": "Limite",
+			"emptyHint": "Sem limite de referência disponível para este exame."
+		},
+		"empty": "Insira dose na câmara, distâncias foco–detector e FID, e o deslocamento mesa- ou Bucky mural–receptor para a estação escolhida.",
+		"footer": {
+			"l1": "Distância foco–pele = FID − espessura do paciente − deslocamento mesa/Bucky mural–receptor",
+			"l2": "DEP = dose na câmara × fator de radiação × (D<sub>foco–detector</sub> / distância foco–pele)²",
+			"l3": "Doses de referência: Anexo II da IN 90/2021 (DEP máxima permitida)."
+		},
+		"exams": {
+			"lumbar-ap": "Coluna lombar AP",
+			"lumbar-lat": "Coluna lombar LAT",
+			"lumbar-lsj": "Coluna lombar LSJ",
+			"abdomen-ap": "Abdômen AP",
+			"urography-ap": "Urografia AP",
+			"cholecystography-ap": "Colecistografia AP",
+			"pelvis-ap": "Pelve AP",
+			"hip-ap": "Quadril AP",
+			"chest-pa": "Tórax PA",
+			"chest-lat": "Tórax LAT",
+			"thoracic-ap": "Coluna torácica AP",
+			"thoracic-lat": "Coluna torácica LAT",
+			"skull-ap": "Crânio AP",
+			"skull-lat": "Crânio LAT"
+		}
+	},
+	"mammography": {
+		"title": "Mamografia — DGM",
+		"description": "Dose glandular média para uma mama equivalente padrão. Consulta g·c (AIEA HHS 17) por espessura de PMMA e CSR, então o fator S para a combinação alvo/filtro, e multiplica pelo kerma no ar na entrada. Validada contra a tolerância IN 54 para aquela espessura de PMMA.",
+		"sections": {
+			"phantomBeam": "Simulador e feixe",
+			"measurement": "Medição"
+		},
+		"fields": {
+			"pmma": "Espessura do PMMA [mm]",
+			"pmmaOption": "{pmma} mm — mama equivalente {breast} mm{cap, select, none {} other { (IN 54 < {cap})}}",
+			"hvl": "CSR nominal [mm Al]",
+			"hvlHint": "Selecione a CSR nominal mais próxima do valor medido.",
+			"targetFilter": "Alvo / filtro",
+			"targetFilterHint": "W/Al usa um fator S dependente da PMMA; os outros são fixos.",
+			"kit": "Kit — kerma no ar na entrada [mGy]",
+			"kitHint": "A partir da leitura da câmara na superfície do simulador. Use o valor derivado de LiF se aplicável."
+		},
+		"stats": {
+			"gc": "g·c (AIEA HHS 17)",
+			"sFactor": "Fator S",
+			"mgd": "DGM"
+		},
+		"validation": {
+			"mgd": "DGM",
+			"cap": "Limite",
+			"in54Label": "IN 54",
+			"in54Incomplete": "Forneça o Kit e uma combinação válida de PMMA/CSR/alvo.",
+			"in54None": "Sem limite IN 54 para esta espessura de PMMA."
+		},
+		"empty": "Insira o kerma no ar na entrada (Kit) para ver o cálculo da DGM.",
+		"footer": {
+			"l1": "DGM = g·c (PMMA, CSR) × S (alvo/filtro) × Kit",
+			"l2": "Consulta de g·c: AIEA HHS 17 (pg. 114). Fatores S: tabela AIEA HHS 17 sobre combinações alvo–filtro e variante W/Al por PMMA. A tolerância IN 54 é um limite superior estrito para DGM por espessura de PMMA."
+		}
+	},
+	"tomography": {
+		"title": "Tomografia — CTDI / DLP / E",
+		"description": "CTDI ponderado a partir das leituras central e periféricas da câmara, escalado para CTDIvol pelo pitch e corrigido em comprimento para varreduras curtas, então DLP e dose efetiva. Compara contra o CTDIvol exibido pela máquina conforme IN 55.",
+		"sections": {
+			"scanParameters": "Parâmetros de varredura",
+			"ctdiReadings": "Leituras CTDI100 na câmara",
+			"machineValues": "Valores indicados pela máquina"
+		},
+		"fields": {
+			"region": "Região",
+			"regionOption": "{label} — k = {k}",
+			"mode": "Modo",
+			"modeHelical": "Helicoidal / multicorte",
+			"modeAxial": "Axial / sequencial",
+			"kvp": "kVp",
+			"mA": "mA",
+			"sliceMm": "Corte T [mm]",
+			"channels": "Canais N",
+			"pitch": "Pitch",
+			"pitchHint": "Pitch helicoidal; padrão 1 para sequencial.",
+			"central": "Central [mGy]",
+			"h3": "3 h [mGy]",
+			"h6": "6 h [mGy]",
+			"h9": "9 h [mGy]",
+			"h12": "12 h [mGy]",
+			"calibrationFactor": "Fator de calibração",
+			"calibrationFactorHint": "Padrão 1, salvo se o certificado fornecer outro valor.",
+			"detectorLength": "Comprimento da câmara [mm]",
+			"detectorLengthHint": "Comprimento ativo da câmara de lápis de TC (tipicamente 100 mm).",
+			"ctdiVolIndicated": "CTDIvol indicado [mGy]",
+			"ctdiVolIndicatedHint": "Do relatório de dose do scanner.",
+			"dlpIndicated": "DLP indicado [mGy·cm]",
+			"dlpIndicatedHint": "Se fornecido, o comprimento de varredura é derivado como 10·DLP / CTDIvol."
+		},
+		"stats": {
+			"ctdiW": "CTDIw",
+			"ctdiVol": "CTDIvol",
+			"dlp": "DLP",
+			"effectiveDose": "Dose efetiva"
+		},
+		"validation": {
+			"calc": "Calc",
+			"indicated": "Indicado",
+			"cap": "Limite",
+			"emptyHint": "Insira o CTDIvol indicado para verificar a exatidão do indicador IN 55.",
+			"capLabel": "Limite IN 55",
+			"capNone": "Sem limite publicado para {region}."
+		},
+		"empty": "Insira as cinco leituras da câmara (central + 3 h, 6 h, 9 h, 12 h) para ver o cálculo da dose.",
+		"footer": {
+			"l1": "CTDIw = (1/3)·CTDI₁₀₀ central + (2/3)·média(CTDI₁₀₀ periférico)",
+			"l2": "CTDIvol = CTDIw · calibração · correção de comprimento / pitch",
+			"l3": "DLP [mGy·cm] = comprimento da varredura [mm] · CTDIvol / 10",
+			"l4": "E [mSv] = DLP · k(região)",
+			"l5": "A correção de comprimento se aplica quando o comprimento da varredura é menor que o comprimento ativo da câmara: fator = comprimento da câmara / comprimento da varredura. Caso contrário, fator = 1."
+		},
+		"regions": {
+			"HeadAdult": "Cabeça (adulto típico)",
+			"ChestAdult": "Tórax (adulto típico)",
+			"AbdomenAdult": "Abdômen (adulto típico)",
+			"PelvisAdult": "Pelve (adulto típico)",
+			"LumbarSpineAdult": "Coluna lombar (adulto típico)",
+			"AbdomenPediatric": "Abdômen (pediátrico)"
+		}
+	},
+	"fluoroscopy": {
+		"title": "Fluoroscopia",
+		"description": "Taxa de dose na entrada no ponto de referência durante a fluoroscopia. Compara contra os limites de taxa de dose IN 91 / RDC 330 para o modo de operação selecionado e verifica o limite do alarme de tempo acumulado.",
+		"sections": {
+			"operatingMode": "Modo de operação",
+			"geometry": "Geometria",
+			"measurement": "Medição",
+			"timeAlarm": "Alarme de tempo"
+		},
+		"fields": {
+			"mode": "Modo",
+			"modeHint": "Seleciona o limite de taxa de dose IN 91 / RDC 330.",
+			"modeOption": "{label} — limite {cap} mGy/min",
+			"manual": "Manual / padrão",
+			"automatic": "Automático",
+			"highRate": "Alta taxa (HLC)",
+			"kvp": "kVp",
+			"mA": "mA",
+			"dFocusChamber": "Distância foco–câmara [cm]",
+			"dFocusChamberHint": "Distância do foco à câmara durante o teste.",
+			"dFocusSkin": "Distância foco–ponto de referência de entrada [cm]",
+			"dFocusSkinHint": "Ponto de referência de entrada do paciente (tipicamente 15 cm acima da mesa para tubos sob-mesa, 30 cm do receptor para sobre-mesa).",
+			"chamberMgy": "Dose integrada na câmara [mGy]",
+			"exposureSeconds": "Tempo de exposição [s]",
+			"alarmMinutes": "Tempo indicado do alarme [min]",
+			"alarmMinutesHint": "Quando o alarme de fluoroscopia acumulada soa. Deve ser ≤ 5 min conforme IN 91."
+		},
+		"stats": {
+			"rateChamber": "Taxa na câmara",
+			"rateEntrance": "Taxa na entrada"
+		},
+		"validation": {
+			"rate": "Taxa",
+			"alarm": "Alarme",
+			"cap": "Limite"
+		},
+		"empty": "Insira a dose integrada na câmara e o tempo de exposição para ver o cálculo da taxa de dose.",
+		"footer": {
+			"l1": "Taxa na câmara [mGy/min] = dose na câmara × 60 / tempo de exposição",
+			"l2": "Taxa na entrada = taxa na câmara × (D<sub>foco–câmara</sub> / D<sub>foco–entrada</sub>)²",
+			"l3": "Limites IN 91 / RDC 330 no ponto de referência de entrada: 50 mGy/min (manual), 100 mGy/min (automático), 200 mGy/min (alta taxa). O alarme de tempo acumulado deve disparar em ≤ 5 min."
+		}
+	},
+	"kvp": {
+		"title": "Exatidão de kVp",
+		"description": "Variação de kVp por disparo contra o valor nominal selecionado, além de reprodutibilidade ao longo da série. Tolerâncias IN 56: ±10% por disparo para exatidão; ±5% reprodutibilidade.",
+		"sections": {
+			"nominal": "Nominal",
+			"measured": "kVp medido por disparo"
+		},
+		"fields": {
+			"nominal": "kVp nominal",
+			"shot": "Disparo {n}"
+		},
+		"stats": {
+			"meanKvp": "kVp médio",
+			"reproducibility": "Reprodutibilidade",
+			"reproducibilityUnit": "(máx−mín)/média"
+		},
+		"verdicts": {
+			"reproTitle": "Reprodutibilidade IN 56",
+			"accuracyTitle": "Veredito de exatidão do pior disparo"
+		},
+		"table": {
+			"shot": "Disparo",
+			"measured": "kVp medido",
+			"deviation": "Variação",
+			"in56": "IN 56"
+		},
+		"empty": "Insira o kVp nominal e ao menos um disparo medido para ver a análise.",
+		"footer": {
+			"l1": "Variação por disparo = medido / nominal − 1",
+			"l2": "Reprodutibilidade = (máx − mín) / média ao longo da série",
+			"l3": "Tolerância IN 56/2019: exatidão por disparo ±10% (conforme), ±10–20% (não conforme), > 20% (restrito). Reprodutibilidade ≤ 5% (conforme), 5–10% (não conforme), > 10% (restrito)."
+		}
+	},
+	"hvl": {
+		"title": "CSR — camada semi-redutora",
+		"description": "Compara a camada semi-redutora medida com o mínimo IN 56/2019 para o kVp e tipo de retificador. Interpolação linear entre as linhas de kVp tabuladas.",
+		"sections": {
+			"beam": "Feixe",
+			"measurement": "Medição"
+		},
+		"fields": {
+			"kvp": "kVp",
+			"rectifier": "Retificador",
+			"rectifierHint": "Padrão do equipamento selecionado: {label}.",
+			"useEquipment": "Usar configuração do equipamento",
+			"mono": "Mono (monofásico)",
+			"tri": "Tri (trifásico)",
+			"af": "AF (alta frequência)",
+			"measuredHvl": "CSR medida [mm Al]"
+		},
+		"stats": {
+			"hvlMinimum": "CSR mínima",
+			"measuredHvl": "CSR medida"
+		},
+		"validation": {
+			"measured": "Medida",
+			"min": "Mín",
+			"in56Label": "IN 56/2019",
+			"outOfRange": "kVp fora da faixa tabulada (50–130 kVp).",
+			"enterMeasured": "Insira a CSR medida para comparar."
+		},
+		"empty": "Insira a configuração de kVp para consultar a CSR mínima IN 56.",
+		"footer": {
+			"l1": "A CSR mínima é interpolada entre as linhas da tabela do Anexo 2 da IN 56/2019 para o tipo de retificador selecionado. Cobertura: 50–130 kVp.",
+			"l2": "Veredito: conforme se medida ≥ mínima; não conforme se 80–100% do mínimo; restrito se < 80%."
+		}
+	},
+	"output": {
+		"title": "Rendimento do tubo",
+		"description": "Rendimento do tubo normalizado para 1 metro e (opcionalmente) para um kVp de referência. Compara contra a faixa aceitável IN 56 / IN 90 para radiografia convencional.",
+		"sections": {
+			"beam": "Feixe",
+			"measurement": "Medição"
+		},
+		"fields": {
+			"kvpRef": "kVp de referência",
+			"kvpMeasured": "kVp medido",
+			"applyKvp": "Aplicar correção kVp²",
+			"applyKvpHint": "Normaliza o rendimento para o kVp de referência via lei do inverso do quadrado.",
+			"yes": "Sim",
+			"no": "Não",
+			"doseRate": "Taxa de dose [mGy/s]",
+			"mA": "Corrente do tubo [mA]",
+			"dfd": "Distância foco–detector [cm]",
+			"dfdHint": "Distância em que a taxa de dose foi medida."
+		},
+		"stats": {
+			"tubeOutput": "Rendimento do tubo"
+		},
+		"verdict": {
+			"label": "IN 56 / IN 90",
+			"range": "Faixa aceitável {passMin}–{passMax}; tolerância {failMin}–{failMax} μGy/mAs·m²."
+		},
+		"note": {
+			"title": "Observação",
+			"body": "A faixa IN 56 é para radiografia convencional no kVp de referência. Intraoral odontológico tipicamente lê mais alto e não tem limite publicado; trate o veredito como informativo fora do contexto convencional."
+		},
+		"empty": "Insira taxa de dose, corrente e distância foco–detector.",
+		"footer": {
+			"l1": "Rendimento do tubo [μGy/mAs·m²] = (taxa de dose × 1000 / mA) × (FDD / 100)² × (kVp<sub>ref</sub> / kVp<sub>med</sub>)²",
+			"l2": "O termo (FDD/100)² escala a medição para 1 m. O termo (razão de kVp)² normaliza para um kVp de referência usando o escalonamento padrão kVp² do rendimento do tubo."
+		}
+	},
+	"timer": {
+		"title": "Tempo de exposição",
+		"description": "Exatidão do temporizador por disparo (medido vs selecionado) e reprodutibilidade ao longo da série. Tolerâncias IN 56: ±10% por disparo para exatidão; ±5% reprodutibilidade.",
+		"sections": {
+			"shotPairs": "Pares de disparo (selecionado vs medido)"
+		},
+		"fields": {
+			"shot": "Disparo {n}",
+			"selected": "Selecionado [s]",
+			"measured": "Medido [s]"
+		},
+		"stats": {
+			"meanMeasured": "Média medida",
+			"reproducibility": "Reprodutibilidade",
+			"reproducibilityUnit": "(máx−mín)/média"
+		},
+		"verdicts": {
+			"reproTitle": "Reprodutibilidade IN 56",
+			"accuracyTitle": "Veredito de exatidão do pior disparo"
+		},
+		"table": {
+			"shot": "Disparo",
+			"selected": "Selecionado",
+			"measured": "Medido",
+			"deviation": "Variação",
+			"in56": "IN 56"
+		},
+		"empty": "Insira ao menos um par de tempo selecionado/medido.",
+		"footer": {
+			"l1": "Variação por disparo = medido / selecionado − 1",
+			"l2": "Reprodutibilidade = (máx − mín) / média ao longo da série",
+			"l3": "IN 56/2019: exatidão por disparo ±10% (conforme), ±10–20% (não conforme), > 20% (restrito). Reprodutibilidade ≤ 5% (conforme), 5–10% (não conforme), > 10% (restrito)."
+		}
+	},
+	"leakage": {
+		"title": "Radiação de fuga",
+		"description": "Taxa de dose de fuga da carcaça do tubo a 1 m, calculada a partir de uma leitura de câmara a qualquer distância e a duração da exposição. Testada sob condições de carga máxima (kVp máx + mA contínuo máx). Limite: 1 mGy/h conforme IN 56 / IEC 60601-1-3.",
+		"sections": {
+			"testConditions": "Condições de teste",
+			"measurement": "Medição"
+		},
+		"fields": {
+			"kvp": "kVp (carga máx)",
+			"mA": "mA (carga máx)",
+			"distance": "Distância da carcaça do tubo [cm]",
+			"distanceHint": "Onde a câmara estava posicionada durante a medição.",
+			"chamberDose": "Dose integrada na câmara [mGy]",
+			"exposureSeconds": "Tempo de exposição [s]"
+		},
+		"stats": {
+			"rateDistance": "Taxa na distância",
+			"rate1m": "Taxa a 1 m"
+		},
+		"validation": {
+			"rate": "Taxa",
+			"cap": "Limite"
+		},
+		"empty": "Insira distância de medição, dose na câmara e tempo de exposição.",
+		"footer": {
+			"l1": "Taxa na distância = dose na câmara × 3600 / tempo de exposição",
+			"l2": "Taxa a 1 m = taxa na distância × (distância / 100)²",
+			"l3": "O termo (distância/100)² escala a medição para 1 m via lei do inverso do quadrado. O teste deve ser realizado na carga máxima contínua especificada pelo fabricante."
+		}
+	},
+	"placeholder": {
+		"title": "{name}",
+		"description": "Esta calculadora está planejada, mas ainda não foi implementada.",
+		"note": "Em breve — veja a página de Auditoria para o roteiro de implementação."
+	}
+}

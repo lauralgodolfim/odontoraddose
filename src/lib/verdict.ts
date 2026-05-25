@@ -50,6 +50,23 @@ export function classifyDeviation(deviation: number, t: Tolerance): Verdict {
 	return "pass";
 }
 
+export const verdictTones: Record<Verdict, string> = {
+	pass: "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+	fail: "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
+	restricted:
+		"border-rose-500/50 bg-rose-500/10 text-rose-700 dark:text-rose-300",
+};
+
+export function pct(x: number): string {
+	return `${(x * 100).toFixed(0)}%`;
+}
+
+/**
+ * English fallback meta. Use {@link useVerdictMeta} from
+ * `@/lib/useVerdictMeta` in client components for translated labels.
+ * Kept for compatibility with any caller that needs verdict text outside a
+ * React tree.
+ */
 export const verdictMeta: Record<
 	Verdict,
 	{ label: string; sub: (t: Tolerance) => string; tone: string }
@@ -57,22 +74,18 @@ export const verdictMeta: Record<
 	pass: {
 		label: "Pass",
 		sub: (t) => `Deviation ≤ ${pct(t.fail)} — within ${t.reference} tolerance.`,
-		tone: "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+		tone: verdictTones.pass,
 	},
 	fail: {
 		label: "Fail",
 		sub: (t) =>
 			`Deviation between ${pct(t.fail)} and ${pct(t.restricted)} — outside ${t.reference} tolerance.`,
-		tone: "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
+		tone: verdictTones.fail,
 	},
 	restricted: {
 		label: "Restricted",
 		sub: (t) =>
 			`Deviation above ${pct(t.restricted)} — usage restriction recommended.`,
-		tone: "border-rose-500/50 bg-rose-500/10 text-rose-700 dark:text-rose-300",
+		tone: verdictTones.restricted,
 	},
 };
-
-function pct(x: number): string {
-	return `${(x * 100).toFixed(0)}%`;
-}

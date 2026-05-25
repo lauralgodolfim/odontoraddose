@@ -1,20 +1,26 @@
 "use client";
 
 import { ArrowRight, Circle } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
+import { Link } from "@/i18n/navigation";
 import type { Calculator } from "@/lib/calculators";
 
 export function CalculatorCard({ calc }: { calc: Calculator }) {
+	const t = useTranslations("calculators");
 	const isImplemented = calc.status === "implemented";
+	// biome-ignore lint/suspicious/noExplicitAny: dynamic key into translations namespace
+	const title = t(`${calc.slug}.title` as any);
+	// biome-ignore lint/suspicious/noExplicitAny: dynamic key into translations namespace
+	const description = t(`${calc.slug}.description` as any);
 	const inner = (
 		<>
 			<span className="flex flex-col">
 				<span className="text-base font-semibold text-zinc-950 dark:text-zinc-50">
-					{calc.title}
+					{title}
 				</span>
 				<span className="text-sm text-zinc-600 dark:text-zinc-400">
-					{calc.description}
+					{description}
 				</span>
 			</span>
 			{isImplemented ? (
@@ -47,7 +53,7 @@ export function CalculatorCard({ calc }: { calc: Calculator }) {
 
 	return (
 		<Link
-			href={`./${calc.slug}`}
+			href={`/${calc.slug}`}
 			prefetch={false}
 			onMouseMove={handleMove}
 			className="group relative flex items-center justify-between gap-4 overflow-hidden rounded-lg border border-zinc-200 bg-white px-5 py-4 text-left transition hover:border-radiation-400 dark:border-radiation-400/20 dark:bg-zinc-950 dark:hover:border-radiation-400 dark:hover:bg-radiation-400/5"

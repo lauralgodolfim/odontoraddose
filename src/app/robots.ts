@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 
+import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/site";
 
-// Required by `output: "export"` — the route must be fully static.
 export const dynamic = "force-static";
 
 export default function robots(): MetadataRoute.Robots {
@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
 		rules: {
 			userAgent: "*",
 			allow: "/",
-			disallow: "/audit/",
+			disallow: routing.locales.map((l) => `/${l}/audit/`),
 		},
 		sitemap: `${SITE_URL}/sitemap.xml`,
 	};

@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { useSelectedEquipment } from "@/components/EquipmentProvider";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
@@ -12,8 +13,8 @@ import { fmt, parse } from "@/lib/num";
 import { DIN_6868_161_DFOV, IN_94_PKA, type Tolerance } from "@/lib/verdict";
 
 const TABS = [
-	{ id: "pka", label: "Indicator accuracy" },
-	{ id: "dap", label: "Representative DAP" },
+	{ id: "pka", label: "Estimated PKA" },
+	{ id: "dap", label: "Measured PKA" },
 	{ id: "dfov", label: "DFOV (CBCT)" },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
@@ -106,24 +107,29 @@ const dfovInitial: DfovFormState = {
 const DFOV_ACTION_LEVEL_MGY = 50;
 
 export default function ExtraoralPage() {
+	const equipment = useSelectedEquipment("extraoral");
 	const [tab, setTab] = useState<TabId>("pka");
 	const [pkaForm, setPkaForm] = useState<PkaFormState>(pkaInitial);
 	const [dapForm, setDapForm] = useState<DapFormState>(dapInitial);
 	const [dfovForm, setDfovForm] = useState<DfovFormState>(dfovInitial);
 
 	const pkaResult = useMemo(() => {
-		const base = computePka(pkaForm);
+		const base = computePka({
+			...pkaForm,
+			fieldHeight: pkaForm.fieldHeight || (equipment?.fieldHeight ?? ""),
+		});
 		if (!base) return null;
 		const pkaMach = parse(pkaForm.pkaMachine);
 		return { ...base, pkaMach };
-	}, [pkaForm]);
+	}, [pkaForm, equipment?.fieldHeight]);
 
 	const dapResult = useMemo(() => {
 		const measured = parse(dapForm.pkaMeasured);
 		if (measured === null) return null;
-		const reference = parse(dapForm.pkaReference);
+		const reference =
+			parse(dapForm.pkaReference) ?? parse(equipment?.referencePka ?? "");
 		return { measured, reference };
-	}, [dapForm.pkaMeasured, dapForm.pkaReference]);
+	}, [dapForm.pkaMeasured, dapForm.pkaReference, equipment?.referencePka]);
 
 	const dapTolerance = useMemo<Tolerance>(() => {
 		const fail = parse(dapForm.failPct) ?? 20;
@@ -141,7 +147,8 @@ export default function ExtraoralPage() {
 		const b = parse(dfovForm.b);
 		const c = parse(dfovForm.c);
 		const d = parse(dfovForm.d);
-		const reference = parse(dfovForm.reference);
+		const reference =
+			parse(dfovForm.reference) ?? parse(equipment?.referenceDfov ?? "");
 
 		if (ka === null || a === null || b === null || c === null || d === null) {
 			return null;
@@ -150,7 +157,7 @@ export default function ExtraoralPage() {
 
 		const dfov = ka * (b / a) * (d / c);
 		return { dfov, reference };
-	}, [dfovForm]);
+	}, [dfovForm, equipment?.referenceDfov]);
 
 	const updatePka =
 		(key: keyof PkaFormState) =>
@@ -301,24 +308,37 @@ export default function ExtraoralPage() {
 										className={inputCls}
 									/>
 								</Field>
-								<Field label="Field height [cm]">
+								<Field
+									label="Field height [cm]"
+									hint={
+										equipment?.fieldHeight
+											? `Default from equipment: ${equipment.fieldHeight} cm.`
+											: undefined
+									}
+								>
 									<input
 										type="number"
 										inputMode="decimal"
 										value={pkaForm.fieldHeight}
 										onChange={updatePka("fieldHeight")}
+										placeholder={equipment?.fieldHeight ?? ""}
 										className={inputCls}
 									/>
 								</Field>
 								<Field
 									label="Beam-swept width [cm]"
-									hint="Informational — P_KL is already integrated over this width."
+									hint={
+										equipment?.beamWidth
+											? `Default from equipment: ${equipment.beamWidth} cm. Informational — P_KL is already integrated over this width.`
+											: "Informational — P_KL is already integrated over this width."
+									}
 								>
 									<input
 										type="number"
 										inputMode="decimal"
 										value={pkaForm.beamWidth}
 										onChange={updatePka("beamWidth")}
+										placeholder={equipment?.beamWidth ?? ""}
 										className={inputCls}
 									/>
 								</Field>
@@ -449,13 +469,18 @@ export default function ExtraoralPage() {
 								</Field>
 								<Field
 									label="Manufacturer reference P_KA [mGy·cm²]"
-									hint="Representative DAP from the equipment manual."
+									hint={
+										equipment?.referencePka
+											? `Default from equipment: ${equipment.referencePka} mGy·cm². Representative DAP from the manual.`
+											: "Representative DAP from the equipment manual."
+									}
 								>
 									<input
 										type="number"
 										inputMode="decimal"
 										value={dapForm.pkaReference}
 										onChange={updateDap("pkaReference")}
+										placeholder={equipment?.referencePka ?? ""}
 										className={inputCls}
 									/>
 								</Field>
@@ -609,12 +634,20 @@ export default function ExtraoralPage() {
 							</Section>
 
 							<Section title="Manufacturer reference">
-								<Field label="Reference DFOV [mGy]">
+								<Field
+									label="Reference DFOV [mGy]"
+									hint={
+										equipment?.referenceDfov
+											? `Default from equipment: ${equipment.referenceDfov} mGy.`
+											: undefined
+									}
+								>
 									<input
 										type="number"
 										inputMode="decimal"
 										value={dfovForm.reference}
 										onChange={updateDfov("reference")}
+										placeholder={equipment?.referenceDfov ?? ""}
 										className={inputCls}
 									/>
 								</Field>

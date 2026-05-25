@@ -278,6 +278,59 @@ export default function EquipmentPage() {
 								</Field>
 							</div>
 						</Section>
+
+						<Section title="Extraoral references">
+							<Field
+								label="Manufacturer reference P_KA [mGy·cm²]"
+								hint="Representative dose from the equipment manual (IN 94 reference)."
+							>
+								<input
+									type="number"
+									inputMode="decimal"
+									value={active.referencePka ?? ""}
+									onChange={setField("referencePka")}
+									className={inputCls}
+								/>
+							</Field>
+							<Field
+								label="Manufacturer reference DFOV [mGy]"
+								hint="Reference DFOV from the CBCT manual."
+							>
+								<input
+									type="number"
+									inputMode="decimal"
+									value={active.referenceDfov ?? ""}
+									onChange={setField("referenceDfov")}
+									className={inputCls}
+								/>
+							</Field>
+							<div className="grid grid-cols-2 gap-3">
+								<Field
+									label="Field height [cm]"
+									hint="Collimated beam height for the standard protocol."
+								>
+									<input
+										type="number"
+										inputMode="decimal"
+										value={active.fieldHeight ?? ""}
+										onChange={setField("fieldHeight")}
+										className={inputCls}
+									/>
+								</Field>
+								<Field
+									label="Beam-swept width [cm]"
+									hint="Collimated beam width for the standard protocol."
+								>
+									<input
+										type="number"
+										inputMode="decimal"
+										value={active.beamWidth ?? ""}
+										onChange={setField("beamWidth")}
+										className={inputCls}
+									/>
+								</Field>
+							</div>
+						</Section>
 					</div>
 				) : (
 					<div className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">

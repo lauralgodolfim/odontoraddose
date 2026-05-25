@@ -27,15 +27,21 @@ export default function Home() {
 						Work in progress
 					</span>
 					<div className="flex items-center gap-4">
-						<Image
-							src="./logo.png"
-							alt=""
-							width={192}
-							height={192}
-							priority
-							sizes="(min-width: 640px) 80px, 56px"
-							className="h-14 w-14 rounded-2xl shadow-sm ring-1 ring-radiation-400/40 sm:h-20 sm:w-20"
-						/>
+						<div className="relative h-14 w-14 sm:h-20 sm:w-20">
+							<Image
+								src="./logo.png"
+								alt=""
+								width={192}
+								height={192}
+								priority
+								sizes="(min-width: 640px) 80px, 56px"
+								className="h-full w-full rounded-2xl"
+							/>
+							<span
+								aria-hidden
+								className="pointer-events-none absolute left-[61%] top-[68%] h-[36%] w-[36%] -translate-x-1/2 -translate-y-1/2 animate-radiate rounded-full"
+							/>
+						</div>
 						<h1 className="text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl dark:text-zinc-50">
 							RadQC Suite
 						</h1>

@@ -1,16 +1,9 @@
 import type { Rectifier } from "@/lib/tables/hvl";
 
 /**
- * Multimeter / dosimeter brand. Several spreadsheet formulas branch on this
- * to pick which measurement column to read (cell offsets differ per brand).
- */
-export type DosimeterBrand = "Unfors" | "Fluke" | "Raysafe";
-
-/**
  * Equipment metadata captured by the Header sheet of Modelos_CQ.xltx.
  * Most fields are informational and feed the printed report (LAUDO);
- * `rectifier` and `dosimeterBrand` are the only fields that change calc
- * formulas.
+ * `rectifier` is the only field that changes calc formulas.
  */
 export type Equipment = {
 	id: string;
@@ -18,13 +11,13 @@ export type Equipment = {
 
 	// QC parameters (calc-affecting)
 	rectifier: Rectifier;
-	dosimeterBrand: DosimeterBrand;
 
 	// Identification (informational, used for reports)
 	client?: string;
 	location?: string;
 	serviceDate?: string;
 	responsible?: string;
+	dosimeterBrand?: string;
 	generatorBrand?: string;
 	generatorModel?: string;
 	generatorSerial?: string;
@@ -36,7 +29,6 @@ export type Equipment = {
 
 export const defaultEquipmentFields: Omit<Equipment, "id" | "name"> = {
 	rectifier: "af",
-	dosimeterBrand: "Unfors",
 };
 
 export function createEquipment(name = "New equipment"): Equipment {

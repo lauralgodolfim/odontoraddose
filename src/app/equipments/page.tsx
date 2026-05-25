@@ -6,10 +6,8 @@ import { useEffect, useState } from "react";
 
 import { useEquipment } from "@/components/EquipmentProvider";
 import { Field, inputCls, Section } from "@/components/form";
-import type { DosimeterBrand, Equipment } from "@/lib/equipment";
+import type { Equipment } from "@/lib/equipment";
 import type { Rectifier } from "@/lib/tables/hvl";
-
-const dosimeterBrands: DosimeterBrand[] = ["Unfors", "Fluke", "Raysafe"];
 
 const rectifiers: { value: Rectifier; label: string; description: string }[] = [
 	{ value: "mono", label: "Mono", description: "Single-phase (60 Hz)" },
@@ -69,7 +67,7 @@ export default function EquipmentPage() {
 					<p className="text-sm text-zinc-600 dark:text-zinc-400">
 						Manage saved equipments. Each calculator can independently select
 						which one to use. Stored locally on this device — nothing is sent to
-						a server. Rectifier type and dosimeter brand affect calculator
+						a server. Rectifier type affects calculator
 						formulas; the rest is informational and shows up on printed reports.
 					</p>
 				</header>
@@ -115,7 +113,8 @@ export default function EquipmentPage() {
 												{eq.name || "(untitled)"}
 											</span>
 											<span className="text-xs text-zinc-500 dark:text-zinc-400">
-												{eq.dosimeterBrand} · {eq.rectifier.toUpperCase()}
+												{eq.rectifier.toUpperCase()}
+												{eq.dosimeterBrand ? ` · ${eq.dosimeterBrand}` : ""}
 												{eq.generatorBrand ? ` · ${eq.generatorBrand}` : ""}
 												{eq.generatorModel ? ` ${eq.generatorModel}` : ""}
 											</span>
@@ -205,25 +204,14 @@ export default function EquipmentPage() {
 									))}
 								</select>
 							</Field>
-							<Field
-								label="Dosimeter brand"
-								hint="Affects which measurement column is read by chamber-driven calculators."
-							>
-								<select
-									value={active.dosimeterBrand}
-									onChange={(e) =>
-										update(active.id, {
-											dosimeterBrand: e.target.value as DosimeterBrand,
-										})
-									}
+							<Field label="Dosimeter brand">
+								<input
+									type="text"
+									value={active.dosimeterBrand ?? ""}
+									onChange={setField("dosimeterBrand")}
+									placeholder="e.g. Unfors"
 									className={inputCls}
-								>
-									{dosimeterBrands.map((b) => (
-										<option key={b} value={b}>
-											{b}
-										</option>
-									))}
-								</select>
+								/>
 							</Field>
 							<Field label="Certificate (multimeter)">
 								<input

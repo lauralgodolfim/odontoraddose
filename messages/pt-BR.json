@@ -165,9 +165,9 @@
 			"responsible": "Responsável",
 			"rectifier": "Retificador",
 			"rectifierHint": "Usado pelas fórmulas de CSR mínimo e qualidade de feixe.",
-			"dosimeterBrand": "Marca do dosímetro",
+			"dosimeterBrand": "Marca do medidor",
 			"dosimeterBrandPlaceholder": "ex.: Unfors",
-			"certificate": "Certificado (multímetro)",
+			"certificate": "Certificado (medidor)",
 			"certificatePlaceholder": "ex.: X2",
 			"brand": "Marca",
 			"model": "Modelo",
@@ -257,8 +257,10 @@
 			"machine": "Máquina",
 			"measured": "Medido",
 			"reference": "Referência",
+			"equipment": "Equipamento",
 			"hintMachine": "Insira o P_KA indicado pelo equipamento para comparar.",
 			"hintReference": "Insira o P_KA de referência do fabricante para comparar.",
+			"hintEquipment": "Defina o P_KA de referência do fabricante no equipamento selecionado para comparar.",
 			"hintDfovRef": "Insira o DFOV de referência do fabricante para comparar."
 		},
 		"empty": {

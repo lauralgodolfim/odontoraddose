@@ -178,11 +178,7 @@
 			"referencePka": "Manufacturer reference P_KA [mGy·cm²]",
 			"referencePkaHint": "Representative dose from the equipment manual (IN 94 reference).",
 			"referenceDfov": "Manufacturer reference DFOV [mGy]",
-			"referenceDfovHint": "Reference DFOV from the CBCT manual.",
-			"fieldHeight": "Field height [cm]",
-			"fieldHeightHint": "Collimated beam height for the standard protocol.",
-			"beamWidth": "Beam-swept width [cm]",
-			"beamWidthHint": "Collimated beam width for the standard protocol."
+			"referenceDfovHint": "Reference DFOV from the CBCT manual."
 		},
 		"rectifiers": {
 			"mono": "Mono",
@@ -225,9 +221,7 @@
 			"dFocusDetector": "Focus–detector distance [cm]",
 			"dFocusDetectorHint": "Distance from focus to the chamber during measurement.",
 			"fieldHeight": "Field height [cm]",
-			"fieldHeightDefault": "Default from equipment: {value} cm.",
 			"beamWidth": "Beam-swept width [cm]",
-			"beamWidthDefault": "Default from equipment: {value} cm. Informational — P_KL is already integrated over this width.",
 			"beamWidthHint": "Informational — P_KL is already integrated over this width.",
 			"pklMeasured": "Measured P_KL [mGy·cm]",
 			"correctionFactor": "Correction factor",

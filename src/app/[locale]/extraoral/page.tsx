@@ -120,14 +120,11 @@ export default function ExtraoralPage() {
 	];
 
 	const pkaResult = useMemo(() => {
-		const base = computePka({
-			...pkaForm,
-			fieldHeight: pkaForm.fieldHeight || (equipment?.fieldHeight ?? ""),
-		});
+		const base = computePka(pkaForm);
 		if (!base) return null;
 		const pkaMach = parse(pkaForm.pkaMachine);
 		return { ...base, pkaMach };
-	}, [pkaForm, equipment?.fieldHeight]);
+	}, [pkaForm]);
 
 	const dapResult = useMemo(() => {
 		const measured = parse(dapForm.pkaMeasured);
@@ -300,41 +297,24 @@ export default function ExtraoralPage() {
 										className={inputCls}
 									/>
 								</Field>
-								<Field
-									label={t("fields.fieldHeight")}
-									hint={
-										equipment?.fieldHeight
-											? t("fields.fieldHeightDefault", {
-													value: equipment.fieldHeight,
-												})
-											: undefined
-									}
-								>
+								<Field label={t("fields.fieldHeight")}>
 									<input
 										type="number"
 										inputMode="decimal"
 										value={pkaForm.fieldHeight}
 										onChange={updatePka("fieldHeight")}
-										placeholder={equipment?.fieldHeight ?? ""}
 										className={inputCls}
 									/>
 								</Field>
 								<Field
 									label={t("fields.beamWidth")}
-									hint={
-										equipment?.beamWidth
-											? t("fields.beamWidthDefault", {
-													value: equipment.beamWidth,
-												})
-											: t("fields.beamWidthHint")
-									}
+									hint={t("fields.beamWidthHint")}
 								>
 									<input
 										type="number"
 										inputMode="decimal"
 										value={pkaForm.beamWidth}
 										onChange={updatePka("beamWidth")}
-										placeholder={equipment?.beamWidth ?? ""}
 										className={inputCls}
 									/>
 								</Field>

@@ -312,32 +312,6 @@ export default function EquipmentPage() {
 									className={inputCls}
 								/>
 							</Field>
-							<div className="grid grid-cols-2 gap-3">
-								<Field
-									label={t("fields.fieldHeight")}
-									hint={t("fields.fieldHeightHint")}
-								>
-									<input
-										type="number"
-										inputMode="decimal"
-										value={active.fieldHeight ?? ""}
-										onChange={setField("fieldHeight")}
-										className={inputCls}
-									/>
-								</Field>
-								<Field
-									label={t("fields.beamWidth")}
-									hint={t("fields.beamWidthHint")}
-								>
-									<input
-										type="number"
-										inputMode="decimal"
-										value={active.beamWidth ?? ""}
-										onChange={setField("beamWidth")}
-										className={inputCls}
-									/>
-								</Field>
-							</div>
 						</Section>
 					</div>
 				) : (

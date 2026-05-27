@@ -178,11 +178,7 @@
 			"referencePka": "P_KA de referência do fabricante [mGy·cm²]",
 			"referencePkaHint": "Dose representativa do manual do equipamento (referência IN 94).",
 			"referenceDfov": "DFOV de referência do fabricante [mGy]",
-			"referenceDfovHint": "DFOV de referência do manual do CBCT.",
-			"fieldHeight": "Altura do campo [cm]",
-			"fieldHeightHint": "Altura colimada do feixe para o protocolo padrão.",
-			"beamWidth": "Largura varrida do feixe [cm]",
-			"beamWidthHint": "Largura colimada do feixe para o protocolo padrão."
+			"referenceDfovHint": "DFOV de referência do manual do CBCT."
 		},
 		"rectifiers": {
 			"mono": "Mono",
@@ -225,9 +221,7 @@
 			"dFocusDetector": "Distância foco–detector [cm]",
 			"dFocusDetectorHint": "Distância do foco à câmara durante a medição.",
 			"fieldHeight": "Altura do campo [cm]",
-			"fieldHeightDefault": "Padrão do equipamento: {value} cm.",
 			"beamWidth": "Largura varrida do feixe [cm]",
-			"beamWidthDefault": "Padrão do equipamento: {value} cm. Informativo — P_KL já está integrado nessa largura.",
 			"beamWidthHint": "Informativo — P_KL já está integrado nessa largura.",
 			"pklMeasured": "P_KL medido [mGy·cm]",
 			"correctionFactor": "Fator de correção",

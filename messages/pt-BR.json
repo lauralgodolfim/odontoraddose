@@ -195,7 +195,7 @@
 	},
 	"extraoral": {
 		"title": "Extraoral",
-		"description": "Três verificações de CQ para imagem extraoral. <strong>Exatidão do indicador</strong> — verificar o P<sub>KA</sub> reportado pelo equipamento contra uma medição (IN 94). <strong>DAP representativo</strong> — comparar um P<sub>KA</sub> medido à referência do fabricante (IN 94, tolerância editável). <strong>DFOV</strong> — validar a dose de CBCT contra a referência e o nível de ação DIN 6868-161.",
+		"description": "Três verificações de CQ para imagem extraoral. <strong>Exatidão do indicador</strong> — verificar o P<sub>KA</sub> reportado pelo equipamento contra uma medição (IN 94). <strong>DAP representativo</strong> — comparar um P<sub>KA</sub> medido à referência do fabricante (IN 94). <strong>DFOV</strong> — validar a dose de CBCT contra a referência e o nível de ação DIN 6868-161.",
 		"tabs": {
 			"pka": "PKA estimado",
 			"dap": "PKA medido",
@@ -208,7 +208,6 @@
 			"measurement": "Medição",
 			"equipmentIndicator": "Indicador do equipamento",
 			"comparison": "Comparação",
-			"tolerance": "Tolerância",
 			"beamAndGeometry": "Feixe e geometria",
 			"fieldOfView": "Campo de visão",
 			"manufacturerReference": "Referência do fabricante"
@@ -239,10 +238,6 @@
 			"pkaReference": "P_KA de referência do fabricante [mGy·cm²]",
 			"pkaReferenceDefault": "Padrão do equipamento: {value} mGy·cm². DAP representativo do manual.",
 			"pkaReferenceHint": "DAP representativo do manual do equipamento.",
-			"failPct": "Limite de não conformidade [%]",
-			"failPctHint": "Variação acima disso conta como não conforme.",
-			"restrictedPct": "Limite de restrição [%]",
-			"restrictedPctHint": "Variação acima disso conta como restrição.",
 			"ka": "Kerma incidente K_a,i(FDD) [mGy]",
 			"kaHint": "Kerma medido na entrada do detector.",
 			"a": "a — Foco–isocentro [cm]",
@@ -282,7 +277,7 @@
 			"pkaFormula2": "P<sub>KA</sub> calculado = P<sub>KL</sub> corrigido × altura do campo × fator de correção",
 			"pkaTolerance": "Tolerância IN 94: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
 			"dapFormula": "Variação = |P<sub>KA,medido</sub> / P<sub>KA,referência</sub> − 1|. Compara com a referência do fabricante (Valor representativo de dose, IN 94).",
-			"dapTolerance": "Limites padrão IN 94 (20% não conforme / 40% restrição) são editáveis para ajustar a tolerâncias do local.",
+			"dapTolerance": "Tolerância IN 94: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
 			"dfovFormula": "DFOV = K_a,i(FDD) × (b / a) × (d / c)",
 			"dfovTolerance": "Variação DIN 6868-161 vs referência: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
 			"dfovAction": "Nível de ação (DIN 6868-161): DFOV ≥ {threshold} mGy — conforme; abaixo disso, ação de qualidade de imagem necessária."

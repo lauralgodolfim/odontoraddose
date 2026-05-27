@@ -70,16 +70,18 @@ type DapFormState = {
 	exam: string;
 	pkaMeasured: string;
 	pkaReference: string;
-	failPct: string;
-	restrictedPct: string;
 };
 
 const dapInitial: DapFormState = {
 	exam: "",
 	pkaMeasured: "",
 	pkaReference: "",
-	failPct: "20",
-	restrictedPct: "40",
+};
+
+const DAP_TOLERANCE: Tolerance = {
+	fail: 0.2,
+	restricted: 0.4,
+	reference: "IN 94",
 };
 
 type DfovFormState = {
@@ -134,16 +136,6 @@ export default function ExtraoralPage() {
 			parse(dapForm.pkaReference) ?? parse(equipment?.referencePka ?? "");
 		return { measured, reference };
 	}, [dapForm.pkaMeasured, dapForm.pkaReference, equipment?.referencePka]);
-
-	const dapTolerance = useMemo<Tolerance>(() => {
-		const fail = parse(dapForm.failPct) ?? 20;
-		const restricted = parse(dapForm.restrictedPct) ?? 40;
-		return {
-			fail: fail / 100,
-			restricted: restricted / 100,
-			reference: "IN 94",
-		};
-	}, [dapForm.failPct, dapForm.restrictedPct]);
 
 	const dfovResult = useMemo(() => {
 		const ka = parse(dfovForm.ka);
@@ -493,35 +485,6 @@ export default function ExtraoralPage() {
 										className={inputCls}
 									/>
 								</Field>
-							</Section>
-
-							<Section title={t("sections.tolerance")}>
-								<div className="grid grid-cols-2 gap-3">
-									<Field
-										label={t("fields.failPct")}
-										hint={t("fields.failPctHint")}
-									>
-										<input
-											type="number"
-											inputMode="decimal"
-											value={dapForm.failPct}
-											onChange={updateDap("failPct")}
-											className={inputCls}
-										/>
-									</Field>
-									<Field
-										label={t("fields.restrictedPct")}
-										hint={t("fields.restrictedPctHint")}
-									>
-										<input
-											type="number"
-											inputMode="decimal"
-											value={dapForm.restrictedPct}
-											onChange={updateDap("restrictedPct")}
-											className={inputCls}
-										/>
-									</Field>
-								</div>
 								<button
 									type="button"
 									onClick={() => setDapForm(dapInitial)}
@@ -546,7 +509,7 @@ export default function ExtraoralPage() {
 									expected={dapResult.reference}
 									expectedLabel={t("validation.reference")}
 									unit="mGy·cm²"
-									tolerance={dapTolerance}
+									tolerance={DAP_TOLERANCE}
 									emptyHint={t("validation.hintReference")}
 								/>
 							</section>

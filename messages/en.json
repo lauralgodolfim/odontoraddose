@@ -195,7 +195,7 @@
 	},
 	"extraoral": {
 		"title": "Extraoral",
-		"description": "Three QC checks for extraoral imaging. <strong>Indicator accuracy</strong> — verify the equipment's reported P<sub>KA</sub> against a measurement (IN 94). <strong>Representative DAP</strong> — compare a measured P<sub>KA</sub> to the manufacturer reference (IN 94, editable tolerance). <strong>DFOV</strong> — validate CBCT dose against the reference and the DIN 6868-161 action level.",
+		"description": "Three QC checks for extraoral imaging. <strong>Indicator accuracy</strong> — verify the equipment's reported P<sub>KA</sub> against a measurement (IN 94). <strong>Representative DAP</strong> — compare a measured P<sub>KA</sub> to the manufacturer reference (IN 94). <strong>DFOV</strong> — validate CBCT dose against the reference and the DIN 6868-161 action level.",
 		"tabs": {
 			"pka": "Estimated PKA",
 			"dap": "Measured PKA",
@@ -208,7 +208,6 @@
 			"measurement": "Measurement",
 			"equipmentIndicator": "Equipment indicator",
 			"comparison": "Comparison",
-			"tolerance": "Tolerance",
 			"beamAndGeometry": "Beam & geometry",
 			"fieldOfView": "Field of view",
 			"manufacturerReference": "Manufacturer reference"
@@ -239,10 +238,6 @@
 			"pkaReference": "Manufacturer reference P_KA [mGy·cm²]",
 			"pkaReferenceDefault": "Default from equipment: {value} mGy·cm². Representative DAP from the manual.",
 			"pkaReferenceHint": "Representative DAP from the equipment manual.",
-			"failPct": "Fail threshold [%]",
-			"failPctHint": "Deviation above this counts as fail.",
-			"restrictedPct": "Restriction threshold [%]",
-			"restrictedPctHint": "Deviation above this counts as restriction.",
 			"ka": "Incident kerma K_a,i(FDD) [mGy]",
 			"kaHint": "Kerma measured at the detector entrance.",
 			"a": "a — Focus–isocenter [cm]",
@@ -282,7 +277,7 @@
 			"pkaFormula2": "Calculated P<sub>KA</sub> = Corrected P<sub>KL</sub> × field height × correction factor",
 			"pkaTolerance": "IN 94 tolerance: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dapFormula": "Deviation = |P<sub>KA,measured</sub> / P<sub>KA,reference</sub> − 1|. Compares against the manufacturer reference (Valor representativo de dose, IN 94).",
-			"dapTolerance": "Default IN 94 thresholds (20% fail / 40% restriction) are editable to match site-specific tolerances.",
+			"dapTolerance": "IN 94 tolerance: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dfovFormula": "DFOV = K_a,i(FDD) × (b / a) × (d / c)",
 			"dfovTolerance": "DIN 6868-161 deviation vs reference: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dfovAction": "Action level (DIN 6868-161): DFOV ≥ {threshold} mGy — compliant; below that, image-quality action required."

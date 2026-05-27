@@ -151,8 +151,8 @@
 		"defaultName": "equipamento",
 		"sections": {
 			"identification": "Identificação",
-			"qcParameters": "Parâmetros de CQ",
-			"generator": "Gerador",
+			"dosimeter": "Equipamento medidor",
+			"equipmentInfo": "Informações do equipamento",
 			"extraoralReferences": "Referências extraorais"
 		},
 		"fields": {

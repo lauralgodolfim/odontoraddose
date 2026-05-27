@@ -151,8 +151,8 @@
 		"defaultName": "equipment",
 		"sections": {
 			"identification": "Identification",
-			"qcParameters": "QC parameters",
-			"generator": "Generator",
+			"dosimeter": "Dosimeter",
+			"equipmentInfo": "Equipment Info",
 			"extraoralReferences": "Extraoral references"
 		},
 		"fields": {

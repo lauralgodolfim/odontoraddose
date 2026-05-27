@@ -191,27 +191,7 @@ export default function EquipmentPage() {
 							</Field>
 						</Section>
 
-						<Section title={t("sections.qcParameters")}>
-							<Field
-								label={t("fields.rectifier")}
-								hint={t("fields.rectifierHint")}
-							>
-								<select
-									value={active.rectifier}
-									onChange={(e) =>
-										update(active.id, {
-											rectifier: e.target.value as Rectifier,
-										})
-									}
-									className={inputCls}
-								>
-									{rectifiers.map((r) => (
-										<option key={r.value} value={r.value}>
-											{r.label} — {r.description}
-										</option>
-									))}
-								</select>
-							</Field>
+						<Section title={t("sections.dosimeter")}>
 							<Field label={t("fields.dosimeterBrand")}>
 								<input
 									type="text"
@@ -232,7 +212,27 @@ export default function EquipmentPage() {
 							</Field>
 						</Section>
 
-						<Section title={t("sections.generator")}>
+						<Section title={t("sections.equipmentInfo")}>
+							<Field
+								label={t("fields.rectifier")}
+								hint={t("fields.rectifierHint")}
+							>
+								<select
+									value={active.rectifier}
+									onChange={(e) =>
+										update(active.id, {
+											rectifier: e.target.value as Rectifier,
+										})
+									}
+									className={inputCls}
+								>
+									{rectifiers.map((r) => (
+										<option key={r.value} value={r.value}>
+											{r.label} — {r.description}
+										</option>
+									))}
+								</select>
+							</Field>
 							<Field label={t("fields.brand")}>
 								<input
 									type="text"

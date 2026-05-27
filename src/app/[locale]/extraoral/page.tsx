@@ -123,8 +123,9 @@ export default function ExtraoralPage() {
 		const base = computePka(pkaForm);
 		if (!base) return null;
 		const pkaMach = parse(pkaForm.pkaMachine);
-		return { ...base, pkaMach };
-	}, [pkaForm]);
+		const pkaRef = parse(equipment?.referencePka ?? "");
+		return { ...base, pkaMach, pkaRef };
+	}, [pkaForm, equipment?.referencePka]);
 
 	const dapResult = useMemo(() => {
 		const measured = parse(dapForm.pkaMeasured);
@@ -365,7 +366,7 @@ export default function ExtraoralPage() {
 						</form>
 
 						{pkaResult ? (
-							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
 								<Stat
 									label={t("stats.correctedPkl")}
 									value={pkaResult.pklCorrected}
@@ -390,6 +391,15 @@ export default function ExtraoralPage() {
 									unit="mGy·cm²"
 									tolerance={IN_94_PKA}
 									emptyHint={t("validation.hintMachine")}
+								/>
+								<ValidationCard
+									observed={pkaResult.pkaCalc}
+									observedLabel={t("validation.calc")}
+									expected={pkaResult.pkaRef}
+									expectedLabel={t("validation.equipment")}
+									unit="mGy·cm²"
+									tolerance={IN_94_PKA}
+									emptyHint={t("validation.hintEquipment")}
 								/>
 							</section>
 						) : (

@@ -130,9 +130,9 @@ export default function ExtraoralPage() {
 	const dapResult = useMemo(() => {
 		const measured = parse(dapForm.pkaMeasured);
 		if (measured === null) return null;
-		const reference =
-			parse(dapForm.pkaReference) ?? parse(equipment?.referencePka ?? "");
-		return { measured, reference };
+		const reference = parse(dapForm.pkaReference);
+		const equipmentReference = parse(equipment?.referencePka ?? "");
+		return { measured, reference, equipmentReference };
 	}, [dapForm.pkaMeasured, dapForm.pkaReference, equipment?.referencePka]);
 
 	const dfovResult = useMemo(() => {
@@ -486,7 +486,7 @@ export default function ExtraoralPage() {
 						</form>
 
 						{dapResult ? (
-							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2">
+							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 								<Stat
 									label={t("stats.measuredPka")}
 									value={dapResult.measured}
@@ -501,6 +501,15 @@ export default function ExtraoralPage() {
 									unit="mGy·cm²"
 									tolerance={DAP_TOLERANCE}
 									emptyHint={t("validation.hintReference")}
+								/>
+								<ValidationCard
+									observed={dapResult.measured}
+									observedLabel={t("validation.measured")}
+									expected={dapResult.equipmentReference}
+									expectedLabel={t("validation.equipment")}
+									unit="mGy·cm²"
+									tolerance={DAP_TOLERANCE}
+									emptyHint={t("validation.hintEquipment")}
 								/>
 							</section>
 						) : (

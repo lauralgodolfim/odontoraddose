@@ -124,6 +124,7 @@
 	},
 	"validation": {
 		"label": "Validation",
+		"vsLabel": "vs {label}",
 		"deviation": "Deviation {value}%",
 		"observedVsExpected": "{observedLabel} {observed} vs {expectedLabel} {expected} {unit}"
 	},

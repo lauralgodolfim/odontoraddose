@@ -104,7 +104,7 @@ DFOV = K_a,i(FDD) × (b / a) × (d / c)    [mGy]
 
 Validation: |DFOV<sub>calc</sub> / DFOV<sub>ref</sub> − 1| against the same
 20% / 40% band, per DIN 6868-161. A separate action-level card flags whether
-the computed DFOV meets the DIN 6868-161 threshold of ≥ 50 mGy.
+the computed DFOV stays within the DIN 6868-161 threshold of ≤ 50 mGy.
 
 #### `/intraoral` — ESD at the cone tip
 

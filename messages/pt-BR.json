@@ -276,13 +276,13 @@
 			"dapTolerance": "Tolerância IN 94: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
 			"dfovFormula": "DFOV = K_a,i(FDD) × (b / a) × (d / c)",
 			"dfovTolerance": "Variação DIN 6868-161 vs referência: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
-			"dfovAction": "Nível de ação (DIN 6868-161): DFOV ≥ {threshold} mGy — conforme; abaixo disso, ação de qualidade de imagem necessária."
+			"dfovAction": "Nível de ação (DIN 6868-161): DFOV ≤ {threshold} mGy — conforme; acima disso, ação de redução de dose necessária."
 		},
 		"actionLevel": {
 			"label": "Nível de ação DIN 6868-161",
 			"compliant": "Conforme",
-			"belowActionLevel": "Abaixo do nível de ação",
-			"threshold": "Limite: DFOV ≥ {threshold} mGy conforme DIN 6868-161."
+			"aboveActionLevel": "Acima do nível de ação",
+			"threshold": "Limite: DFOV ≤ {threshold} mGy conforme DIN 6868-161."
 		}
 	},
 	"intraoral": {

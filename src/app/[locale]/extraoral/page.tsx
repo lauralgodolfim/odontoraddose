@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { ComparisonChart } from "@/components/ComparisonChart";
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
@@ -402,6 +403,29 @@ export default function ExtraoralPage() {
 									emptyHint={t("validation.hintEquipment")}
 								/>
 							</section>
+						) : null}
+
+						{pkaResult ? (
+							<ComparisonChart
+								unit="mGy·cm²"
+								series={[
+									{
+										label: t("validation.calc"),
+										value: pkaResult.pkaCalc,
+										tone: "primary",
+									},
+									{
+										label: t("validation.machine"),
+										value: pkaResult.pkaMach,
+										tone: "neutral",
+									},
+									{
+										label: t("validation.equipment"),
+										value: pkaResult.pkaRef,
+										tone: "equipment",
+									},
+								]}
+							/>
 						) : (
 							<section
 								className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
@@ -512,6 +536,29 @@ export default function ExtraoralPage() {
 									emptyHint={t("validation.hintEquipment")}
 								/>
 							</section>
+						) : null}
+
+						{dapResult ? (
+							<ComparisonChart
+								unit="mGy·cm²"
+								series={[
+									{
+										label: t("validation.measured"),
+										value: dapResult.measured,
+										tone: "primary",
+									},
+									{
+										label: t("validation.reference"),
+										value: dapResult.reference,
+										tone: "neutral",
+									},
+									{
+										label: t("validation.equipment"),
+										value: dapResult.equipmentReference,
+										tone: "equipment",
+									},
+								]}
+							/>
 						) : (
 							<section
 								className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
@@ -638,6 +685,31 @@ export default function ExtraoralPage() {
 								/>
 								<ActionLevelCard dfov={dfovResult.dfov} />
 							</section>
+						) : null}
+
+						{dfovResult ? (
+							<ComparisonChart
+								unit="mGy"
+								threshold={DFOV_ACTION_LEVEL_MGY}
+								thresholdLabel={t("actionLevel.label")}
+								series={[
+									{
+										label: t("validation.calc"),
+										value: dfovResult.dfov,
+										tone: "primary",
+									},
+									{
+										label: t("validation.reference"),
+										value: parse(dfovForm.reference),
+										tone: "neutral",
+									},
+									{
+										label: t("validation.equipment"),
+										value: parse(equipment?.referenceDfov ?? ""),
+										tone: "equipment",
+									},
+								]}
+							/>
 						) : (
 							<section
 								className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"

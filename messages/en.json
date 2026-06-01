@@ -128,6 +128,9 @@
 		"deviation": "Deviation {value}%",
 		"observedVsExpected": "{observedLabel} {observed} vs {expectedLabel} {expected} {unit}"
 	},
+	"chart": {
+		"title": "Comparison"
+	},
 	"equipmentBadge": {
 		"noneSaved": "None saved",
 		"saved": "saved"

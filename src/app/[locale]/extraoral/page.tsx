@@ -664,7 +664,7 @@ export default function ExtraoralPage() {
 
 function ActionLevelCard({ dfov }: { dfov: number }) {
 	const t = useTranslations("extraoral.actionLevel");
-	const compliant = dfov <= DFOV_ACTION_LEVEL_MGY;
+	const compliant = dfov < DFOV_ACTION_LEVEL_MGY;
 	const tone = compliant
 		? "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
 		: "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300";
@@ -677,7 +677,7 @@ function ActionLevelCard({ dfov }: { dfov: number }) {
 				{compliant ? t("compliant") : t("aboveActionLevel")}
 			</span>
 			<span className="font-mono text-sm tabular-nums">
-				DFOV {fmt(dfov)} mGy {compliant ? "≤" : ">"} {DFOV_ACTION_LEVEL_MGY} mGy
+				DFOV {fmt(dfov)} mGy {compliant ? "<" : "≥"} {DFOV_ACTION_LEVEL_MGY} mGy
 			</span>
 			<span className="text-[11px]">
 				{t("threshold", { threshold: DFOV_ACTION_LEVEL_MGY })}

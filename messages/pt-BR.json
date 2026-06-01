@@ -143,7 +143,7 @@
 	},
 	"equipments": {
 		"title": "Equipamentos",
-		"description": "Gerencie os equipamentos salvos. Cada calculadora pode selecionar independentemente qual usar. Armazenados localmente neste dispositivo — nada é enviado a um servidor. O tipo de retificador afeta as fórmulas das calculadoras; o restante é informativo e aparece nos laudos impressos.",
+		"description": "Gerencie os equipamentos salvos. Cada calculadora pode selecionar independentemente qual usar. Armazenados localmente neste dispositivo — nada é enviado a um servidor.",
 		"savedCount": "Equipamentos salvos ({count})",
 		"addNew": "Adicionar novo",
 		"empty": "Nenhum equipamento salvo ainda. Clique em <strong>Adicionar novo</strong> para criar.",

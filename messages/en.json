@@ -143,7 +143,7 @@
 	},
 	"equipments": {
 		"title": "Equipment",
-		"description": "Manage saved equipments. Each calculator can independently select which one to use. Stored locally on this device — nothing is sent to a server. Rectifier type affects calculator formulas; the rest is informational and shows up on printed reports.",
+		"description": "Manage saved equipments. Each calculator can independently select which one to use. Stored locally on this device — nothing is sent to a server.",
 		"savedCount": "Saved equipments ({count})",
 		"addNew": "Add new",
 		"empty": "No equipments saved yet. Click <strong>Add new</strong> to create one.",

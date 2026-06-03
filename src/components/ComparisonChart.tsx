@@ -1,18 +1,18 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Fragment } from "react";
 import {
-	Bar,
-	BarChart,
-	Cell,
-	LabelList,
 	ReferenceLine,
 	ResponsiveContainer,
+	Scatter,
+	ScatterChart,
 	XAxis,
 	YAxis,
 } from "recharts";
 
 import { fmt } from "@/lib/num";
+import { pct, type Tolerance } from "@/lib/verdict";
 
 export type ComparisonSeries = {
 	label: string;
@@ -26,27 +26,106 @@ const TONE_COLORS: Record<NonNullable<ComparisonSeries["tone"]>, string> = {
 	equipment: "#10b981",
 };
 
+const BAND_COLORS = {
+	fail: "#f59e0b",
+	restricted: "#ea580c",
+} as const;
+
+type BandShapeProps = {
+	x1: number;
+	y1: number;
+	x2: number;
+	y2: number;
+};
+
+function makeBandShape(
+	color: string,
+	dashArray: string,
+	opacity: number,
+	tooltipText: string,
+) {
+	return function BandLine(props: BandShapeProps) {
+		return (
+			<g>
+				<line
+					x1={props.x1}
+					y1={props.y1}
+					x2={props.x2}
+					y2={props.y2}
+					stroke="transparent"
+					strokeWidth={14}
+					pointerEvents="stroke"
+				>
+					<title>{tooltipText}</title>
+				</line>
+				<line
+					x1={props.x1}
+					y1={props.y1}
+					x2={props.x2}
+					y2={props.y2}
+					stroke={color}
+					strokeOpacity={opacity}
+					strokeDasharray={dashArray}
+					strokeWidth={1.25}
+					pointerEvents="none"
+				/>
+			</g>
+		);
+	};
+}
+
 export function ComparisonChart({
 	series,
 	unit,
+	tolerance,
 	threshold,
 	thresholdLabel,
 }: {
 	series: ComparisonSeries[];
 	unit: string;
+	tolerance?: Tolerance;
 	threshold?: number;
 	thresholdLabel?: string;
 }) {
 	const t = useTranslations("chart");
-	const data = series
-		.filter((s): s is ComparisonSeries & { value: number } => s.value !== null)
+
+	const primary = series.find(
+		(s): s is ComparisonSeries & { value: number } =>
+			s.tone === "primary" && s.value !== null,
+	);
+	const comparisons = series
+		.filter(
+			(s): s is ComparisonSeries & { value: number } =>
+				s.tone !== "primary" && s.value !== null,
+		)
 		.map((s) => ({
 			label: s.label,
 			value: s.value,
-			fill: TONE_COLORS[s.tone ?? "neutral"],
+			tone: s.tone ?? "neutral",
+			color: TONE_COLORS[s.tone ?? "neutral"],
 		}));
 
-	if (data.length < 2) return null;
+	if (!primary || comparisons.length === 0 || !tolerance) return null;
+
+	const tabValue = primary.value;
+
+	const bounds: number[] = [tabValue];
+	for (const c of comparisons) {
+		if (c.tone === "equipment") {
+			bounds.push(c.value);
+		} else {
+			bounds.push(
+				c.value * (1 - tolerance.restricted),
+				c.value * (1 + tolerance.restricted),
+			);
+		}
+	}
+	if (threshold !== undefined) bounds.push(threshold);
+	const min = Math.min(...bounds);
+	const max = Math.max(...bounds);
+	const span = max - min || Math.max(Math.abs(max), 1);
+	const padding = span * 0.08;
+	const domain: [number, number] = [Math.max(0, min - padding), max + padding];
 
 	return (
 		<section className="animate-fade-up rounded-lg border border-zinc-200 bg-white p-4 dark:border-radiation-400/20 dark:bg-zinc-950">
@@ -58,54 +137,138 @@ export function ComparisonChart({
 					{unit}
 				</span>
 			</div>
-			<ResponsiveContainer width="100%" height={48 + data.length * 44}>
-				<BarChart
-					data={data}
-					layout="vertical"
-					margin={{ top: 8, right: 32, bottom: 8, left: 8 }}
-				>
-					<XAxis
-						type="number"
-						hide
-						domain={[0, (max: number) => Math.max(max, threshold ?? 0) * 1.1]}
-					/>
+			<ResponsiveContainer width="100%" height={280}>
+				<ScatterChart margin={{ top: 16, right: 32, bottom: 16, left: 16 }}>
+					<XAxis type="number" dataKey="x" hide domain={[0, 1]} />
 					<YAxis
-						type="category"
-						dataKey="label"
-						width={110}
-						tick={{ fill: "currentColor", fontSize: 12 }}
-						axisLine={false}
-						tickLine={false}
+						type="number"
+						dataKey="y"
+						domain={domain}
+						tickFormatter={(v: number) => fmt(v)}
+						tick={{ fill: "currentColor", fontSize: 11 }}
+						axisLine={{ stroke: "currentColor", strokeOpacity: 0.2 }}
+						tickLine={{ stroke: "currentColor", strokeOpacity: 0.2 }}
+						width={56}
 					/>
-					<Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={22}>
-						{data.map((entry) => (
-							<Cell key={entry.label} fill={entry.fill} />
-						))}
-						<LabelList
-							dataKey="value"
-							position="right"
-							formatter={(value) =>
-								typeof value === "number" ? fmt(value) : ""
-							}
-							className="fill-zinc-700 dark:fill-zinc-200"
-							style={{ fontSize: 12, fontVariantNumeric: "tabular-nums" }}
-						/>
-					</Bar>
+					{comparisons.map((c) => {
+						if (c.tone === "equipment") {
+							return (
+								<ReferenceLine
+									key={c.label}
+									y={c.value}
+									shape={makeBandShape(
+										c.color,
+										"0",
+										0.95,
+										`${c.label}: ${fmt(c.value)} ${unit}`,
+									)}
+								/>
+							);
+						}
+						const lowerRestricted = c.value * (1 - tolerance.restricted);
+						const lowerFail = c.value * (1 - tolerance.fail);
+						const upperFail = c.value * (1 + tolerance.fail);
+						const upperRestricted = c.value * (1 + tolerance.restricted);
+						const refTip = `${c.label}: ${fmt(c.value)} ${unit}`;
+						const tip = (sign: string, value: number, level: number) =>
+							`${refTip} · ${sign}${pct(level)}: ${fmt(value)} ${unit}`;
+						return (
+							<Fragment key={c.label}>
+								<ReferenceLine
+									y={lowerRestricted}
+									shape={makeBandShape(
+										BAND_COLORS.restricted,
+										"2 4",
+										0.75,
+										tip("−", lowerRestricted, tolerance.restricted),
+									)}
+								/>
+								<ReferenceLine
+									y={lowerFail}
+									shape={makeBandShape(
+										BAND_COLORS.fail,
+										"4 3",
+										0.9,
+										tip("−", lowerFail, tolerance.fail),
+									)}
+								/>
+								<ReferenceLine
+									y={upperFail}
+									shape={makeBandShape(
+										BAND_COLORS.fail,
+										"4 3",
+										0.9,
+										tip("+", upperFail, tolerance.fail),
+									)}
+								/>
+								<ReferenceLine
+									y={upperRestricted}
+									shape={makeBandShape(
+										BAND_COLORS.restricted,
+										"2 4",
+										0.75,
+										tip("+", upperRestricted, tolerance.restricted),
+									)}
+								/>
+							</Fragment>
+						);
+					})}
 					{threshold !== undefined && (
 						<ReferenceLine
-							x={threshold}
+							y={threshold}
 							stroke="#f59e0b"
 							strokeDasharray="4 3"
 							label={{
 								value: thresholdLabel ?? `${fmt(threshold)} ${unit}`,
-								position: "top",
+								position: "insideTopRight",
 								fill: "#b45309",
 								fontSize: 11,
 							}}
 						/>
 					)}
-				</BarChart>
+					<Scatter
+						data={[{ x: 0.5, y: tabValue }]}
+						fill={TONE_COLORS.primary}
+						shape="circle"
+						isAnimationActive={false}
+					/>
+				</ScatterChart>
 			</ResponsiveContainer>
+			<div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] text-zinc-600 dark:text-zinc-400">
+				<span className="inline-flex items-center gap-1.5">
+					<span
+						aria-hidden
+						className="inline-block h-2.5 w-2.5 rounded-full"
+						style={{ background: TONE_COLORS.primary }}
+					/>
+					<span className="font-medium">{primary.label}</span>
+					<span className="font-mono tabular-nums">{fmt(tabValue)}</span>
+				</span>
+				<span className="inline-flex items-center gap-1.5">
+					<span
+						aria-hidden
+						className="inline-block h-0.5 w-4"
+						style={{ background: BAND_COLORS.fail }}
+					/>
+					<span>±{pct(tolerance.fail)}</span>
+				</span>
+				<span className="inline-flex items-center gap-1.5">
+					<span
+						aria-hidden
+						className="inline-block h-0.5 w-4"
+						style={{ background: BAND_COLORS.restricted }}
+					/>
+					<span>±{pct(tolerance.restricted)}</span>
+				</span>
+				{comparisons.map((c) => (
+					<span key={c.label} className="inline-flex items-center gap-1.5">
+						<span className="font-medium" style={{ color: c.color }}>
+							{c.label}
+						</span>
+						<span className="font-mono tabular-nums">{fmt(c.value)}</span>
+					</span>
+				))}
+			</div>
 		</section>
 	);
 }

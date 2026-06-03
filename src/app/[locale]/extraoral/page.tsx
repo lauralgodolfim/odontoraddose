@@ -408,6 +408,7 @@ export default function ExtraoralPage() {
 						{pkaResult ? (
 							<ComparisonChart
 								unit="mGy·cm²"
+								tolerance={IN_94_PKA}
 								series={[
 									{
 										label: t("validation.calc"),
@@ -541,6 +542,7 @@ export default function ExtraoralPage() {
 						{dapResult ? (
 							<ComparisonChart
 								unit="mGy·cm²"
+								tolerance={DAP_TOLERANCE}
 								series={[
 									{
 										label: t("validation.measured"),
@@ -690,6 +692,7 @@ export default function ExtraoralPage() {
 						{dfovResult ? (
 							<ComparisonChart
 								unit="mGy"
+								tolerance={DIN_6868_161_DFOV}
 								threshold={DFOV_ACTION_LEVEL_MGY}
 								thresholdLabel={t("actionLevel.label")}
 								series={[

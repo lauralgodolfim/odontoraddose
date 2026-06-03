@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { VerdictCard } from "@/components/VerdictCard";
 import { Link } from "@/i18n/navigation";
@@ -147,23 +148,24 @@ export default function KvpPage() {
 					</Section>
 				</form>
 
-				{result ? (
-					<>
-						<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-							<Stat label={t("stats.meanKvp")} value={result.avg} unit="kVp" />
-							<Stat
-								label={t("stats.reproducibility")}
-								value={`${(result.reproducibility * 100).toFixed(1)}%`}
-								unit={t("stats.reproducibilityUnit")}
-								emphasis
-							/>
-							<VerdictCard
-								title={t("verdicts.reproTitle")}
-								verdict={result.reproVerdict}
-								tolerance={reproTolerance}
-							/>
-						</section>
-						<section className="overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+				<Reveal when={!!result}>
+					{result ? (
+						<>
+							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+								<Stat label={t("stats.meanKvp")} value={result.avg} unit="kVp" />
+								<Stat
+									label={t("stats.reproducibility")}
+									value={`${(result.reproducibility * 100).toFixed(1)}%`}
+									unit={t("stats.reproducibilityUnit")}
+									emphasis
+								/>
+								<VerdictCard
+									title={t("verdicts.reproTitle")}
+									verdict={result.reproVerdict}
+									tolerance={reproTolerance}
+								/>
+							</section>
+							<section className="overflow-hidden animate-fade-up rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
 							<table className="w-full text-sm">
 								<thead className="bg-zinc-50 text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
 									<tr>
@@ -215,7 +217,7 @@ export default function KvpPage() {
 								</tbody>
 							</table>
 						</section>
-						<section>
+						<section className="animate-fade-up">
 							<VerdictCard
 								title={t("verdicts.accuracyTitle")}
 								verdict={result.accuracyVerdict}
@@ -223,11 +225,13 @@ export default function KvpPage() {
 							/>
 						</section>
 					</>
-				) : (
-					<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+				) : null}
+				</Reveal>
+				<Reveal when={!result}>
+					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
 						{t("empty")}
 					</section>
-				)}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>{t("footer.l1")}</p>

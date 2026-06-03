@@ -1,11 +1,11 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { useMemo, useState } from "react";
-
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
+import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
 import { type Verdict, verdictMeta } from "@/lib/verdict";
 
@@ -235,22 +235,24 @@ export default function UltrasoundPage() {
 					</button>
 				</Section>
 
-				{overall ? (
-					<section
-						className={`flex flex-col gap-1 rounded-lg border p-4 ${verdictMeta[overall].tone}`}
-					>
-						<span className="text-[11px] font-medium uppercase tracking-wider">
-							Overall verdict
-						</span>
-						<span className="text-2xl font-semibold">
-							{verdictMeta[overall].label}
-						</span>
-						<span className="text-[11px]">
-							Aggregates the worst result across all completed numeric and
-							pass/fail tests.
-						</span>
-					</section>
-				) : null}
+				<Reveal when={!!overall}>
+					{overall ? (
+						<section
+							className={`flex animate-fade-up flex-col gap-1 rounded-lg border p-4 ${verdictMeta[overall].tone}`}
+						>
+							<span className="text-[11px] font-medium uppercase tracking-wider">
+								Overall verdict
+							</span>
+							<span className="text-2xl font-semibold">
+								{verdictMeta[overall].label}
+							</span>
+							<span className="text-[11px]">
+								Aggregates the worst result across all completed numeric and
+								pass/fail tests.
+							</span>
+						</section>
+					) : null}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>

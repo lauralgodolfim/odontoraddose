@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
@@ -196,46 +197,49 @@ export default function OutputPage() {
 					</Section>
 				</form>
 
-				{result ? (
-					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-						<Stat
-							label={t("stats.tubeOutput")}
-							value={result.tubeOutput}
-							unit="μGy/mAs · m²"
-							emphasis
-						/>
-						<div
-							className={`flex flex-col gap-1 rounded-lg border p-4 ${
-								verdictMeta(result.verdict, outputTolerance).tone
-							}`}
-						>
-							<span className="text-[11px] font-medium uppercase tracking-wider">
-								{t("verdict.label")}
-							</span>
-							<span className="text-2xl font-semibold">
-								{verdictMeta(result.verdict, outputTolerance).label}
-							</span>
-							<span className="text-[11px]">
-								{t("verdict.range", {
-									passMin: conventionalRanges.pass.min,
-									passMax: conventionalRanges.pass.max,
-									failMin: conventionalRanges.fail.min,
-									failMax: conventionalRanges.fail.max,
-								})}
-							</span>
-						</div>
-						<div className="flex flex-col gap-1 rounded-lg border border-zinc-200 bg-white p-4 text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
-							<span className="font-medium uppercase tracking-wider">
-								{t("note.title")}
-							</span>
-							<span>{t("note.body")}</span>
-						</div>
-					</section>
-				) : (
-					<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+				<Reveal when={!!result}>
+					{result ? (
+						<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							<Stat
+								label={t("stats.tubeOutput")}
+								value={result.tubeOutput}
+								unit="μGy/mAs · m²"
+								emphasis
+							/>
+							<div
+								className={`flex flex-col gap-1 rounded-lg border p-4 ${
+									verdictMeta(result.verdict, outputTolerance).tone
+								}`}
+							>
+								<span className="text-[11px] font-medium uppercase tracking-wider">
+									{t("verdict.label")}
+								</span>
+								<span className="text-2xl font-semibold">
+									{verdictMeta(result.verdict, outputTolerance).label}
+								</span>
+								<span className="text-[11px]">
+									{t("verdict.range", {
+										passMin: conventionalRanges.pass.min,
+										passMax: conventionalRanges.pass.max,
+										failMin: conventionalRanges.fail.min,
+										failMax: conventionalRanges.fail.max,
+									})}
+								</span>
+							</div>
+							<div className="flex flex-col gap-1 rounded-lg border border-zinc-200 bg-white p-4 text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+								<span className="font-medium uppercase tracking-wider">
+									{t("note.title")}
+								</span>
+								<span>{t("note.body")}</span>
+							</div>
+						</section>
+					) : null}
+				</Reveal>
+				<Reveal when={!result}>
+					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
 						{t("empty")}
 					</section>
-				)}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p

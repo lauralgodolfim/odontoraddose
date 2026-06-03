@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { parse } from "@/lib/num";
 import { type Verdict, verdictMeta } from "@/lib/verdict";
 
@@ -148,50 +149,53 @@ export default function MammographyPhantomPage() {
 					</Section>
 				</form>
 
-				{result ? (
-					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-						{(
-							Object.keys(ACR_THRESHOLDS) as (keyof typeof ACR_THRESHOLDS)[]
-						).map((k) => {
-							const t = ACR_THRESHOLDS[k];
-							const value = result[k] as number;
-							const verdict = result.v[k];
-							const meta = verdictMeta[verdict];
-							return (
-								<div
-									key={k}
-									className={`flex flex-col gap-1 rounded-lg border p-4 ${meta.tone}`}
-								>
-									<span className="text-[11px] font-medium uppercase tracking-wider">
-										{t.label}
-									</span>
-									<span className="font-mono text-2xl font-semibold tabular-nums">
-										{value} / {t.total}
-									</span>
-									<span className="text-xs">{meta.label}</span>
-									<span className="text-[11px]">ACR ≥ {t.min}</span>
-								</div>
-							);
-						})}
-						<div
-							className={`flex flex-col gap-1 rounded-lg border p-4 ${verdictMeta[result.overall].tone}`}
-						>
-							<span className="text-[11px] font-medium uppercase tracking-wider">
-								Overall
-							</span>
-							<span className="text-2xl font-semibold">
-								{verdictMeta[result.overall].label}
-							</span>
-							<span className="text-[11px]">
-								Worst category determines the overall verdict.
-							</span>
-						</div>
-					</section>
-				) : (
-					<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+				<Reveal when={!!result}>
+					{result ? (
+						<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+							{(
+								Object.keys(ACR_THRESHOLDS) as (keyof typeof ACR_THRESHOLDS)[]
+							).map((k) => {
+								const t = ACR_THRESHOLDS[k];
+								const value = result[k] as number;
+								const verdict = result.v[k];
+								const meta = verdictMeta[verdict];
+								return (
+									<div
+										key={k}
+										className={`flex flex-col gap-1 rounded-lg border p-4 ${meta.tone}`}
+									>
+										<span className="text-[11px] font-medium uppercase tracking-wider">
+											{t.label}
+										</span>
+										<span className="font-mono text-2xl font-semibold tabular-nums">
+											{value} / {t.total}
+										</span>
+										<span className="text-xs">{meta.label}</span>
+										<span className="text-[11px]">ACR ≥ {t.min}</span>
+									</div>
+								);
+							})}
+							<div
+								className={`flex flex-col gap-1 rounded-lg border p-4 ${verdictMeta[result.overall].tone}`}
+							>
+								<span className="text-[11px] font-medium uppercase tracking-wider">
+									Overall
+								</span>
+								<span className="text-2xl font-semibold">
+									{verdictMeta[result.overall].label}
+								</span>
+								<span className="text-[11px]">
+									Worst category determines the overall verdict.
+								</span>
+							</div>
+						</section>
+					) : null}
+				</Reveal>
+				<Reveal when={!result}>
+					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
 						Enter visible counts for fibres, masses, and speck groups.
 					</section>
-				)}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>

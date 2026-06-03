@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
 import { parse } from "@/lib/num";
@@ -177,51 +178,54 @@ export default function CtNumberPage() {
 					</Section>
 				</form>
 
-				{result ? (
-					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-						<Stat
-							label="Centre CT number"
-							value={result.center}
-							unit="HU"
-							emphasis
-						/>
-						<ValidationCard
-							observed={result.center}
-							observedLabel="Centre"
-							expected={0}
-							expectedLabel="Target"
-							unit="HU"
-							tolerance={waterAccuracy}
-							emptyHint=""
-						/>
-						{result.worstUniformity !== null ? (
+				<Reveal when={!!result}>
+					{result ? (
+						<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							<Stat
+								label="Centre CT number"
+								value={result.center}
+								unit="HU"
+								emphasis
+							/>
 							<ValidationCard
-								observed={result.worstUniformity}
-								observedLabel="Δ"
+								observed={result.center}
+								observedLabel="Centre"
 								expected={0}
 								expectedLabel="Target"
 								unit="HU"
-								tolerance={uniformity}
+								tolerance={waterAccuracy}
 								emptyHint=""
 							/>
-						) : null}
-						{result.noise !== null ? (
-							<ValidationCard
-								observed={result.noise}
-								observedLabel="Noise"
-								expected={NOISE_CAP_HU}
-								expectedLabel="Cap"
-								unit="HU"
-								tolerance={noiseCap}
-								emptyHint=""
-							/>
-						) : null}
-					</section>
-				) : (
-					<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+							{result.worstUniformity !== null ? (
+								<ValidationCard
+									observed={result.worstUniformity}
+									observedLabel="Δ"
+									expected={0}
+									expectedLabel="Target"
+									unit="HU"
+									tolerance={uniformity}
+									emptyHint=""
+								/>
+							) : null}
+							{result.noise !== null ? (
+								<ValidationCard
+									observed={result.noise}
+									observedLabel="Noise"
+									expected={NOISE_CAP_HU}
+									expectedLabel="Cap"
+									unit="HU"
+									tolerance={noiseCap}
+									emptyHint=""
+								/>
+							) : null}
+						</section>
+					) : null}
+				</Reveal>
+				<Reveal when={!result}>
+					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
 						Enter the centre-ROI mean to start.
 					</section>
-				)}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>Water target: 0 HU. ACR / IN 55 tolerance ±5 HU.</p>

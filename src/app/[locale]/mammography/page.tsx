@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
 import { Link } from "@/i18n/navigation";
@@ -199,52 +200,55 @@ export default function MammographyPage() {
 					</Section>
 				</form>
 
-				{result ? (
-					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-						<Stat
-							label={t("stats.gc")}
-							value={result.gc !== null ? fmt(result.gc) : "—"}
-							unit="—"
-						/>
-						<Stat
-							label={t("stats.sFactor")}
-							value={result.s !== null ? fmt(result.s) : "—"}
-							unit="—"
-						/>
-						<Stat
-							label={t("stats.mgd")}
-							value={result.mgd !== null ? fmt(result.mgd) : "—"}
-							unit="mGy"
-							emphasis
-						/>
-						{result.mgd !== null && result.cap ? (
-							<ValidationCard
-								observed={result.mgd}
-								observedLabel={t("validation.mgd")}
-								expected={result.cap.tolerance}
-								expectedLabel={t("validation.cap")}
-								unit="mGy"
-								tolerance={in54Cap}
-								emptyHint=""
+				<Reveal when={!!result}>
+					{result ? (
+						<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+							<Stat
+								label={t("stats.gc")}
+								value={result.gc !== null ? fmt(result.gc) : "—"}
+								unit="—"
 							/>
-						) : (
-							<div className="flex flex-col gap-1 rounded-lg border border-dashed border-zinc-300 p-4 text-xs text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-								<span className="font-medium uppercase tracking-wider">
-									{t("validation.in54Label")}
-								</span>
-								<span>
-									{result.cap
-										? t("validation.in54Incomplete")
-										: t("validation.in54None")}
-								</span>
-							</div>
-						)}
-					</section>
-				) : (
-					<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+							<Stat
+								label={t("stats.sFactor")}
+								value={result.s !== null ? fmt(result.s) : "—"}
+								unit="—"
+							/>
+							<Stat
+								label={t("stats.mgd")}
+								value={result.mgd !== null ? fmt(result.mgd) : "—"}
+								unit="mGy"
+								emphasis
+							/>
+							{result.mgd !== null && result.cap ? (
+								<ValidationCard
+									observed={result.mgd}
+									observedLabel={t("validation.mgd")}
+									expected={result.cap.tolerance}
+									expectedLabel={t("validation.cap")}
+									unit="mGy"
+									tolerance={in54Cap}
+									emptyHint=""
+								/>
+							) : (
+								<div className="flex flex-col gap-1 rounded-lg border border-dashed border-zinc-300 p-4 text-xs text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
+									<span className="font-medium uppercase tracking-wider">
+										{t("validation.in54Label")}
+									</span>
+									<span>
+										{result.cap
+											? t("validation.in54Incomplete")
+											: t("validation.in54None")}
+									</span>
+								</div>
+							)}
+						</section>
+					) : null}
+				</Reveal>
+				<Reveal when={!result}>
+					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
 						{t("empty")}
 					</section>
-				)}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>{t("footer.l1")}</p>

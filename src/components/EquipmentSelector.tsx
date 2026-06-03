@@ -25,7 +25,7 @@ export function EquipmentSelector({
 
 	if (equipments.length === 0) {
 		return (
-			<div className="inline-flex items-center gap-2 rounded-md border border-dashed border-zinc-300 bg-white/40 px-3 py-1.5 text-xs text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+			<div className="inline-flex items-center gap-2 rounded-md border border-dashed border-zinc-300 bg-white/40 px-3 py-1.5 text-xs text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400">
 				<span className="uppercase tracking-wider">{t("equipment")}</span>
 				<Link
 					href="/equipments"

@@ -13,12 +13,13 @@ export function CalculatorCard({ calc }: { calc: Calculator }) {
 	const title = t(`${calc.slug}.title` as any);
 	// biome-ignore lint/suspicious/noExplicitAny: dynamic key into translations namespace
 	const description = t(`${calc.slug}.description` as any);
+	const titleCls = isImplemented
+		? "text-zinc-950 dark:text-zinc-50"
+		: "text-zinc-600 dark:text-zinc-400";
 	const inner = (
 		<>
 			<span className="flex flex-col">
-				<span className="text-base font-semibold text-zinc-950 dark:text-zinc-50">
-					{title}
-				</span>
+				<span className={`text-base font-semibold ${titleCls}`}>{title}</span>
 				<span className="text-sm text-zinc-600 dark:text-zinc-400">
 					{description}
 				</span>
@@ -39,7 +40,7 @@ export function CalculatorCard({ calc }: { calc: Calculator }) {
 
 	if (!isImplemented) {
 		return (
-			<div className="flex items-center justify-between gap-4 rounded-lg border border-dashed border-zinc-200 bg-white/40 px-5 py-4 text-left opacity-60 dark:border-zinc-800 dark:bg-zinc-950/40">
+			<div className="flex items-center justify-between gap-4 rounded-lg border border-dashed border-zinc-200 bg-white/40 px-5 py-4 text-left dark:border-zinc-800 dark:bg-zinc-950/40">
 				{inner}
 			</div>
 		);

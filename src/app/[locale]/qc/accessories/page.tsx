@@ -241,7 +241,7 @@ function AccessoryRow({
 				<button
 					type="button"
 					onClick={onRemove}
-					className="ml-auto text-xs text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400"
+					className="ml-auto text-xs text-zinc-500 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400"
 				>
 					Remove
 				</button>

@@ -216,7 +216,7 @@ export default function CtNumberPage() {
 					) : null}
 				</Reveal>
 				<Reveal when={!result}>
-					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400">
 						Enter the centre-ROI mean to start.
 					</section>
 				</Reveal>

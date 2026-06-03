@@ -93,7 +93,7 @@ export default function EquipmentPage() {
 					</div>
 					{equipments.length === 0 ? (
 						<div
-							className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
+							className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400"
 							// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy includes <strong>
 							dangerouslySetInnerHTML={{ __html: t.raw("empty") as string }}
 						/>
@@ -315,7 +315,7 @@ export default function EquipmentPage() {
 						</Section>
 					</div>
 				) : (
-					<div className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+					<div className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400">
 						{t("selectPrompt")}
 					</div>
 				)}

@@ -221,7 +221,7 @@ export default function ExtraoralPage() {
 								className={
 									active
 										? "border-radiation-400 text-radiation-500 border-b-2 -mb-px px-4 py-2 text-sm font-medium dark:text-radiation-300"
-										: "border-transparent text-zinc-500 hover:text-zinc-900 border-b-2 -mb-px px-4 py-2 text-sm font-medium dark:hover:text-zinc-200"
+										: "border-transparent text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 border-b-2 -mb-px px-4 py-2 text-sm font-medium dark:hover:text-zinc-200"
 								}
 							>
 								{tabItem.label}
@@ -446,7 +446,7 @@ export default function ExtraoralPage() {
 						</Reveal>
 						<Reveal when={!pkaResult}>
 							<section
-								className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
+								className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400"
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <sub> markup
 								dangerouslySetInnerHTML={{
 									__html: t.raw("empty.pka") as string,
@@ -587,7 +587,7 @@ export default function ExtraoralPage() {
 						</Reveal>
 						<Reveal when={!dapResult}>
 							<section
-								className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
+								className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400"
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <sub> markup
 								dangerouslySetInnerHTML={{
 									__html: t.raw("empty.dap") as string,
@@ -746,7 +746,7 @@ export default function ExtraoralPage() {
 						</Reveal>
 						<Reveal when={!dfovResult}>
 							<section
-								className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
+								className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400"
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <sub> markup
 								dangerouslySetInnerHTML={{
 									__html: t.raw("empty.dfov") as string,

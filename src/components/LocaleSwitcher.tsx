@@ -11,10 +11,8 @@ function BrazilFlag() {
 		<svg
 			viewBox="0 0 28 20"
 			className="h-3.5 w-5 overflow-hidden rounded-[2px]"
-			role="img"
-			aria-label="Brazil"
+			aria-hidden="true"
 		>
-			<title>Brazil</title>
 			<rect width="28" height="20" fill="#009c3b" />
 			<polygon points="14,2.5 25.5,10 14,17.5 2.5,10" fill="#ffdf00" />
 			<circle cx="14" cy="10" r="3.6" fill="#002776" />
@@ -30,10 +28,8 @@ function USFlag() {
 		<svg
 			viewBox="0 0 28 20"
 			className="h-3.5 w-5 overflow-hidden rounded-[2px]"
-			role="img"
-			aria-label="United States"
+			aria-hidden="true"
 		>
-			<title>United States</title>
 			<rect width="28" height="20" fill="#b22234" />
 			{usStripeRows.map((row) => (
 				<rect
@@ -88,7 +84,6 @@ export function LocaleSwitcher() {
 						type="button"
 						onClick={() => switchTo(l)}
 						disabled={isPending || active}
-						aria-label={l}
 						aria-pressed={active}
 						className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-[11px] font-medium uppercase tracking-wider transition ${
 							active

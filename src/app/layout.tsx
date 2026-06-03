@@ -18,8 +18,8 @@ export const metadata: Metadata = {
 	title: "RadQC Suite",
 	description:
 		"Radiation-dose and quality-control calculators for medical imaging equipment.",
-	manifest: "./manifest.webmanifest",
-	icons: { icon: "./favicon.png", apple: "./favicon.png" },
+	manifest: "/manifest.webmanifest",
+	icons: { icon: "/favicon.png", apple: "/favicon.png" },
 	applicationName: "RadQC Suite",
 	appleWebApp: {
 		capable: true,

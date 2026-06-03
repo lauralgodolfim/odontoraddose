@@ -2,10 +2,10 @@
 
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { ComparisonChart } from "@/components/ComparisonChart";
-import { useSelectedEquipment } from "@/components/EquipmentProvider";
+import { useEquipment } from "@/components/EquipmentProvider";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
 import { Reveal } from "@/components/Reveal";
@@ -109,8 +109,19 @@ const DFOV_ACTION_LEVEL_MGY = 50;
 export default function ExtraoralPage() {
 	const t = useTranslations("extraoral");
 	const tCommon = useTranslations("common");
-	const equipment = useSelectedEquipment("extraoral");
+	const { equipments, getSelected, select } = useEquipment();
+	const equipment = getSelected("extraoral");
 	const [tab, setTab] = useState<TabId>("pka");
+
+	// When no equipment is selected for this calculator, default to the first one
+	// that has extraoral reference values (manufacturer P_KA or DFOV) filled in.
+	useEffect(() => {
+		if (getSelected("extraoral")) return;
+		const firstWithExtraoral = equipments.find((e) =>
+			Boolean(e.referencePka?.trim() || e.referenceDfov?.trim()),
+		);
+		if (firstWithExtraoral) select("extraoral", firstWithExtraoral.id);
+	}, [equipments, getSelected, select]);
 	const [pkaForm, setPkaForm] = useState<PkaFormState>(pkaInitial);
 	const [dapForm, setDapForm] = useState<DapFormState>(dapInitial);
 	const [dfovForm, setDfovForm] = useState<DfovFormState>(dfovInitial);

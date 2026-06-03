@@ -260,8 +260,8 @@
 			"calc": "Calc",
 			"machine": "Machine",
 			"measured": "Measured",
-			"reference": "Reference",
-			"equipment": "Equipment",
+			"reference": "Indicated",
+			"equipment": "Manufacturer",
 			"hintMachine": "Enter the machine-reported P_KA to compare.",
 			"hintReference": "Enter the manufacturer reference P_KA to compare.",
 			"hintEquipment": "Set the manufacturer reference P_KA on the selected equipment to compare.",
@@ -326,7 +326,7 @@
 		},
 		"validation": {
 			"calc": "Calc",
-			"ref": "Ref",
+			"ref": "Indicated",
 			"emptyHint": "Enter a reference ESD to compare against."
 		},
 		"empty": "Enter chamber dose, focus–chamber distance and focus–cone-tip distance to see the ESD calculation.",

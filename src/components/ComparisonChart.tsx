@@ -43,10 +43,17 @@ function makeBandShape(
 	dashArray: string,
 	opacity: number,
 	tooltipText: string,
+	delayMs = 0,
 ) {
 	return function BandLine(props: BandShapeProps) {
 		return (
-			<g>
+			<g
+				style={{
+					animation: `chartBandIn 360ms cubic-bezier(0.16, 1, 0.3, 1) ${delayMs}ms both`,
+					transformBox: "fill-box",
+					transformOrigin: "center",
+				}}
+			>
 				<line
 					x1={props.x1}
 					y1={props.y1}
@@ -150,7 +157,8 @@ export function ComparisonChart({
 						tickLine={{ stroke: "currentColor", strokeOpacity: 0.2 }}
 						width={56}
 					/>
-					{comparisons.map((c) => {
+					{comparisons.map((c, ci) => {
+						const base = ci * 120;
 						if (c.tone === "equipment") {
 							return (
 								<ReferenceLine
@@ -161,6 +169,7 @@ export function ComparisonChart({
 										"0",
 										0.95,
 										`${c.label}: ${fmt(c.value)} ${unit}`,
+										base,
 									)}
 								/>
 							);
@@ -181,6 +190,7 @@ export function ComparisonChart({
 										"2 4",
 										0.75,
 										tip("−", lowerRestricted, tolerance.restricted),
+										base,
 									)}
 								/>
 								<ReferenceLine
@@ -190,6 +200,7 @@ export function ComparisonChart({
 										"4 3",
 										0.9,
 										tip("−", lowerFail, tolerance.fail),
+										base + 60,
 									)}
 								/>
 								<ReferenceLine
@@ -199,6 +210,7 @@ export function ComparisonChart({
 										"4 3",
 										0.9,
 										tip("+", upperFail, tolerance.fail),
+										base + 60,
 									)}
 								/>
 								<ReferenceLine
@@ -208,6 +220,7 @@ export function ComparisonChart({
 										"2 4",
 										0.75,
 										tip("+", upperRestricted, tolerance.restricted),
+										base,
 									)}
 								/>
 							</Fragment>
@@ -230,7 +243,10 @@ export function ComparisonChart({
 						data={[{ x: 0.5, y: tabValue }]}
 						fill={TONE_COLORS.primary}
 						shape="circle"
-						isAnimationActive={false}
+						isAnimationActive
+						animationDuration={420}
+						animationBegin={Math.max(comparisons.length, 1) * 120 + 80}
+						animationEasing="ease-out"
 					/>
 				</ScatterChart>
 			</ResponsiveContainer>

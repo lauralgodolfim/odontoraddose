@@ -24,6 +24,7 @@
 	--animate-row-glow: rowGlow 4s ease-in-out infinite;
 	--animate-selector-flash: selectorFlash 600ms ease-out;
 	--animate-radiate: radiate 2.8s ease-in-out infinite;
+	--animate-chart-band: chartBandIn 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes fadeUp {
@@ -79,6 +80,17 @@
 		box-shadow:
 			0 0 28px 4px rgba(235, 178, 68, 0.6),
 			0 0 0 14px rgba(235, 178, 68, 0);
+	}
+}
+
+@keyframes chartBandIn {
+	from {
+		opacity: 0;
+		transform: translateY(4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
 

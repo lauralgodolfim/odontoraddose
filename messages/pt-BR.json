@@ -124,8 +124,12 @@
 	},
 	"validation": {
 		"label": "Avaliação",
+		"vsLabel": "vs {label}",
 		"deviation": "Variação {value}%",
 		"observedVsExpected": "{observedLabel} {observed} vs {expectedLabel} {expected} {unit}"
+	},
+	"chart": {
+		"title": "Comparação"
 	},
 	"equipmentBadge": {
 		"noneSaved": "Nenhum salvo",
@@ -142,7 +146,7 @@
 	},
 	"equipments": {
 		"title": "Equipamentos",
-		"description": "Gerencie os equipamentos salvos. Cada calculadora pode selecionar independentemente qual usar. Armazenados localmente neste dispositivo — nada é enviado a um servidor. O tipo de retificador afeta as fórmulas das calculadoras; o restante é informativo e aparece nos laudos impressos.",
+		"description": "Gerencie os equipamentos salvos. Cada calculadora pode selecionar independentemente qual usar. Armazenados localmente neste dispositivo — nada é enviado a um servidor.",
 		"savedCount": "Equipamentos salvos ({count})",
 		"addNew": "Adicionar novo",
 		"empty": "Nenhum equipamento salvo ainda. Clique em <strong>Adicionar novo</strong> para criar.",
@@ -151,8 +155,8 @@
 		"defaultName": "equipamento",
 		"sections": {
 			"identification": "Identificação",
-			"qcParameters": "Parâmetros de CQ",
-			"generator": "Gerador",
+			"dosimeter": "Equipamento medidor",
+			"equipmentInfo": "Informações do equipamento",
 			"extraoralReferences": "Referências extraorais"
 		},
 		"fields": {
@@ -165,9 +169,9 @@
 			"responsible": "Responsável",
 			"rectifier": "Retificador",
 			"rectifierHint": "Usado pelas fórmulas de CSR mínimo e qualidade de feixe.",
-			"dosimeterBrand": "Marca do dosímetro",
+			"dosimeterBrand": "Marca do medidor",
 			"dosimeterBrandPlaceholder": "ex.: Unfors",
-			"certificate": "Certificado (multímetro)",
+			"certificate": "Certificado (medidor)",
 			"certificatePlaceholder": "ex.: X2",
 			"brand": "Marca",
 			"model": "Modelo",
@@ -178,11 +182,7 @@
 			"referencePka": "P_KA de referência do fabricante [mGy·cm²]",
 			"referencePkaHint": "Dose representativa do manual do equipamento (referência IN 94).",
 			"referenceDfov": "DFOV de referência do fabricante [mGy]",
-			"referenceDfovHint": "DFOV de referência do manual do CBCT.",
-			"fieldHeight": "Altura do campo [cm]",
-			"fieldHeightHint": "Altura colimada do feixe para o protocolo padrão.",
-			"beamWidth": "Largura varrida do feixe [cm]",
-			"beamWidthHint": "Largura colimada do feixe para o protocolo padrão."
+			"referenceDfovHint": "DFOV de referência do manual do CBCT."
 		},
 		"rectifiers": {
 			"mono": "Mono",
@@ -195,7 +195,7 @@
 	},
 	"extraoral": {
 		"title": "Extraoral",
-		"description": "Três verificações de CQ para imagem extraoral. <strong>Exatidão do indicador</strong> — verificar o P<sub>KA</sub> reportado pelo equipamento contra uma medição (IN 94). <strong>DAP representativo</strong> — comparar um P<sub>KA</sub> medido à referência do fabricante (IN 94, tolerância editável). <strong>DFOV</strong> — validar a dose de CBCT contra a referência e o nível de ação DIN 6868-161.",
+		"description": "Três verificações de CQ para imagem extraoral. <strong>Exatidão do indicador</strong> — verificar o P<sub>KA</sub> reportado pelo equipamento contra uma medição (IN 94). <strong>DAP representativo</strong> — comparar um P<sub>KA</sub> medido à referência do fabricante (IN 94). <strong>DFOV</strong> — validar a dose de CBCT contra a referência e o nível de ação DIN 6868-161.",
 		"tabs": {
 			"pka": "PKA estimado",
 			"dap": "PKA medido",
@@ -208,7 +208,6 @@
 			"measurement": "Medição",
 			"equipmentIndicator": "Indicador do equipamento",
 			"comparison": "Comparação",
-			"tolerance": "Tolerância",
 			"beamAndGeometry": "Feixe e geometria",
 			"fieldOfView": "Campo de visão",
 			"manufacturerReference": "Referência do fabricante"
@@ -226,9 +225,7 @@
 			"dFocusDetector": "Distância foco–detector [cm]",
 			"dFocusDetectorHint": "Distância do foco à câmara durante a medição.",
 			"fieldHeight": "Altura do campo [cm]",
-			"fieldHeightDefault": "Padrão do equipamento: {value} cm.",
 			"beamWidth": "Largura varrida do feixe [cm]",
-			"beamWidthDefault": "Padrão do equipamento: {value} cm. Informativo — P_KL já está integrado nessa largura.",
 			"beamWidthHint": "Informativo — P_KL já está integrado nessa largura.",
 			"pklMeasured": "P_KL medido [mGy·cm]",
 			"correctionFactor": "Fator de correção",
@@ -239,10 +236,6 @@
 			"pkaReference": "P_KA de referência do fabricante [mGy·cm²]",
 			"pkaReferenceDefault": "Padrão do equipamento: {value} mGy·cm². DAP representativo do manual.",
 			"pkaReferenceHint": "DAP representativo do manual do equipamento.",
-			"failPct": "Limite de não conformidade [%]",
-			"failPctHint": "Variação acima disso conta como não conforme.",
-			"restrictedPct": "Limite de restrição [%]",
-			"restrictedPctHint": "Variação acima disso conta como restrição.",
 			"ka": "Kerma incidente K_a,i(FDD) [mGy]",
 			"kaHint": "Kerma medido na entrada do detector.",
 			"a": "a — Foco–isocentro [cm]",
@@ -268,8 +261,10 @@
 			"machine": "Indicado",
 			"measured": "Medido",
 			"reference": "Referência",
+			"equipment": "Equipamento",
 			"hintMachine": "Insira o P_KA indicado pelo equipamento para comparar.",
 			"hintReference": "Insira o P_KA de referência do fabricante para comparar.",
+			"hintEquipment": "Defina o P_KA de referência do fabricante no equipamento selecionado para comparar.",
 			"hintDfovRef": "Insira o DFOV de referência do fabricante para comparar."
 		},
 		"empty": {
@@ -282,16 +277,16 @@
 			"pkaFormula2": "P<sub>KA</sub> calculado = P<sub>KL</sub> corrigido × altura do campo × fator de correção",
 			"pkaTolerance": "Tolerância IN 94: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
 			"dapFormula": "Variação = |P<sub>KA,medido</sub> / P<sub>KA,referência</sub> − 1|. Compara com a referência do fabricante (Valor representativo de dose, IN 94).",
-			"dapTolerance": "Limites padrão IN 94 (20% não conforme / 40% restrição) são editáveis para ajustar a tolerâncias do local.",
+			"dapTolerance": "Tolerância IN 94: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
 			"dfovFormula": "DFOV = K_a,i(FDD) × (b / a) × (d / c)",
 			"dfovTolerance": "Variação DIN 6868-161 vs referência: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
-			"dfovAction": "Nível de ação (DIN 6868-161): DFOV ≥ {threshold} mGy — conforme; abaixo disso, ação de qualidade de imagem necessária."
+			"dfovAction": "Nível de ação (DIN 6868-161): DFOV ≤ {threshold} mGy — conforme; acima disso, ação de redução de dose necessária."
 		},
 		"actionLevel": {
 			"label": "Nível de ação DIN 6868-161",
 			"compliant": "Conforme",
-			"belowActionLevel": "Abaixo do nível de ação",
-			"threshold": "Limite: DFOV ≥ {threshold} mGy conforme DIN 6868-161."
+			"aboveActionLevel": "Acima do nível de ação",
+			"threshold": "Limite: DFOV ≤ {threshold} mGy conforme DIN 6868-161."
 		}
 	},
 	"intraoral": {

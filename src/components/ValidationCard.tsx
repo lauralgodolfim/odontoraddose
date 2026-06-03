@@ -30,7 +30,7 @@ export function ValidationCard({
 		return (
 			<div className="flex flex-col gap-1 rounded-lg border border-dashed border-zinc-300 p-4 text-xs text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
 				<span className="font-medium uppercase tracking-wider">
-					{t("label")}
+					{t("vsLabel", { label: expLabel })}
 				</span>
 				<span>{emptyHint}</span>
 			</div>
@@ -45,7 +45,7 @@ export function ValidationCard({
 			className={`flex flex-col gap-1 rounded-lg border p-4 ${meta.tone}${pulse}`}
 		>
 			<span className="text-[11px] font-medium uppercase tracking-wider">
-				{tolerance.reference}
+				{tolerance.reference} · {t("vsLabel", { label: expLabel })}
 			</span>
 			<span className="text-2xl font-semibold">{meta.label}</span>
 			<span className="font-mono text-sm tabular-nums">

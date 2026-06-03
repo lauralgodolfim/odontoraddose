@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { ComparisonChart } from "@/components/ComparisonChart";
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
@@ -70,16 +71,18 @@ type DapFormState = {
 	exam: string;
 	pkaMeasured: string;
 	pkaReference: string;
-	failPct: string;
-	restrictedPct: string;
 };
 
 const dapInitial: DapFormState = {
 	exam: "",
 	pkaMeasured: "",
 	pkaReference: "",
-	failPct: "20",
-	restrictedPct: "40",
+};
+
+const DAP_TOLERANCE: Tolerance = {
+	fail: 0.2,
+	restricted: 0.4,
+	reference: "IN 94",
 };
 
 type DfovFormState = {
@@ -118,32 +121,20 @@ export default function ExtraoralPage() {
 	];
 
 	const pkaResult = useMemo(() => {
-		const base = computePka({
-			...pkaForm,
-			fieldHeight: pkaForm.fieldHeight || (equipment?.fieldHeight ?? ""),
-		});
+		const base = computePka(pkaForm);
 		if (!base) return null;
 		const pkaMach = parse(pkaForm.pkaMachine);
-		return { ...base, pkaMach };
-	}, [pkaForm, equipment?.fieldHeight]);
+		const pkaRef = parse(equipment?.referencePka ?? "");
+		return { ...base, pkaMach, pkaRef };
+	}, [pkaForm, equipment?.referencePka]);
 
 	const dapResult = useMemo(() => {
 		const measured = parse(dapForm.pkaMeasured);
 		if (measured === null) return null;
-		const reference =
-			parse(dapForm.pkaReference) ?? parse(equipment?.referencePka ?? "");
-		return { measured, reference };
+		const reference = parse(dapForm.pkaReference);
+		const equipmentReference = parse(equipment?.referencePka ?? "");
+		return { measured, reference, equipmentReference };
 	}, [dapForm.pkaMeasured, dapForm.pkaReference, equipment?.referencePka]);
-
-	const dapTolerance = useMemo<Tolerance>(() => {
-		const fail = parse(dapForm.failPct) ?? 20;
-		const restricted = parse(dapForm.restrictedPct) ?? 40;
-		return {
-			fail: fail / 100,
-			restricted: restricted / 100,
-			reference: "IN 94",
-		};
-	}, [dapForm.failPct, dapForm.restrictedPct]);
 
 	const dfovResult = useMemo(() => {
 		const ka = parse(dfovForm.ka);
@@ -308,41 +299,24 @@ export default function ExtraoralPage() {
 										className={inputCls}
 									/>
 								</Field>
-								<Field
-									label={t("fields.fieldHeight")}
-									hint={
-										equipment?.fieldHeight
-											? t("fields.fieldHeightDefault", {
-													value: equipment.fieldHeight,
-												})
-											: undefined
-									}
-								>
+								<Field label={t("fields.fieldHeight")}>
 									<input
 										type="number"
 										inputMode="decimal"
 										value={pkaForm.fieldHeight}
 										onChange={updatePka("fieldHeight")}
-										placeholder={equipment?.fieldHeight ?? ""}
 										className={inputCls}
 									/>
 								</Field>
 								<Field
 									label={t("fields.beamWidth")}
-									hint={
-										equipment?.beamWidth
-											? t("fields.beamWidthDefault", {
-													value: equipment.beamWidth,
-												})
-											: t("fields.beamWidthHint")
-									}
+									hint={t("fields.beamWidthHint")}
 								>
 									<input
 										type="number"
 										inputMode="decimal"
 										value={pkaForm.beamWidth}
 										onChange={updatePka("beamWidth")}
-										placeholder={equipment?.beamWidth ?? ""}
 										className={inputCls}
 									/>
 								</Field>
@@ -393,7 +367,7 @@ export default function ExtraoralPage() {
 						</form>
 
 						{pkaResult ? (
-							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
 								<Stat
 									label={t("stats.correctedPkl")}
 									value={pkaResult.pklCorrected}
@@ -419,7 +393,39 @@ export default function ExtraoralPage() {
 									tolerance={IN_94_PKA}
 									emptyHint={t("validation.hintMachine")}
 								/>
+								<ValidationCard
+									observed={pkaResult.pkaCalc}
+									observedLabel={t("validation.calc")}
+									expected={pkaResult.pkaRef}
+									expectedLabel={t("validation.equipment")}
+									unit="mGy·cm²"
+									tolerance={IN_94_PKA}
+									emptyHint={t("validation.hintEquipment")}
+								/>
 							</section>
+						) : null}
+
+						{pkaResult ? (
+							<ComparisonChart
+								unit="mGy·cm²"
+								series={[
+									{
+										label: t("validation.calc"),
+										value: pkaResult.pkaCalc,
+										tone: "primary",
+									},
+									{
+										label: t("validation.machine"),
+										value: pkaResult.pkaMach,
+										tone: "neutral",
+									},
+									{
+										label: t("validation.equipment"),
+										value: pkaResult.pkaRef,
+										tone: "equipment",
+									},
+								]}
+							/>
 						) : (
 							<section
 								className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
@@ -493,35 +499,6 @@ export default function ExtraoralPage() {
 										className={inputCls}
 									/>
 								</Field>
-							</Section>
-
-							<Section title={t("sections.tolerance")}>
-								<div className="grid grid-cols-2 gap-3">
-									<Field
-										label={t("fields.failPct")}
-										hint={t("fields.failPctHint")}
-									>
-										<input
-											type="number"
-											inputMode="decimal"
-											value={dapForm.failPct}
-											onChange={updateDap("failPct")}
-											className={inputCls}
-										/>
-									</Field>
-									<Field
-										label={t("fields.restrictedPct")}
-										hint={t("fields.restrictedPctHint")}
-									>
-										<input
-											type="number"
-											inputMode="decimal"
-											value={dapForm.restrictedPct}
-											onChange={updateDap("restrictedPct")}
-											className={inputCls}
-										/>
-									</Field>
-								</div>
 								<button
 									type="button"
 									onClick={() => setDapForm(dapInitial)}
@@ -533,7 +510,7 @@ export default function ExtraoralPage() {
 						</form>
 
 						{dapResult ? (
-							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2">
+							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 								<Stat
 									label={t("stats.measuredPka")}
 									value={dapResult.measured}
@@ -546,10 +523,42 @@ export default function ExtraoralPage() {
 									expected={dapResult.reference}
 									expectedLabel={t("validation.reference")}
 									unit="mGy·cm²"
-									tolerance={dapTolerance}
+									tolerance={DAP_TOLERANCE}
 									emptyHint={t("validation.hintReference")}
 								/>
+								<ValidationCard
+									observed={dapResult.measured}
+									observedLabel={t("validation.measured")}
+									expected={dapResult.equipmentReference}
+									expectedLabel={t("validation.equipment")}
+									unit="mGy·cm²"
+									tolerance={DAP_TOLERANCE}
+									emptyHint={t("validation.hintEquipment")}
+								/>
 							</section>
+						) : null}
+
+						{dapResult ? (
+							<ComparisonChart
+								unit="mGy·cm²"
+								series={[
+									{
+										label: t("validation.measured"),
+										value: dapResult.measured,
+										tone: "primary",
+									},
+									{
+										label: t("validation.reference"),
+										value: dapResult.reference,
+										tone: "neutral",
+									},
+									{
+										label: t("validation.equipment"),
+										value: dapResult.equipmentReference,
+										tone: "equipment",
+									},
+								]}
+							/>
 						) : (
 							<section
 								className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
@@ -676,6 +685,31 @@ export default function ExtraoralPage() {
 								/>
 								<ActionLevelCard dfov={dfovResult.dfov} />
 							</section>
+						) : null}
+
+						{dfovResult ? (
+							<ComparisonChart
+								unit="mGy"
+								threshold={DFOV_ACTION_LEVEL_MGY}
+								thresholdLabel={t("actionLevel.label")}
+								series={[
+									{
+										label: t("validation.calc"),
+										value: dfovResult.dfov,
+										tone: "primary",
+									},
+									{
+										label: t("validation.reference"),
+										value: parse(dfovForm.reference),
+										tone: "neutral",
+									},
+									{
+										label: t("validation.equipment"),
+										value: parse(equipment?.referenceDfov ?? ""),
+										tone: "equipment",
+									},
+								]}
+							/>
 						) : (
 							<section
 								className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
@@ -702,7 +736,7 @@ export default function ExtraoralPage() {
 
 function ActionLevelCard({ dfov }: { dfov: number }) {
 	const t = useTranslations("extraoral.actionLevel");
-	const compliant = dfov >= DFOV_ACTION_LEVEL_MGY;
+	const compliant = dfov < DFOV_ACTION_LEVEL_MGY;
 	const tone = compliant
 		? "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
 		: "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300";
@@ -712,10 +746,10 @@ function ActionLevelCard({ dfov }: { dfov: number }) {
 				{t("label")}
 			</span>
 			<span className="text-2xl font-semibold">
-				{compliant ? t("compliant") : t("belowActionLevel")}
+				{compliant ? t("compliant") : t("aboveActionLevel")}
 			</span>
 			<span className="font-mono text-sm tabular-nums">
-				DFOV {fmt(dfov)} mGy {compliant ? "≥" : "<"} {DFOV_ACTION_LEVEL_MGY} mGy
+				DFOV {fmt(dfov)} mGy {compliant ? "<" : "≥"} {DFOV_ACTION_LEVEL_MGY} mGy
 			</span>
 			<span className="text-[11px]">
 				{t("threshold", { threshold: DFOV_ACTION_LEVEL_MGY })}

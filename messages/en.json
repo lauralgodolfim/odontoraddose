@@ -124,8 +124,12 @@
 	},
 	"validation": {
 		"label": "Validation",
+		"vsLabel": "vs {label}",
 		"deviation": "Deviation {value}%",
 		"observedVsExpected": "{observedLabel} {observed} vs {expectedLabel} {expected} {unit}"
+	},
+	"chart": {
+		"title": "Comparison"
 	},
 	"equipmentBadge": {
 		"noneSaved": "None saved",
@@ -142,7 +146,7 @@
 	},
 	"equipments": {
 		"title": "Equipment",
-		"description": "Manage saved equipments. Each calculator can independently select which one to use. Stored locally on this device — nothing is sent to a server. Rectifier type affects calculator formulas; the rest is informational and shows up on printed reports.",
+		"description": "Manage saved equipments. Each calculator can independently select which one to use. Stored locally on this device — nothing is sent to a server.",
 		"savedCount": "Saved equipments ({count})",
 		"addNew": "Add new",
 		"empty": "No equipments saved yet. Click <strong>Add new</strong> to create one.",
@@ -151,8 +155,8 @@
 		"defaultName": "equipment",
 		"sections": {
 			"identification": "Identification",
-			"qcParameters": "QC parameters",
-			"generator": "Generator",
+			"dosimeter": "Dosimeter",
+			"equipmentInfo": "Equipment Info",
 			"extraoralReferences": "Extraoral references"
 		},
 		"fields": {
@@ -178,11 +182,7 @@
 			"referencePka": "Manufacturer reference P_KA [mGy·cm²]",
 			"referencePkaHint": "Representative dose from the equipment manual (IN 94 reference).",
 			"referenceDfov": "Manufacturer reference DFOV [mGy]",
-			"referenceDfovHint": "Reference DFOV from the CBCT manual.",
-			"fieldHeight": "Field height [cm]",
-			"fieldHeightHint": "Collimated beam height for the standard protocol.",
-			"beamWidth": "Beam-swept width [cm]",
-			"beamWidthHint": "Collimated beam width for the standard protocol."
+			"referenceDfovHint": "Reference DFOV from the CBCT manual."
 		},
 		"rectifiers": {
 			"mono": "Mono",
@@ -195,7 +195,7 @@
 	},
 	"extraoral": {
 		"title": "Extraoral",
-		"description": "Three QC checks for extraoral imaging. <strong>Indicator accuracy</strong> — verify the equipment's reported P<sub>KA</sub> against a measurement (IN 94). <strong>Representative DAP</strong> — compare a measured P<sub>KA</sub> to the manufacturer reference (IN 94, editable tolerance). <strong>DFOV</strong> — validate CBCT dose against the reference and the DIN 6868-161 action level.",
+		"description": "Three QC checks for extraoral imaging. <strong>Indicator accuracy</strong> — verify the equipment's reported P<sub>KA</sub> against a measurement (IN 94). <strong>Representative DAP</strong> — compare a measured P<sub>KA</sub> to the manufacturer reference (IN 94). <strong>DFOV</strong> — validate CBCT dose against the reference and the DIN 6868-161 action level.",
 		"tabs": {
 			"pka": "Estimated PKA",
 			"dap": "Measured PKA",
@@ -208,7 +208,6 @@
 			"measurement": "Measurement",
 			"equipmentIndicator": "Equipment indicator",
 			"comparison": "Comparison",
-			"tolerance": "Tolerance",
 			"beamAndGeometry": "Beam & geometry",
 			"fieldOfView": "Field of view",
 			"manufacturerReference": "Manufacturer reference"
@@ -226,9 +225,7 @@
 			"dFocusDetector": "Focus–detector distance [cm]",
 			"dFocusDetectorHint": "Distance from focus to the chamber during measurement.",
 			"fieldHeight": "Field height [cm]",
-			"fieldHeightDefault": "Default from equipment: {value} cm.",
 			"beamWidth": "Beam-swept width [cm]",
-			"beamWidthDefault": "Default from equipment: {value} cm. Informational — P_KL is already integrated over this width.",
 			"beamWidthHint": "Informational — P_KL is already integrated over this width.",
 			"pklMeasured": "Measured P_KL [mGy·cm]",
 			"correctionFactor": "Correction factor",
@@ -239,10 +236,6 @@
 			"pkaReference": "Manufacturer reference P_KA [mGy·cm²]",
 			"pkaReferenceDefault": "Default from equipment: {value} mGy·cm². Representative DAP from the manual.",
 			"pkaReferenceHint": "Representative DAP from the equipment manual.",
-			"failPct": "Fail threshold [%]",
-			"failPctHint": "Deviation above this counts as fail.",
-			"restrictedPct": "Restriction threshold [%]",
-			"restrictedPctHint": "Deviation above this counts as restriction.",
 			"ka": "Incident kerma K_a,i(FDD) [mGy]",
 			"kaHint": "Kerma measured at the detector entrance.",
 			"a": "a — Focus–isocenter [cm]",
@@ -268,8 +261,10 @@
 			"machine": "Machine",
 			"measured": "Measured",
 			"reference": "Reference",
+			"equipment": "Equipment",
 			"hintMachine": "Enter the machine-reported P_KA to compare.",
 			"hintReference": "Enter the manufacturer reference P_KA to compare.",
+			"hintEquipment": "Set the manufacturer reference P_KA on the selected equipment to compare.",
 			"hintDfovRef": "Enter the manufacturer reference DFOV to compare."
 		},
 		"empty": {
@@ -282,16 +277,16 @@
 			"pkaFormula2": "Calculated P<sub>KA</sub> = Corrected P<sub>KL</sub> × field height × correction factor",
 			"pkaTolerance": "IN 94 tolerance: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dapFormula": "Deviation = |P<sub>KA,measured</sub> / P<sub>KA,reference</sub> − 1|. Compares against the manufacturer reference (Valor representativo de dose, IN 94).",
-			"dapTolerance": "Default IN 94 thresholds (20% fail / 40% restriction) are editable to match site-specific tolerances.",
+			"dapTolerance": "IN 94 tolerance: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dfovFormula": "DFOV = K_a,i(FDD) × (b / a) × (d / c)",
 			"dfovTolerance": "DIN 6868-161 deviation vs reference: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
-			"dfovAction": "Action level (DIN 6868-161): DFOV ≥ {threshold} mGy — compliant; below that, image-quality action required."
+			"dfovAction": "Action level (DIN 6868-161): DFOV ≤ {threshold} mGy — compliant; above that, dose-reduction action required."
 		},
 		"actionLevel": {
 			"label": "DIN 6868-161 action level",
 			"compliant": "Compliant",
-			"belowActionLevel": "Below action level",
-			"threshold": "Threshold: DFOV ≥ {threshold} mGy per DIN 6868-161."
+			"aboveActionLevel": "Above action level",
+			"threshold": "Threshold: DFOV ≤ {threshold} mGy per DIN 6868-161."
 		}
 	},
 	"intraoral": {

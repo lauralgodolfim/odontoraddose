@@ -27,13 +27,9 @@ export type Equipment = {
 	certificate?: string;
 
 	// Extraoral reference values (used as defaults by the extraoral tabs).
-	// Manufacturer P_KA / DFOV come from the device manual; field height and
-	// beam-swept width are fixed by the equipment's collimator for a given
-	// protocol.
+	// Manufacturer P_KA / DFOV come from the device manual.
 	referencePka?: string;
 	referenceDfov?: string;
-	fieldHeight?: string;
-	beamWidth?: string;
 };
 
 export const defaultEquipmentFields: Omit<Equipment, "id" | "name"> = {

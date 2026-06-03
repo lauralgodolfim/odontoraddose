@@ -233,7 +233,7 @@
 			"pklMeasured": "P_KL medido [mGy·cm]",
 			"correctionFactor": "Fator de correção",
 			"correctionFactorHint": "Mantenha em 1 quando nenhum fator for declarado.",
-			"pkaMachine": "P_KA reportado pela máquina [mGy·cm²]",
+			"pkaMachine": "P_KA indicado pelo equipamento [mGy·cm²]",
 			"pkaMeasured": "P_KA medido [mGy·cm²]",
 			"pkaMeasuredHint": "DAP medido com a câmara ou calculado na aba de indicador.",
 			"pkaReference": "P_KA de referência do fabricante [mGy·cm²]",
@@ -265,7 +265,7 @@
 		},
 		"validation": {
 			"calc": "Calc",
-			"machine": "Máquina",
+			"machine": "Indicado",
 			"measured": "Medido",
 			"reference": "Referência",
 			"hintMachine": "Insira o P_KA indicado pelo equipamento para comparar.",

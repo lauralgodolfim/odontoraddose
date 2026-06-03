@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
 import { Reveal } from "@/components/Reveal";
@@ -123,13 +124,7 @@ export default function KvpPage() {
 								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 
 					<Section title={t("sections.measured")}>
@@ -152,7 +147,11 @@ export default function KvpPage() {
 					{result ? (
 						<>
 							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-								<Stat label={t("stats.meanKvp")} value={result.avg} unit="kVp" />
+								<Stat
+									label={t("stats.meanKvp")}
+									value={result.avg}
+									unit="kVp"
+								/>
 								<Stat
 									label={t("stats.reproducibility")}
 									value={`${(result.reproducibility * 100).toFixed(1)}%`}
@@ -166,66 +165,66 @@ export default function KvpPage() {
 								/>
 							</section>
 							<section className="overflow-hidden animate-fade-up rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-							<table className="w-full text-sm">
-								<thead className="bg-zinc-50 text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
-									<tr>
-										<th className="px-4 py-2 text-left font-medium">
-											{t("table.shot")}
-										</th>
-										<th className="px-4 py-2 text-right font-medium">
-											{t("table.measured")}
-										</th>
-										<th className="px-4 py-2 text-right font-medium">
-											{t("table.deviation")}
-										</th>
-										<th className="px-4 py-2 text-right font-medium">
-											{t("table.in56")}
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									{result.measured.map((m, idx) => {
-										if (m === null) return null;
-										const dev = result.deviations[idx];
-										const verdict = classifyDeviation(dev, IN_56_KVP);
-										const meta = verdictMeta(verdict, IN_56_KVP);
-										return (
-											<tr
-												// biome-ignore lint/suspicious/noArrayIndexKey: rows are positional shot entries; index matches the input slot above
-												key={idx}
-												className="border-t border-zinc-100 dark:border-zinc-900"
-											>
-												<td className="px-4 py-2 text-zinc-700 dark:text-zinc-300">
-													{idx + 1}
-												</td>
-												<td className="px-4 py-2 text-right font-mono tabular-nums">
-													{fmt(m)}
-												</td>
-												<td className="px-4 py-2 text-right font-mono tabular-nums">
-													{(dev * 100).toFixed(1)}%
-												</td>
-												<td className="px-4 py-2 text-right">
-													<span
-														className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${meta.tone}`}
-													>
-														{meta.label}
-													</span>
-												</td>
-											</tr>
-										);
-									})}
-								</tbody>
-							</table>
-						</section>
-						<section className="animate-fade-up">
-							<VerdictCard
-								title={t("verdicts.accuracyTitle")}
-								verdict={result.accuracyVerdict}
-								tolerance={IN_56_KVP}
-							/>
-						</section>
-					</>
-				) : null}
+								<table className="w-full text-sm">
+									<thead className="bg-zinc-50 text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
+										<tr>
+											<th className="px-4 py-2 text-left font-medium">
+												{t("table.shot")}
+											</th>
+											<th className="px-4 py-2 text-right font-medium">
+												{t("table.measured")}
+											</th>
+											<th className="px-4 py-2 text-right font-medium">
+												{t("table.deviation")}
+											</th>
+											<th className="px-4 py-2 text-right font-medium">
+												{t("table.in56")}
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										{result.measured.map((m, idx) => {
+											if (m === null) return null;
+											const dev = result.deviations[idx];
+											const verdict = classifyDeviation(dev, IN_56_KVP);
+											const meta = verdictMeta(verdict, IN_56_KVP);
+											return (
+												<tr
+													// biome-ignore lint/suspicious/noArrayIndexKey: rows are positional shot entries; index matches the input slot above
+													key={idx}
+													className="border-t border-zinc-100 dark:border-zinc-900"
+												>
+													<td className="px-4 py-2 text-zinc-700 dark:text-zinc-300">
+														{idx + 1}
+													</td>
+													<td className="px-4 py-2 text-right font-mono tabular-nums">
+														{fmt(m)}
+													</td>
+													<td className="px-4 py-2 text-right font-mono tabular-nums">
+														{(dev * 100).toFixed(1)}%
+													</td>
+													<td className="px-4 py-2 text-right">
+														<span
+															className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${meta.tone}`}
+														>
+															{meta.label}
+														</span>
+													</td>
+												</tr>
+											);
+										})}
+									</tbody>
+								</table>
+							</section>
+							<section className="animate-fade-up">
+								<VerdictCard
+									title={t("verdicts.accuracyTitle")}
+									verdict={result.accuracyVerdict}
+									tolerance={IN_56_KVP}
+								/>
+							</section>
+						</>
+					) : null}
 				</Reveal>
 				<Reveal when={!result}>
 					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">

@@ -1,6 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
+import { useAudio } from "@/lib/AudioProvider";
 import { fmt } from "@/lib/num";
 import { useVerdictMeta } from "@/lib/useVerdictMeta";
 import { classifyDeviation, type Tolerance } from "@/lib/verdict";
@@ -24,9 +26,21 @@ export function ValidationCard({
 }) {
 	const t = useTranslations("validation");
 	const verdictMeta = useVerdictMeta();
+	const { playVerdict } = useAudio();
 	const obsLabel = observedLabel ?? "Calc";
 	const expLabel = expectedLabel ?? t("label");
-	if (expected === null || expected === 0) {
+
+	const hasVerdict = expected !== null && expected !== 0;
+	const verdict = hasVerdict
+		? classifyDeviation(observed / (expected as number) - 1, tolerance)
+		: null;
+
+	useEffect(() => {
+		if (!verdict) return;
+		playVerdict(verdict);
+	}, [verdict, playVerdict]);
+
+	if (!hasVerdict || verdict === null) {
 		return (
 			<div className="flex flex-col gap-1 rounded-lg border border-dashed border-zinc-300 p-4 text-xs text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
 				<span className="font-medium uppercase tracking-wider">
@@ -36,8 +50,8 @@ export function ValidationCard({
 			</div>
 		);
 	}
-	const deviation = observed / expected - 1;
-	const verdict = classifyDeviation(deviation, tolerance);
+
+	const deviation = observed / (expected as number) - 1;
 	const meta = verdictMeta(verdict, tolerance);
 	const pulse = verdict === "restricted" ? " animate-alert-pulse" : "";
 	return (

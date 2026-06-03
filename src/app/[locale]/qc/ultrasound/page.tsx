@@ -2,6 +2,7 @@
 
 import { ArrowLeft } from "lucide-react";
 import { useMemo, useState } from "react";
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
 import { Reveal } from "@/components/Reveal";
@@ -226,13 +227,10 @@ export default function UltrasoundPage() {
 							</label>
 						))}
 					</div>
-					<button
-						type="button"
+					<ClearButton
 						onClick={() => setForm(initial)}
 						className="self-start rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-					>
-						Clear
-					</button>
+					/>
 				</Section>
 
 				<Reveal when={!!overall}>

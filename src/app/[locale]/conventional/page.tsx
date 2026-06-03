@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
 import { Reveal } from "@/components/Reveal";
@@ -144,7 +145,9 @@ export default function ConventionalPage() {
 								onChange={update("station")}
 								className={inputCls}
 							>
-								<option value="wallStand">{t("fields.stationWallStand")}</option>
+								<option value="wallStand">
+									{t("fields.stationWallStand")}
+								</option>
 								<option value="table">{t("fields.stationTable")}</option>
 							</select>
 						</Field>
@@ -240,13 +243,7 @@ export default function ConventionalPage() {
 								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 
@@ -258,7 +255,12 @@ export default function ConventionalPage() {
 								value={result.skinFocusDistance}
 								unit="cm"
 							/>
-							<Stat label={t("stats.esd")} value={result.esd} unit="mGy" emphasis />
+							<Stat
+								label={t("stats.esd")}
+								value={result.esd}
+								unit="mGy"
+								emphasis
+							/>
 							<ValidationCard
 								observed={result.esd}
 								observedLabel={t("validation.calc")}

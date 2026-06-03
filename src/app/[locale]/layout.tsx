@@ -1,9 +1,11 @@
+import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import { notFound } from "next/navigation";
 import { EquipmentProvider } from "@/components/EquipmentProvider";
+import { Header } from "@/components/Header";
 import { HtmlLangSync } from "@/components/HtmlLangSync";
 import { routing } from "@/i18n/routing";
+import { AudioProvider } from "@/lib/AudioProvider";
 
 export function generateStaticParams() {
 	return routing.locales.map((locale) => ({ locale }));
@@ -26,7 +28,12 @@ export default async function LocaleLayout({
 	return (
 		<NextIntlClientProvider>
 			<HtmlLangSync locale={locale} />
-			<EquipmentProvider>{children}</EquipmentProvider>
+			<AudioProvider>
+				<EquipmentProvider>
+					<Header />
+					{children}
+				</EquipmentProvider>
+			</AudioProvider>
 		</NextIntlClientProvider>
 	);
 }

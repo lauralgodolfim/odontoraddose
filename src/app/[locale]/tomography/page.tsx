@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
 import { Reveal } from "@/components/Reveal";
@@ -347,13 +348,7 @@ export default function TomographyPage() {
 								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 
@@ -361,7 +356,11 @@ export default function TomographyPage() {
 					{result ? (
 						<>
 							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-								<Stat label={t("stats.ctdiW")} value={result.ctdiW} unit="mGy" />
+								<Stat
+									label={t("stats.ctdiW")}
+									value={result.ctdiW}
+									unit="mGy"
+								/>
 								<Stat
 									label={t("stats.ctdiVol")}
 									value={result.ctdiVol}
@@ -401,7 +400,9 @@ export default function TomographyPage() {
 											{t("validation.capLabel")}
 										</span>
 										<span>
-											{t("validation.capNone", { region: tRegion(form.region) })}
+											{t("validation.capNone", {
+												region: tRegion(form.region),
+											})}
 										</span>
 									</div>
 								)}

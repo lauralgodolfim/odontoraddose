@@ -3,7 +3,7 @@
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
-
+import { ClearButton } from "@/components/ClearButton";
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
@@ -129,13 +129,7 @@ export default function HvlPage() {
 								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 

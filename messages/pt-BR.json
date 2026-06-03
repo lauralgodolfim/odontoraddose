@@ -10,7 +10,9 @@
 		"printReport": "Imprimir laudo",
 		"workInProgress": "Em desenvolvimento",
 		"language": "Idioma",
-		"continue": "Continuar →"
+		"continue": "Continuar →",
+		"mute": "Silenciar sons",
+		"unmute": "Ativar sons"
 	},
 	"languages": {
 		"pt-BR": "Português (BR)",

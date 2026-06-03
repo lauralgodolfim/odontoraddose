@@ -1,10 +1,9 @@
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import Image from "next/image";
 
 import { CalculatorCard } from "@/components/CalculatorCard";
 import { EquipmentBadge } from "@/components/EquipmentBadge";
-import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Link } from "@/i18n/navigation";
 import {
 	type Calculator,
@@ -83,7 +82,6 @@ function HomeView() {
 							</span>
 							<span>{t("auditBadgeSub")}</span>
 						</Link>
-						<LocaleSwitcher />
 					</div>
 				</header>
 

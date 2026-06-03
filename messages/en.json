@@ -10,7 +10,9 @@
 		"printReport": "Print report",
 		"workInProgress": "Work in progress",
 		"language": "Language",
-		"continue": "Continue →"
+		"continue": "Continue →",
+		"mute": "Mute sounds",
+		"unmute": "Unmute sounds"
 	},
 	"languages": {
 		"pt-BR": "Português (BR)",

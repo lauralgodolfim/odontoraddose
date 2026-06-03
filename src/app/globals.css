@@ -18,7 +18,8 @@
 	--color-radiation-700: #856016;
 	--color-radiation-800: #5e430f;
 
-	--animate-fade-up: fadeUp 280ms cubic-bezier(0.16, 1, 0.3, 1);
+	--animate-fade-up: fadeUp 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+	--animate-fade-down: fadeDown 280ms cubic-bezier(0.4, 0, 1, 1) forwards;
 	--animate-alert-pulse: alertPulse 2.4s ease-in-out infinite;
 	--animate-list-enter: listEnter 240ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
 	--animate-row-glow: rowGlow 4s ease-in-out infinite;
@@ -30,11 +31,22 @@
 @keyframes fadeUp {
 	from {
 		opacity: 0;
-		transform: translateY(6px);
+		transform: translateY(16px);
 	}
 	to {
 		opacity: 1;
 		transform: translateY(0);
+	}
+}
+
+@keyframes fadeDown {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(10px);
 	}
 }
 

@@ -8,6 +8,7 @@ import { ComparisonChart } from "@/components/ComparisonChart";
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, inputCls, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { ValidationCard } from "@/components/ValidationCard";
 import { Link } from "@/i18n/navigation";
@@ -366,74 +367,81 @@ export default function ExtraoralPage() {
 							</Section>
 						</form>
 
-						{pkaResult ? (
-							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-								<Stat
-									label={t("stats.correctedPkl")}
-									value={pkaResult.pklCorrected}
-									unit="mGy·cm"
-								/>
-								<Stat
-									label={t("stats.doseAreaPka")}
-									value={pkaResult.pkaArea}
-									unit="mGy·cm²"
-								/>
-								<Stat
-									label={t("stats.calculatedPka")}
-									value={pkaResult.pkaCalc}
-									unit="mGy·cm²"
-									emphasis
-								/>
-								<ValidationCard
-									observed={pkaResult.pkaCalc}
-									observedLabel={t("validation.calc")}
-									expected={pkaResult.pkaMach}
-									expectedLabel={t("validation.machine")}
-									unit="mGy·cm²"
-									tolerance={IN_94_PKA}
-									emptyHint={t("validation.hintMachine")}
-								/>
-								<ValidationCard
-									observed={pkaResult.pkaCalc}
-									observedLabel={t("validation.calc")}
-									expected={pkaResult.pkaRef}
-									expectedLabel={t("validation.equipment")}
-									unit="mGy·cm²"
-									tolerance={IN_94_PKA}
-									emptyHint={t("validation.hintEquipment")}
-								/>
-							</section>
-						) : null}
+						<Reveal when={!!pkaResult}>
+							{pkaResult ? (
+								<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+									<Stat
+										label={t("stats.correctedPkl")}
+										value={pkaResult.pklCorrected}
+										unit="mGy·cm"
+									/>
+									<Stat
+										label={t("stats.doseAreaPka")}
+										value={pkaResult.pkaArea}
+										unit="mGy·cm²"
+									/>
+									<Stat
+										label={t("stats.calculatedPka")}
+										value={pkaResult.pkaCalc}
+										unit="mGy·cm²"
+										emphasis
+									/>
+									<ValidationCard
+										observed={pkaResult.pkaCalc}
+										observedLabel={t("validation.calc")}
+										expected={pkaResult.pkaMach}
+										expectedLabel={t("validation.machine")}
+										unit="mGy·cm²"
+										tolerance={IN_94_PKA}
+										emptyHint={t("validation.hintMachine")}
+									/>
+									<ValidationCard
+										observed={pkaResult.pkaCalc}
+										observedLabel={t("validation.calc")}
+										expected={pkaResult.pkaRef}
+										expectedLabel={t("validation.equipment")}
+										unit="mGy·cm²"
+										tolerance={IN_94_PKA}
+										emptyHint={t("validation.hintEquipment")}
+									/>
+								</section>
+							) : null}
+						</Reveal>
 
-						{pkaResult ? (
-							<ComparisonChart
-								unit="mGy·cm²"
-								tolerance={IN_94_PKA}
-								series={[
-									{
-										label: t("validation.calc"),
-										value: pkaResult.pkaCalc,
-										tone: "primary",
-									},
-									{
-										label: t("validation.machine"),
-										value: pkaResult.pkaMach,
-										tone: "neutral",
-									},
-									{
-										label: t("validation.equipment"),
-										value: pkaResult.pkaRef,
-										tone: "equipment",
-									},
-								]}
-							/>
-						) : (
+						<Reveal when={!!pkaResult}>
+							{pkaResult ? (
+								<ComparisonChart
+									unit="mGy·cm²"
+									tolerance={IN_94_PKA}
+									series={[
+										{
+											label: t("validation.calc"),
+											value: pkaResult.pkaCalc,
+											tone: "primary",
+										},
+										{
+											label: t("validation.machine"),
+											value: pkaResult.pkaMach,
+											tone: "neutral",
+										},
+										{
+											label: t("validation.equipment"),
+											value: pkaResult.pkaRef,
+											tone: "equipment",
+										},
+									]}
+								/>
+							) : null}
+						</Reveal>
+						<Reveal when={!pkaResult}>
 							<section
-								className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
+								className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <sub> markup
-								dangerouslySetInnerHTML={{ __html: t.raw("empty.pka") as string }}
+								dangerouslySetInnerHTML={{
+									__html: t.raw("empty.pka") as string,
+								}}
 							/>
-						)}
+						</Reveal>
 
 						<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 							<p
@@ -510,64 +518,71 @@ export default function ExtraoralPage() {
 							</Section>
 						</form>
 
-						{dapResult ? (
-							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-								<Stat
-									label={t("stats.measuredPka")}
-									value={dapResult.measured}
-									unit="mGy·cm²"
-									emphasis
-								/>
-								<ValidationCard
-									observed={dapResult.measured}
-									observedLabel={t("validation.measured")}
-									expected={dapResult.reference}
-									expectedLabel={t("validation.reference")}
-									unit="mGy·cm²"
-									tolerance={DAP_TOLERANCE}
-									emptyHint={t("validation.hintReference")}
-								/>
-								<ValidationCard
-									observed={dapResult.measured}
-									observedLabel={t("validation.measured")}
-									expected={dapResult.equipmentReference}
-									expectedLabel={t("validation.equipment")}
-									unit="mGy·cm²"
-									tolerance={DAP_TOLERANCE}
-									emptyHint={t("validation.hintEquipment")}
-								/>
-							</section>
-						) : null}
+						<Reveal when={!!dapResult}>
+							{dapResult ? (
+								<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+									<Stat
+										label={t("stats.measuredPka")}
+										value={dapResult.measured}
+										unit="mGy·cm²"
+										emphasis
+									/>
+									<ValidationCard
+										observed={dapResult.measured}
+										observedLabel={t("validation.measured")}
+										expected={dapResult.reference}
+										expectedLabel={t("validation.reference")}
+										unit="mGy·cm²"
+										tolerance={DAP_TOLERANCE}
+										emptyHint={t("validation.hintReference")}
+									/>
+									<ValidationCard
+										observed={dapResult.measured}
+										observedLabel={t("validation.measured")}
+										expected={dapResult.equipmentReference}
+										expectedLabel={t("validation.equipment")}
+										unit="mGy·cm²"
+										tolerance={DAP_TOLERANCE}
+										emptyHint={t("validation.hintEquipment")}
+									/>
+								</section>
+							) : null}
+						</Reveal>
 
-						{dapResult ? (
-							<ComparisonChart
-								unit="mGy·cm²"
-								tolerance={DAP_TOLERANCE}
-								series={[
-									{
-										label: t("validation.measured"),
-										value: dapResult.measured,
-										tone: "primary",
-									},
-									{
-										label: t("validation.reference"),
-										value: dapResult.reference,
-										tone: "neutral",
-									},
-									{
-										label: t("validation.equipment"),
-										value: dapResult.equipmentReference,
-										tone: "equipment",
-									},
-								]}
-							/>
-						) : (
+						<Reveal when={!!dapResult}>
+							{dapResult ? (
+								<ComparisonChart
+									unit="mGy·cm²"
+									tolerance={DAP_TOLERANCE}
+									series={[
+										{
+											label: t("validation.measured"),
+											value: dapResult.measured,
+											tone: "primary",
+										},
+										{
+											label: t("validation.reference"),
+											value: dapResult.reference,
+											tone: "neutral",
+										},
+										{
+											label: t("validation.equipment"),
+											value: dapResult.equipmentReference,
+											tone: "equipment",
+										},
+									]}
+								/>
+							) : null}
+						</Reveal>
+						<Reveal when={!dapResult}>
 							<section
-								className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
+								className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <sub> markup
-								dangerouslySetInnerHTML={{ __html: t.raw("empty.dap") as string }}
+								dangerouslySetInnerHTML={{
+									__html: t.raw("empty.dap") as string,
+								}}
 							/>
-						)}
+						</Reveal>
 
 						<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 							<p
@@ -668,60 +683,65 @@ export default function ExtraoralPage() {
 							</Section>
 						</form>
 
-						{dfovResult ? (
-							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-								<Stat
-									label={t("stats.dfov")}
-									value={dfovResult.dfov}
-									unit="mGy"
-									emphasis
-								/>
-								<ValidationCard
-									observed={dfovResult.dfov}
-									observedLabel={t("validation.calc")}
-									expected={dfovResult.reference}
-									expectedLabel={t("validation.reference")}
+						<Reveal when={!!dfovResult}>
+							{dfovResult ? (
+								<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+									<Stat
+										label={t("stats.dfov")}
+										value={dfovResult.dfov}
+										unit="mGy"
+										emphasis
+									/>
+									<ValidationCard
+										observed={dfovResult.dfov}
+										observedLabel={t("validation.calc")}
+										expected={dfovResult.reference}
+										expectedLabel={t("validation.reference")}
+										unit="mGy"
+										tolerance={DIN_6868_161_DFOV}
+										emptyHint={t("validation.hintDfovRef")}
+									/>
+									<ActionLevelCard dfov={dfovResult.dfov} />
+								</section>
+							) : null}
+						</Reveal>
+
+						<Reveal when={!!dfovResult}>
+							{dfovResult ? (
+								<ComparisonChart
 									unit="mGy"
 									tolerance={DIN_6868_161_DFOV}
-									emptyHint={t("validation.hintDfovRef")}
+									threshold={DFOV_ACTION_LEVEL_MGY}
+									thresholdLabel={t("actionLevel.label")}
+									series={[
+										{
+											label: t("validation.calc"),
+											value: dfovResult.dfov,
+											tone: "primary",
+										},
+										{
+											label: t("validation.reference"),
+											value: parse(dfovForm.reference),
+											tone: "neutral",
+										},
+										{
+											label: t("validation.equipment"),
+											value: parse(equipment?.referenceDfov ?? ""),
+											tone: "equipment",
+										},
+									]}
 								/>
-								<ActionLevelCard dfov={dfovResult.dfov} />
-							</section>
-						) : null}
-
-						{dfovResult ? (
-							<ComparisonChart
-								unit="mGy"
-								tolerance={DIN_6868_161_DFOV}
-								threshold={DFOV_ACTION_LEVEL_MGY}
-								thresholdLabel={t("actionLevel.label")}
-								series={[
-									{
-										label: t("validation.calc"),
-										value: dfovResult.dfov,
-										tone: "primary",
-									},
-									{
-										label: t("validation.reference"),
-										value: parse(dfovForm.reference),
-										tone: "neutral",
-									},
-									{
-										label: t("validation.equipment"),
-										value: parse(equipment?.referenceDfov ?? ""),
-										tone: "equipment",
-									},
-								]}
-							/>
-						) : (
+							) : null}
+						</Reveal>
+						<Reveal when={!dfovResult}>
 							<section
-								className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
+								className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <sub> markup
 								dangerouslySetInnerHTML={{
 									__html: t.raw("empty.dfov") as string,
 								}}
 							/>
-						)}
+						</Reveal>
 
 						<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 							<p>{t("footer.dfovFormula")}</p>

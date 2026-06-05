@@ -11,6 +11,11 @@ export function generateStaticParams() {
 	return routing.locales.map((locale) => ({ locale }));
 }
 
+// Unknown first-path segments (e.g. /foo) are captured as a `[locale]` value.
+// Returning 404 for any non-generated locale lets the global not-found render
+// instead of the dev server throwing E443 under `output: export`.
+export const dynamicParams = false;
+
 export default async function LocaleLayout({
 	children,
 	params,

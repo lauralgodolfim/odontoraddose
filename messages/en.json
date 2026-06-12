@@ -46,7 +46,7 @@
 	},
 	"calculators": {
 		"extraoral": {
-			"title": "Extraoral — PKA / DAP / DFOV CBCT",
+			"title": "Extraoral — PKA / CBCT / DAP / DFOV",
 			"description": "PKA indicator accuracy and representative DAP comparison (IN 94), plus CBCT DFOV vs reference and the DIN 6868-161 action level."
 		},
 		"intraoral": {
@@ -195,10 +195,11 @@
 	},
 	"extraoral": {
 		"title": "Extraoral",
-		"description": "Three QC checks for extraoral imaging. <strong>Indicator accuracy</strong> — verify the equipment's reported P<sub>KA</sub> against a measurement (IN 94). <strong>Representative DAP</strong> — compare a measured P<sub>KA</sub> to the manufacturer reference (IN 94). <strong>DFOV</strong> — validate CBCT dose against the reference and the DIN 6868-161 action level.",
+		"description": "Four QC checks for extraoral imaging. <strong>Indicator accuracy</strong> — verify the equipment's reported P<sub>KA</sub> against a measurement (IN 94). <strong>CBCT PKA</strong> — estimate P<sub>KA</sub> from measurements and the beam area (AAPM 261, IN 94). <strong>Representative DAP</strong> — compare a measured P<sub>KA</sub> to the manufacturer reference (IN 94). <strong>DFOV</strong> — validate CBCT dose against the reference and the DIN 6868-161 action level.",
 		"tabs": {
 			"pka": "Estimated PKA",
 			"dap": "Measured PKA",
+			"cbct": "Estimated PKA AAPM 261 (CBCT)",
 			"dfov": "DFOV (CBCT)",
 			"aria": "Extraoral calculators"
 		},
@@ -247,14 +248,23 @@
 			"d": "d — Radiation field diameter at measurement [cm]",
 			"dHint": "Horizontal diameter of the radiation field at the measurement point.",
 			"reference": "Reference DFOV [mGy]",
-			"referenceDefault": "Default from equipment: {value} mGy."
+			"referenceDefault": "Default from equipment: {value} mGy.",
+			"kermaHorizontal": "Horizontal measurement [mGy]",
+			"kermaHorizontalHint": "Kerma measured with the chamber in the horizontal orientation.",
+			"kermaVertical": "Vertical measurement [mGy]",
+			"kermaVerticalHint": "Kerma measured with the chamber in the vertical orientation.",
+			"beamHeight": "Beam height [cm]",
+			"cbctBeamWidth": "Beam width [cm]"
 		},
 		"stats": {
 			"correctedPkl": "Corrected P_KL",
 			"doseAreaPka": "Dose–area P_KA",
 			"calculatedPka": "Calculated P_KA",
 			"measuredPka": "Measured P_KA",
-			"dfov": "DFOV"
+			"dfov": "DFOV",
+			"meanKerma": "Mean kerma",
+			"beamArea": "Beam area",
+			"estimatedPka": "Estimated P_KA"
 		},
 		"validation": {
 			"calc": "Calc",
@@ -270,6 +280,7 @@
 		"empty": {
 			"pka": "Enter measured P<sub>KL</sub>, focus–receptor and focus–detector distances, and field height to see the calculation.",
 			"dap": "Enter the measured P<sub>KA</sub> to see the comparison.",
+			"cbct": "Enter the horizontal and vertical measurements, beam height and beam width to see the calculation.",
 			"dfov": "Enter K<sub>a,i</sub>, focus–isocenter (a), focus–measurement (b), scanned-volume diameter (c) and radiation-field diameter (d) to see the calculation."
 		},
 		"footer": {
@@ -278,6 +289,9 @@
 			"pkaTolerance": "IN 94 tolerance: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dapFormula": "Deviation = |P<sub>KA,measured</sub> / P<sub>KA,reference</sub> − 1|. Compares against the manufacturer reference (Valor representativo de dose, IN 94).",
 			"dapTolerance": "IN 94 tolerance: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
+			"cbctFormula1": "Mean kerma = (horizontal measurement + vertical measurement) / 2; Beam area = height × width",
+			"cbctFormula2": "Estimated P<sub>KA</sub> = mean kerma × beam area (AAPM Report 261)",
+			"cbctTolerance": "IN 94 tolerance: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dfovFormula": "DFOV = K_a,i(FDD) × (b / a) × (d / c)",
 			"dfovTolerance": "DIN 6868-161 deviation vs reference: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dfovAction": "Action level (DIN 6868-161): DFOV ≤ {threshold} mGy — compliant; above that, dose-reduction action required."

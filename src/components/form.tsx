@@ -3,6 +3,9 @@ import type { ReactNode } from "react";
 export const inputCls =
 	"w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-radiation-400 focus:ring-1 focus:ring-radiation-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-radiation-400 dark:focus:ring-radiation-400";
 
+export const clearBtnCls =
+	"mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10";
+
 export function Section({
 	title,
 	children,

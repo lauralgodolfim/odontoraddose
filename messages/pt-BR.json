@@ -46,7 +46,7 @@
 	},
 	"calculators": {
 		"extraoral": {
-			"title": "Extraoral — PKA / DAP / DFOV CBCT",
+			"title": "Extraoral — PKA / CBCT / DAP / DFOV",
 			"description": "Exatidão do indicador de PKA e comparação do DAP representativo (IN 94), além do DFOV de CBCT vs referência e o nível de ação DIN 6868-161."
 		},
 		"intraoral": {
@@ -195,10 +195,11 @@
 	},
 	"extraoral": {
 		"title": "Extraoral",
-		"description": "Três verificações de CQ para imagem extraoral. <strong>Exatidão do indicador</strong> — verificar o P<sub>KA</sub> reportado pelo equipamento contra uma medição (IN 94). <strong>DAP representativo</strong> — comparar um P<sub>KA</sub> medido à referência do fabricante (IN 94). <strong>DFOV</strong> — validar a dose de CBCT contra a referência e o nível de ação DIN 6868-161.",
+		"description": "Quatro verificações de CQ para imagem extraoral. <strong>Exatidão do indicador</strong> — verificar o P<sub>KA</sub> reportado pelo equipamento contra uma medição (IN 94). <strong>PKA CBCT</strong> — estimar o P<sub>KA</sub> a partir de medições e da área do feixe (AAPM 261, IN 94). <strong>DAP representativo</strong> — comparar um P<sub>KA</sub> medido à referência do fabricante (IN 94). <strong>DFOV</strong> — validar a dose de CBCT contra a referência e o nível de ação DIN 6868-161.",
 		"tabs": {
 			"pka": "PKA estimado",
 			"dap": "PKA medido",
+			"cbct": "PKA Estimado - AAPM 261 (CBCT)",
 			"dfov": "DFOV (CBCT)",
 			"aria": "Calculadoras extraorais"
 		},
@@ -247,14 +248,23 @@
 			"d": "d — Diâmetro do campo de radiação na medição [cm]",
 			"dHint": "Diâmetro horizontal do campo de radiação no ponto de medição.",
 			"reference": "DFOV de referência [mGy]",
-			"referenceDefault": "Padrão do equipamento: {value} mGy."
+			"referenceDefault": "Padrão do equipamento: {value} mGy.",
+			"kermaHorizontal": "Medida horizontal [mGy]",
+			"kermaHorizontalHint": "Kerma medido com a câmara na orientação horizontal.",
+			"kermaVertical": "Medida vertical [mGy]",
+			"kermaVerticalHint": "Kerma medido com a câmara na orientação vertical.",
+			"beamHeight": "Altura do feixe [cm]",
+			"cbctBeamWidth": "Largura do feixe [cm]"
 		},
 		"stats": {
 			"correctedPkl": "P_KL corrigido",
 			"doseAreaPka": "P_KA dose–área",
 			"calculatedPka": "P_KA calculado",
 			"measuredPka": "P_KA medido",
-			"dfov": "DFOV"
+			"dfov": "DFOV",
+			"meanKerma": "Kerma médio",
+			"beamArea": "Área do feixe",
+			"estimatedPka": "P_KA estimado"
 		},
 		"validation": {
 			"calc": "Calc",
@@ -270,6 +280,7 @@
 		"empty": {
 			"pka": "Insira o P<sub>KL</sub> medido, distâncias foco–receptor e foco–detector, e a altura do campo para ver o cálculo.",
 			"dap": "Insira o P<sub>KA</sub> medido para ver a comparação.",
+			"cbct": "Insira as medidas horizontal e vertical, a altura e a largura do feixe para ver o cálculo.",
 			"dfov": "Insira K<sub>a,i</sub>, foco–isocentro (a), foco–medição (b), diâmetro do volume escaneado (c) e diâmetro do campo de radiação (d) para ver o cálculo."
 		},
 		"footer": {
@@ -278,6 +289,9 @@
 			"pkaTolerance": "Tolerância IN 94: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
 			"dapFormula": "Variação = |P<sub>KA,medido</sub> / P<sub>KA,referência</sub> − 1|. Compara com a referência do fabricante (Valor representativo de dose, IN 94).",
 			"dapTolerance": "Tolerância IN 94: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
+			"cbctFormula1": "Kerma médio = (medida horizontal + medida vertical) / 2; Área do feixe = altura × largura",
+			"cbctFormula2": "P<sub>KA</sub> estimado = kerma médio × área do feixe (AAPM Report 261)",
+			"cbctTolerance": "Tolerância IN 94: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
 			"dfovFormula": "DFOV = K_a,i(FDD) × (b / a) × (d / c)",
 			"dfovTolerance": "Variação DIN 6868-161 vs referência: ≤ 20% conforme; 20%–40% não conforme; > 40% restrição.",
 			"dfovAction": "Nível de ação (DIN 6868-161): DFOV ≤ {threshold} mGy — conforme; acima disso, ação de redução de dose necessária."

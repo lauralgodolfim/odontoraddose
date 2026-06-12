@@ -4,8 +4,10 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { ClearButton, Field, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { Input } from "@/components/ui/input";
 import {
@@ -241,39 +243,42 @@ export default function IntraoralPage() {
 					</Section>
 				</form>
 
-				{result ? (
-					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-						<Stat
-							label={t("stats.doseAtConeTip")}
-							value={result.doseAtConeTip}
-							unit={t("stats.doseAtConeTipUnit")}
-						/>
-						<Stat
-							label={t("stats.esd")}
-							value={result.esd}
-							unit="mGy"
-							emphasis
-						/>
-						<Stat
-							label={t("stats.doseRate")}
-							value={result.doseRate}
-							unit="mGy/s"
-						/>
-						<ValidationCard
-							observed={result.esd}
-							observedLabel={t("validation.calc")}
-							expected={result.referenceDose}
-							expectedLabel={t("validation.ref")}
-							unit="mGy"
-							tolerance={intraoralTolerance}
-							emptyHint={t("validation.emptyHint")}
-						/>
-					</section>
-				) : (
-					<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+				<Reveal when={!!result}>
+					{result ? (
+						<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+							<Stat
+								label={t("stats.doseAtConeTip")}
+								value={result.doseAtConeTip}
+								unit={t("stats.doseAtConeTipUnit")}
+							/>
+							<Stat
+								label={t("stats.esd")}
+								value={result.esd}
+								unit="mGy"
+								emphasis
+							/>
+							<Stat
+								label={t("stats.doseRate")}
+								value={result.doseRate}
+								unit="mGy/s"
+							/>
+							<ValidationCard
+								observed={result.esd}
+								observedLabel={t("validation.calc")}
+								expected={result.referenceDose}
+								expectedLabel={t("validation.ref")}
+								unit="mGy"
+								tolerance={intraoralTolerance}
+								emptyHint={t("validation.emptyHint")}
+							/>
+						</section>
+					) : null}
+				</Reveal>
+				<Reveal when={!result}>
+					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400">
 						{t("empty")}
 					</section>
-				)}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>{t.rich("footer.l1", richTags)}</p>

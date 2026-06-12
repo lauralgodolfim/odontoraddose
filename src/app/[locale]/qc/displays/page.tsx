@@ -2,8 +2,10 @@
 
 import { ArrowLeft } from "lucide-react";
 import { useMemo, useState } from "react";
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { ClearButton, Field, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
@@ -223,86 +225,92 @@ export default function DisplaysPage() {
 					</Section>
 				</form>
 
-				{lbResult ? (
-					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-						<Stat
-							label="Light box mean"
-							value={lbResult.mean}
-							unit="cd/m²"
-							emphasis
-						/>
-						<ValidationCard
-							observed={lbResult.mean}
-							observedLabel="Mean"
-							expected={LB_LUMINANCE_MIN}
-							expectedLabel="Min"
-							unit="cd/m²"
-							tolerance={lbLuminanceFloor}
-							emptyHint=""
-						/>
-						<ValidationCard
-							observed={lbResult.uniformity}
-							observedLabel="(max−min)/mean"
-							expected={LB_UNIFORMITY_MAX}
-							expectedLabel="Cap"
-							unit=""
-							tolerance={{
-								fail: 0,
-								restricted: 0.5,
-								reference: "TG-18 uniformity",
-								kind: "cap",
-							}}
-							emptyHint=""
-						/>
-					</section>
-				) : null}
-
-				{monResult.max !== null && monResult.min !== null ? (
-					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-						<Stat label="L max" value={monResult.max} unit="cd/m²" />
-						<Stat label="L min" value={monResult.min} unit="cd/m²" />
-						<Stat
-							label="L max / L min"
-							value={monResult.ratio}
-							unit=""
-							emphasis
-						/>
-						<ValidationCard
-							observed={monResult.max}
-							observedLabel="L max"
-							expected={MON_LUMINANCE_MIN}
-							expectedLabel="Min"
-							unit="cd/m²"
-							tolerance={monLuminanceFloor}
-							emptyHint=""
-						/>
-						{monResult.ratio !== null ? (
+				<Reveal when={!!lbResult}>
+					{lbResult ? (
+						<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							<Stat
+								label="Light box mean"
+								value={lbResult.mean}
+								unit="cd/m²"
+								emphasis
+							/>
 							<ValidationCard
-								observed={monResult.ratio}
-								observedLabel="Ratio"
-								expected={MON_RATIO_MIN}
+								observed={lbResult.mean}
+								observedLabel="Mean"
+								expected={LB_LUMINANCE_MIN}
 								expectedLabel="Min"
-								unit=""
-								tolerance={monRatioFloor}
+								unit="cd/m²"
+								tolerance={lbLuminanceFloor}
 								emptyHint=""
 							/>
-						) : null}
-					</section>
-				) : null}
+							<ValidationCard
+								observed={lbResult.uniformity}
+								observedLabel="(max−min)/mean"
+								expected={LB_UNIFORMITY_MAX}
+								expectedLabel="Cap"
+								unit=""
+								tolerance={{
+									fail: 0,
+									restricted: 0.5,
+									reference: "TG-18 uniformity",
+									kind: "cap",
+								}}
+								emptyHint=""
+							/>
+						</section>
+					) : null}
+				</Reveal>
 
-				{ambient !== null ? (
-					<section>
-						<ValidationCard
-							observed={ambient}
-							observedLabel="Ambient"
-							expected={AMBIENT_LUX_MAX}
-							expectedLabel="Cap"
-							unit="lux"
-							tolerance={ambientCap}
-							emptyHint=""
-						/>
-					</section>
-				) : null}
+				<Reveal when={monResult.max !== null && monResult.min !== null}>
+					{monResult.max !== null && monResult.min !== null ? (
+						<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							<Stat label="L max" value={monResult.max} unit="cd/m²" />
+							<Stat label="L min" value={monResult.min} unit="cd/m²" />
+							<Stat
+								label="L max / L min"
+								value={monResult.ratio}
+								unit=""
+								emphasis
+							/>
+							<ValidationCard
+								observed={monResult.max}
+								observedLabel="L max"
+								expected={MON_LUMINANCE_MIN}
+								expectedLabel="Min"
+								unit="cd/m²"
+								tolerance={monLuminanceFloor}
+								emptyHint=""
+							/>
+							{monResult.ratio !== null ? (
+								<ValidationCard
+									observed={monResult.ratio}
+									observedLabel="Ratio"
+									expected={MON_RATIO_MIN}
+									expectedLabel="Min"
+									unit=""
+									tolerance={monRatioFloor}
+									emptyHint=""
+								/>
+							) : null}
+						</section>
+					) : null}
+				</Reveal>
+
+				<Reveal when={ambient !== null}>
+					{ambient !== null ? (
+						<section className="animate-fade-up">
+							<ValidationCard
+								observed={ambient}
+								observedLabel="Ambient"
+								expected={AMBIENT_LUX_MAX}
+								expectedLabel="Cap"
+								unit="lux"
+								tolerance={ambientCap}
+								emptyHint=""
+							/>
+						</section>
+					) : null}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>Light box mean = average of 5 measurement points.</p>

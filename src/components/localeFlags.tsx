@@ -1,10 +1,13 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useLocale } from "next-intl";
-import { type JSX, useTransition } from "react";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import type { JSX } from "react";
 import { type Locale, routing } from "@/i18n/routing";
+
+/**
+ * Shared locale flag switcher for the error/not-found pages, which render
+ * OUTSIDE the next-intl provider and so can't use the provider-bound
+ * `LocaleSwitcher`. These flip a local copy language rather than navigating.
+ */
 
 function BrazilFlag() {
 	return (
@@ -55,24 +58,19 @@ const shortLabel: Record<Locale, string> = {
 	en: "EN",
 };
 
-export function LocaleSwitcher() {
-	const locale = useLocale();
-	const router = useRouter();
-	const pathname = usePathname();
-	const params = useParams();
-	const [isPending, startTransition] = useTransition();
+/** Locale from the URL prefix, defaulting to English for unprefixed paths. */
+export function localeFromPath(pathname: string): Locale {
+	const first = pathname.split("/").filter(Boolean)[0];
+	return routing.locales.find((l) => l === first) ?? "en";
+}
 
-	const switchTo = (next: Locale) => {
-		if (next === locale) return;
-		startTransition(() => {
-			router.replace(
-				// @ts-expect-error -- next-intl typed routes can't infer params at runtime
-				{ pathname, params },
-				{ locale: next },
-			);
-		});
-	};
-
+export function LocaleFlagToggle({
+	locale,
+	onSelect,
+}: {
+	locale: Locale;
+	onSelect: (locale: Locale) => void;
+}) {
 	return (
 		<div className="inline-flex items-center gap-1">
 			{routing.locales.map((l) => {
@@ -82,13 +80,12 @@ export function LocaleSwitcher() {
 					<button
 						key={l}
 						type="button"
-						onClick={() => switchTo(l)}
-						disabled={isPending || active}
+						onClick={() => onSelect(l)}
 						aria-pressed={active}
 						className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-[11px] font-medium uppercase tracking-wider transition ${
 							active
 								? "border-radiation-400/60 bg-radiation-400/10 text-radiation-300"
-								: "border-radiation-400/20 text-zinc-400 hover:border-radiation-400/50 hover:text-zinc-200 disabled:opacity-50"
+								: "border-radiation-400/20 text-zinc-400 hover:border-radiation-400/50 hover:text-zinc-200"
 						}`}
 					>
 						<Flag />

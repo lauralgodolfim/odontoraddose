@@ -4,8 +4,10 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { ClearButton, Field, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { Input } from "@/components/ui/input";
 import {
@@ -360,60 +362,69 @@ export default function TomographyPage() {
 					</Section>
 				</form>
 
-				{result ? (
-					<>
-						<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-							<Stat label={t("stats.ctdiW")} value={result.ctdiW} unit="mGy" />
-							<Stat
-								label={t("stats.ctdiVol")}
-								value={result.ctdiVol}
-								unit="mGy"
-								emphasis
-							/>
-							<Stat label={t("stats.dlp")} value={result.dlp} unit="mGy·cm" />
-							<Stat
-								label={t("stats.effectiveDose")}
-								value={result.effectiveDose}
-								unit="mSv"
-							/>
-						</section>
-						<section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-							<ValidationCard
-								observed={result.ctdiVol}
-								observedLabel={t("validation.calc")}
-								expected={result.ctdiVolIndicated}
-								expectedLabel={t("validation.indicated")}
-								unit="mGy"
-								tolerance={ctdiAccuracyTolerance}
-								emptyHint={t("validation.emptyHint")}
-							/>
-							{result.cap !== null ? (
+				<Reveal when={!!result}>
+					{result ? (
+						<>
+							<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+								<Stat
+									label={t("stats.ctdiW")}
+									value={result.ctdiW}
+									unit="mGy"
+								/>
+								<Stat
+									label={t("stats.ctdiVol")}
+									value={result.ctdiVol}
+									unit="mGy"
+									emphasis
+								/>
+								<Stat label={t("stats.dlp")} value={result.dlp} unit="mGy·cm" />
+								<Stat
+									label={t("stats.effectiveDose")}
+									value={result.effectiveDose}
+									unit="mSv"
+								/>
+							</section>
+							<section className="grid animate-fade-up grid-cols-1 gap-4 lg:grid-cols-2">
 								<ValidationCard
 									observed={result.ctdiVol}
 									observedLabel={t("validation.calc")}
-									expected={result.cap}
-									expectedLabel={t("validation.cap")}
+									expected={result.ctdiVolIndicated}
+									expectedLabel={t("validation.indicated")}
 									unit="mGy"
-									tolerance={ctdiCapTolerance}
-									emptyHint=""
+									tolerance={ctdiAccuracyTolerance}
+									emptyHint={t("validation.emptyHint")}
 								/>
-							) : (
-								<div className="flex flex-col gap-1 rounded-lg border border-dashed border-zinc-300 p-4 text-xs text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-									<span className="font-medium uppercase tracking-wider">
-										{t("validation.capLabel")}
-									</span>
-									<span>
-										{t("validation.capNone", { region: tRegion(form.region) })}
-									</span>
-								</div>
-							)}
-						</section>
-					</>
-				) : (
-					<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+								{result.cap !== null ? (
+									<ValidationCard
+										observed={result.ctdiVol}
+										observedLabel={t("validation.calc")}
+										expected={result.cap}
+										expectedLabel={t("validation.cap")}
+										unit="mGy"
+										tolerance={ctdiCapTolerance}
+										emptyHint=""
+									/>
+								) : (
+									<div className="flex flex-col gap-1 rounded-lg border border-dashed border-zinc-300 p-4 text-xs text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
+										<span className="font-medium uppercase tracking-wider">
+											{t("validation.capLabel")}
+										</span>
+										<span>
+											{t("validation.capNone", {
+												region: tRegion(form.region),
+											})}
+										</span>
+									</div>
+								)}
+							</section>
+						</>
+					) : null}
+				</Reveal>
+				<Reveal when={!result}>
+					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400">
 						{t("empty")}
 					</section>
-				)}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>{t("footer.l1")}</p>

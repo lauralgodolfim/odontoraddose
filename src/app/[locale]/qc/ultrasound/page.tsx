@@ -2,9 +2,10 @@
 
 import { ArrowLeft } from "lucide-react";
 import { useMemo, useState } from "react";
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Field, Section } from "@/components/form";
-import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/Reveal";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
@@ -224,32 +225,30 @@ export default function UltrasoundPage() {
 							</label>
 						))}
 					</div>
-					<Button
-						type="button"
-						variant="outline"
+					<ClearButton
 						onClick={() => setForm(initial)}
 						className="self-start rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-					>
-						Clear
-					</Button>
+					/>
 				</Section>
 
-				{overall ? (
-					<section
-						className={`flex flex-col gap-1 rounded-lg border p-4 ${verdictMeta[overall].tone}`}
-					>
-						<span className="text-[11px] font-medium uppercase tracking-wider">
-							Overall verdict
-						</span>
-						<span className="text-2xl font-semibold">
-							{verdictMeta[overall].label}
-						</span>
-						<span className="text-[11px]">
-							Aggregates the worst result across all completed numeric and
-							pass/fail tests.
-						</span>
-					</section>
-				) : null}
+				<Reveal when={!!overall}>
+					{overall ? (
+						<section
+							className={`flex animate-fade-up flex-col gap-1 rounded-lg border p-4 ${verdictMeta[overall].tone}`}
+						>
+							<span className="text-[11px] font-medium uppercase tracking-wider">
+								Overall verdict
+							</span>
+							<span className="text-2xl font-semibold">
+								{verdictMeta[overall].label}
+							</span>
+							<span className="text-[11px]">
+								Aggregates the worst result across all completed numeric and
+								pass/fail tests.
+							</span>
+						</section>
+					) : null}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>

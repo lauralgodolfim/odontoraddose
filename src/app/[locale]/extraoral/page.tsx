@@ -2,8 +2,9 @@
 
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { ComponentType } from "react";
+import { type ComponentType, useEffect } from "react";
 
+import { useEquipment } from "@/components/EquipmentProvider";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "@/i18n/navigation";
@@ -25,6 +26,17 @@ const TABS: { id: TabId; Panel: ComponentType }[] = [
 export default function ExtraoralPage() {
 	const t = useTranslations("extraoral");
 	const tCommon = useTranslations("common");
+	const { equipments, getSelected, select } = useEquipment();
+
+	// When no equipment is selected for this calculator, default to the first one
+	// that has extraoral reference values (manufacturer P_KA or DFOV) filled in.
+	useEffect(() => {
+		if (getSelected("extraoral")) return;
+		const firstWithExtraoral = equipments.find((e) =>
+			Boolean(e.referencePka?.trim() || e.referenceDfov?.trim()),
+		);
+		if (firstWithExtraoral) select("extraoral", firstWithExtraoral.id);
+	}, [equipments, getSelected, select]);
 
 	return (
 		<div className="flex flex-col flex-1 bg-zinc-50 font-sans dark:bg-black">
@@ -57,7 +69,7 @@ export default function ExtraoralPage() {
 							<TabsTrigger
 								key={id}
 								value={id}
-								className="h-auto flex-none rounded-none px-4 py-2 text-sm font-medium text-zinc-500 after:-bottom-px after:h-0.5 after:bg-radiation-400 hover:text-zinc-900 data-active:text-radiation-500 dark:text-zinc-500 dark:hover:text-zinc-200 dark:data-active:text-radiation-300"
+								className="h-auto flex-none rounded-none px-4 py-2 text-sm font-medium text-zinc-500 after:-bottom-px after:h-0.5 after:bg-radiation-400 hover:text-zinc-900 data-active:text-radiation-500 dark:text-zinc-400 dark:hover:text-zinc-200 dark:data-active:text-radiation-300"
 							>
 								{t(`tabs.${id}`)}
 							</TabsTrigger>

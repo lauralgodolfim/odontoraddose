@@ -2,10 +2,11 @@
 
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
-
+import { ClearButton } from "@/components/ClearButton";
 import { ComparisonChart } from "@/components/ComparisonChart";
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
-import { ClearButton, Field, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
@@ -164,71 +165,76 @@ export function CbctTab() {
 				</Section>
 			</form>
 
-			{result ? (
-				<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-					<Stat
-						label={t("stats.meanKerma")}
-						value={result.kermaMean}
-						unit="mGy"
-					/>
-					<Stat
-						label={t("stats.beamArea")}
-						value={result.beamArea}
-						unit="cm²"
-					/>
-					<Stat
-						label={t("stats.estimatedPka")}
-						value={result.pkaEstimated}
-						unit="mGy·cm²"
-						emphasis
-					/>
-					<ValidationCard
-						observed={result.pkaEstimated}
-						observedLabel={t("validation.calc")}
-						expected={result.pkaMach}
-						expectedLabel={t("validation.machine")}
-						unit="mGy·cm²"
-						tolerance={IN_94_PKA}
-						emptyHint={t("validation.hintMachine")}
-					/>
-					<ValidationCard
-						observed={result.pkaEstimated}
-						observedLabel={t("validation.calc")}
-						expected={result.pkaRef}
-						expectedLabel={t("validation.reference")}
-						unit="mGy·cm²"
-						tolerance={IN_94_PKA}
-						emptyHint={t("validation.hintReference")}
-					/>
-				</section>
-			) : null}
+			<Reveal when={!!result}>
+				{result ? (
+					<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+						<Stat
+							label={t("stats.meanKerma")}
+							value={result.kermaMean}
+							unit="mGy"
+						/>
+						<Stat
+							label={t("stats.beamArea")}
+							value={result.beamArea}
+							unit="cm²"
+						/>
+						<Stat
+							label={t("stats.estimatedPka")}
+							value={result.pkaEstimated}
+							unit="mGy·cm²"
+							emphasis
+						/>
+						<ValidationCard
+							observed={result.pkaEstimated}
+							observedLabel={t("validation.calc")}
+							expected={result.pkaMach}
+							expectedLabel={t("validation.machine")}
+							unit="mGy·cm²"
+							tolerance={IN_94_PKA}
+							emptyHint={t("validation.hintMachine")}
+						/>
+						<ValidationCard
+							observed={result.pkaEstimated}
+							observedLabel={t("validation.calc")}
+							expected={result.pkaRef}
+							expectedLabel={t("validation.reference")}
+							unit="mGy·cm²"
+							tolerance={IN_94_PKA}
+							emptyHint={t("validation.hintReference")}
+						/>
+					</section>
+				) : null}
+			</Reveal>
 
-			{result ? (
-				<ComparisonChart
-					unit="mGy·cm²"
-					series={[
-						{
-							label: t("validation.calc"),
-							value: result.pkaEstimated,
-							tone: "primary",
-						},
-						{
-							label: t("validation.machine"),
-							value: result.pkaMach,
-							tone: "neutral",
-						},
-						{
-							label: t("validation.reference"),
-							value: result.pkaRef,
-							tone: "equipment",
-						},
-					]}
-				/>
-			) : (
-				<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+			<Reveal when={!!result}>
+				{result ? (
+					<ComparisonChart
+						unit="mGy·cm²"
+						series={[
+							{
+								label: t("validation.calc"),
+								value: result.pkaEstimated,
+								tone: "primary",
+							},
+							{
+								label: t("validation.machine"),
+								value: result.pkaMach,
+								tone: "neutral",
+							},
+							{
+								label: t("validation.reference"),
+								value: result.pkaRef,
+								tone: "equipment",
+							},
+						]}
+					/>
+				) : null}
+			</Reveal>
+			<Reveal when={!result}>
+				<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400">
 					{t.rich("empty.cbct", richTags)}
 				</section>
-			)}
+			</Reveal>
 
 			<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 				<p>{t.rich("footer.cbctFormula1", richTags)}</p>

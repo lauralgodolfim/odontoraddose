@@ -4,8 +4,10 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { ClearButton, Field, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { Input } from "@/components/ui/input";
 import {
@@ -259,34 +261,37 @@ export default function ConventionalPage() {
 					</Section>
 				</form>
 
-				{result ? (
-					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-						<Stat
-							label={t("stats.focusSkin")}
-							value={result.skinFocusDistance}
-							unit="cm"
-						/>
-						<Stat
-							label={t("stats.esd")}
-							value={result.esd}
-							unit="mGy"
-							emphasis
-						/>
-						<ValidationCard
-							observed={result.esd}
-							observedLabel={t("validation.calc")}
-							expected={result.maxEsd}
-							expectedLabel={t("validation.cap")}
-							unit="mGy"
-							tolerance={in90Cap}
-							emptyHint={t("validation.emptyHint")}
-						/>
-					</section>
-				) : (
-					<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+				<Reveal when={!!result}>
+					{result ? (
+						<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							<Stat
+								label={t("stats.focusSkin")}
+								value={result.skinFocusDistance}
+								unit="cm"
+							/>
+							<Stat
+								label={t("stats.esd")}
+								value={result.esd}
+								unit="mGy"
+								emphasis
+							/>
+							<ValidationCard
+								observed={result.esd}
+								observedLabel={t("validation.calc")}
+								expected={result.maxEsd}
+								expectedLabel={t("validation.cap")}
+								unit="mGy"
+								tolerance={in90Cap}
+								emptyHint={t("validation.emptyHint")}
+							/>
+						</section>
+					) : null}
+				</Reveal>
+				<Reveal when={!result}>
+					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400">
 						{t("empty")}
 					</section>
-				)}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>{t("footer.l1")}</p>

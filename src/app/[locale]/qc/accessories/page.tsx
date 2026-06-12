@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useMemo, useState } from "react";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -128,27 +129,29 @@ export default function AcessoriosPage() {
 					</div>
 				</Section>
 
-				{summary ? (
-					<section
-						className={`flex flex-col gap-1 rounded-lg border p-4 ${verdictMeta[summary.verdict].tone}`}
-					>
-						<span className="text-[11px] font-medium uppercase tracking-wider">
-							IN 56 / NR 32
-						</span>
-						<span className="text-2xl font-semibold">
-							{verdictMeta[summary.verdict].label}
-						</span>
-						<span className="font-mono text-sm tabular-nums">
-							{summary.passed} pass · {summary.failed} fail · {items.length}{" "}
-							total
-						</span>
-						<span className="text-[11px]">
-							Pass when no item fails. Fail when up to 20% of items fail.
-							Restricted when more than 20% fail or any critical item is
-							missing.
-						</span>
-					</section>
-				) : null}
+				<Reveal when={!!summary}>
+					{summary ? (
+						<section
+							className={`flex animate-fade-up flex-col gap-1 rounded-lg border p-4 ${verdictMeta[summary.verdict].tone}`}
+						>
+							<span className="text-[11px] font-medium uppercase tracking-wider">
+								IN 56 / NR 32
+							</span>
+							<span className="text-2xl font-semibold">
+								{verdictMeta[summary.verdict].label}
+							</span>
+							<span className="font-mono text-sm tabular-nums">
+								{summary.passed} pass · {summary.failed} fail · {items.length}{" "}
+								total
+							</span>
+							<span className="text-[11px]">
+								Pass when no item fails. Fail when up to 20% of items fail.
+								Restricted when more than 20% fail or any critical item is
+								missing.
+							</span>
+						</section>
+					) : null}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>
@@ -259,7 +262,7 @@ function AccessoryRow({
 					type="button"
 					variant="outline"
 					onClick={onRemove}
-					className="ml-auto text-xs text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400"
+					className="ml-auto text-xs text-zinc-500 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400"
 				>
 					Remove
 				</Button>

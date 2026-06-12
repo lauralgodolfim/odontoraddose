@@ -4,8 +4,10 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { ClearButton, Field, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { Input } from "@/components/ui/input";
 import {
@@ -232,48 +234,53 @@ export default function FluoroscopyPage() {
 					</Section>
 				</form>
 
-				{result ? (
-					<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-						<Stat
-							label={t("stats.rateChamber")}
-							value={result.ratePerMinAtChamber}
-							unit="mGy/min"
-						/>
-						<Stat
-							label={t("stats.rateEntrance")}
-							value={result.rateAtSkin}
-							unit="mGy/min"
-							emphasis
-						/>
-						<ValidationCard
-							observed={result.rateAtSkin ?? result.ratePerMinAtChamber}
-							observedLabel={t("validation.rate")}
-							expected={result.cap}
-							expectedLabel={t("validation.cap")}
-							unit="mGy/min"
-							tolerance={dosRateCap}
-							emptyHint=""
-						/>
-					</section>
-				) : (
-					<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+				<Reveal when={!!result}>
+					{result ? (
+						<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							<Stat
+								label={t("stats.rateChamber")}
+								value={result.ratePerMinAtChamber}
+								unit="mGy/min"
+							/>
+							<Stat
+								label={t("stats.rateEntrance")}
+								value={result.rateAtSkin}
+								unit="mGy/min"
+								emphasis
+							/>
+							<ValidationCard
+								observed={result.rateAtSkin ?? result.ratePerMinAtChamber}
+								observedLabel={t("validation.rate")}
+								expected={result.cap}
+								expectedLabel={t("validation.cap")}
+								unit="mGy/min"
+								tolerance={dosRateCap}
+								emptyHint=""
+							/>
+						</section>
+					) : null}
+				</Reveal>
+				<Reveal when={!result}>
+					<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400">
 						{t("empty")}
 					</section>
-				)}
+				</Reveal>
 
-				{alarmMin !== null ? (
-					<section>
-						<ValidationCard
-							observed={alarmMin}
-							observedLabel={t("validation.alarm")}
-							expected={ALARM_THRESHOLD_MIN}
-							expectedLabel={t("validation.cap")}
-							unit="min"
-							tolerance={alarmTolerance}
-							emptyHint=""
-						/>
-					</section>
-				) : null}
+				<Reveal when={alarmMin !== null}>
+					{alarmMin !== null ? (
+						<section className="animate-fade-up">
+							<ValidationCard
+								observed={alarmMin}
+								observedLabel={t("validation.alarm")}
+								expected={ALARM_THRESHOLD_MIN}
+								expectedLabel={t("validation.cap")}
+								unit="min"
+								tolerance={alarmTolerance}
+								emptyHint=""
+							/>
+						</section>
+					) : null}
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>{t("footer.l1")}</p>

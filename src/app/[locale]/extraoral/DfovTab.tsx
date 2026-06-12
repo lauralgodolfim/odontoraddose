@@ -2,10 +2,11 @@
 
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
-
+import { ClearButton } from "@/components/ClearButton";
 import { ComparisonChart } from "@/components/ComparisonChart";
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
-import { ClearButton, Field, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
@@ -135,55 +136,60 @@ export function DfovTab() {
 				</Section>
 			</form>
 
-			{result ? (
-				<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-					<Stat
-						label={t("stats.dfov")}
-						value={result.dfov}
-						unit="mGy"
-						emphasis
-					/>
-					<ValidationCard
-						observed={result.dfov}
-						observedLabel={t("validation.calc")}
-						expected={result.reference}
-						expectedLabel={t("validation.reference")}
-						unit="mGy"
-						tolerance={DIN_6868_161_DFOV}
-						emptyHint={t("validation.hintDfovRef")}
-					/>
-					<ActionLevelCard dfov={result.dfov} />
-				</section>
-			) : null}
+			<Reveal when={!!result}>
+				{result ? (
+					<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+						<Stat
+							label={t("stats.dfov")}
+							value={result.dfov}
+							unit="mGy"
+							emphasis
+						/>
+						<ValidationCard
+							observed={result.dfov}
+							observedLabel={t("validation.calc")}
+							expected={result.reference}
+							expectedLabel={t("validation.reference")}
+							unit="mGy"
+							tolerance={DIN_6868_161_DFOV}
+							emptyHint={t("validation.hintDfovRef")}
+						/>
+						<ActionLevelCard dfov={result.dfov} />
+					</section>
+				) : null}
+			</Reveal>
 
-			{result ? (
-				<ComparisonChart
-					unit="mGy"
-					threshold={DFOV_ACTION_LEVEL_MGY}
-					thresholdLabel={t("actionLevel.label")}
-					series={[
-						{
-							label: t("validation.calc"),
-							value: result.dfov,
-							tone: "primary",
-						},
-						{
-							label: t("validation.reference"),
-							value: parse(form.reference),
-							tone: "neutral",
-						},
-						{
-							label: t("validation.equipment"),
-							value: parse(equipment?.referenceDfov ?? ""),
-							tone: "equipment",
-						},
-					]}
-				/>
-			) : (
-				<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+			<Reveal when={!!result}>
+				{result ? (
+					<ComparisonChart
+						unit="mGy"
+						threshold={DFOV_ACTION_LEVEL_MGY}
+						thresholdLabel={t("actionLevel.label")}
+						series={[
+							{
+								label: t("validation.calc"),
+								value: result.dfov,
+								tone: "primary",
+							},
+							{
+								label: t("validation.reference"),
+								value: parse(form.reference),
+								tone: "neutral",
+							},
+							{
+								label: t("validation.equipment"),
+								value: parse(equipment?.referenceDfov ?? ""),
+								tone: "equipment",
+							},
+						]}
+					/>
+				) : null}
+			</Reveal>
+			<Reveal when={!result}>
+				<section className="animate-fade-up rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40 dark:text-zinc-400">
 					{t.rich("empty.dfov", richTags)}
 				</section>
-			)}
+			</Reveal>
 
 			<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 				<p>{t("footer.dfovFormula")}</p>

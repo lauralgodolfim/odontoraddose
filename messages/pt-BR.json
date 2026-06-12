@@ -10,7 +10,9 @@
 		"printReport": "Imprimir laudo",
 		"workInProgress": "Em desenvolvimento",
 		"language": "Idioma",
-		"continue": "Continuar →"
+		"continue": "Continuar →",
+		"mute": "Silenciar sons",
+		"unmute": "Ativar sons"
 	},
 	"languages": {
 		"pt-BR": "Português (BR)",
@@ -231,7 +233,7 @@
 			"pklMeasured": "P_KL medido [mGy·cm]",
 			"correctionFactor": "Fator de correção",
 			"correctionFactorHint": "Mantenha em 1 quando nenhum fator for declarado.",
-			"pkaMachine": "P_KA reportado pela máquina [mGy·cm²]",
+			"pkaMachine": "P_KA indicado pelo equipamento [mGy·cm²]",
 			"pkaMeasured": "P_KA medido [mGy·cm²]",
 			"pkaMeasuredHint": "DAP medido com a câmara ou calculado na aba de indicador.",
 			"pkaReference": "P_KA de referência do fabricante [mGy·cm²]",
@@ -268,10 +270,10 @@
 		},
 		"validation": {
 			"calc": "Calc",
-			"machine": "Máquina",
+			"machine": "Aparelho",
 			"measured": "Medido",
-			"reference": "Referência",
-			"equipment": "Equipamento",
+			"reference": "Indicado",
+			"equipment": "Fabricante",
 			"hintMachine": "Insira o P_KA indicado pelo equipamento para comparar.",
 			"hintReference": "Insira o P_KA de referência do fabricante para comparar.",
 			"hintEquipment": "Defina o P_KA de referência do fabricante no equipamento selecionado para comparar.",
@@ -340,7 +342,7 @@
 		},
 		"validation": {
 			"calc": "Calc",
-			"ref": "Ref",
+			"ref": "Indicado",
 			"emptyHint": "Insira uma DEP de referência para comparar."
 		},
 		"empty": "Insira a dose na câmara, distância foco–câmara e distância foco–ponta do cone para ver o cálculo da DEP.",

@@ -1,9 +1,5 @@
-"use client";
-
-import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 
@@ -47,19 +43,5 @@ export function Field({
 				</span>
 			) : null}
 		</Label>
-	);
-}
-
-export function ClearButton({ onClick }: { onClick: () => void }) {
-	const t = useTranslations("common");
-	return (
-		<Button
-			type="button"
-			variant="outline"
-			onClick={onClick}
-			className="mt-2 self-start border-radiation-400/40 text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10 hover:text-radiation-300 dark:border-radiation-400/40 dark:bg-zinc-950 dark:hover:bg-radiation-400/10"
-		>
-			{t("clear")}
-		</Button>
 	);
 }

@@ -2,8 +2,10 @@
 
 import { ArrowLeft } from "lucide-react";
 import { useMemo, useState } from "react";
+import { ClearButton } from "@/components/ClearButton";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { ClearButton, Field, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
+import { Reveal } from "@/components/Reveal";
 import { Stat } from "@/components/Stat";
 import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
@@ -104,6 +106,15 @@ export default function MriPage() {
 	const piu = parse(form.piuPct);
 	const ghosting = parse(form.ghostingPct);
 	const lowContrast = parse(form.lowContrastSpokes);
+
+	const hasResults =
+		result.snr !== null ||
+		geom !== null ||
+		(sliceMeas !== null && sliceNom !== null) ||
+		slicePos !== null ||
+		piu !== null ||
+		ghosting !== null ||
+		lowContrast !== null;
 
 	return (
 		<div className="flex flex-col flex-1 bg-zinc-50 font-sans dark:bg-black">
@@ -236,77 +247,79 @@ export default function MriPage() {
 					</Section>
 				</form>
 
-				<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-					{result.snr !== null ? (
-						<Stat label="SNR" value={result.snr} unit="" emphasis />
-					) : null}
-					{geom !== null ? (
-						<ValidationCard
-							observed={geom}
-							observedLabel="Length"
-							expected={GEOMETRY_NOMINAL}
-							expectedLabel="Target"
-							unit="mm"
-							tolerance={geometryTolerance}
-							emptyHint=""
-						/>
-					) : null}
-					{sliceMeas !== null && sliceNom !== null ? (
-						<ValidationCard
-							observed={sliceMeas}
-							observedLabel="Slice"
-							expected={sliceNom}
-							expectedLabel="Nominal"
-							unit="mm"
-							tolerance={sliceThicknessTolerance}
-							emptyHint=""
-						/>
-					) : null}
-					{slicePos !== null ? (
-						<ValidationCard
-							observed={slicePos}
-							observedLabel="Δ"
-							expected={0}
-							expectedLabel="Target"
-							unit="mm"
-							tolerance={slicePositionTolerance}
-							emptyHint=""
-						/>
-					) : null}
-					{piu !== null ? (
-						<ValidationCard
-							observed={piu}
-							observedLabel="PIU"
-							expected={PIU_MIN}
-							expectedLabel="Min"
-							unit="%"
-							tolerance={piuFloor}
-							emptyHint=""
-						/>
-					) : null}
-					{ghosting !== null ? (
-						<ValidationCard
-							observed={ghosting}
-							observedLabel="PSG"
-							expected={PSG_CAP}
-							expectedLabel="Cap"
-							unit="%"
-							tolerance={ghostingCap}
-							emptyHint=""
-						/>
-					) : null}
-					{lowContrast !== null ? (
-						<ValidationCard
-							observed={lowContrast}
-							observedLabel="Spokes"
-							expected={LOW_CONTRAST_MIN}
-							expectedLabel="Min"
-							unit=""
-							tolerance={lowContrastFloor}
-							emptyHint=""
-						/>
-					) : null}
-				</section>
+				<Reveal when={hasResults}>
+					<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+						{result.snr !== null ? (
+							<Stat label="SNR" value={result.snr} unit="" emphasis />
+						) : null}
+						{geom !== null ? (
+							<ValidationCard
+								observed={geom}
+								observedLabel="Length"
+								expected={GEOMETRY_NOMINAL}
+								expectedLabel="Target"
+								unit="mm"
+								tolerance={geometryTolerance}
+								emptyHint=""
+							/>
+						) : null}
+						{sliceMeas !== null && sliceNom !== null ? (
+							<ValidationCard
+								observed={sliceMeas}
+								observedLabel="Slice"
+								expected={sliceNom}
+								expectedLabel="Nominal"
+								unit="mm"
+								tolerance={sliceThicknessTolerance}
+								emptyHint=""
+							/>
+						) : null}
+						{slicePos !== null ? (
+							<ValidationCard
+								observed={slicePos}
+								observedLabel="Δ"
+								expected={0}
+								expectedLabel="Target"
+								unit="mm"
+								tolerance={slicePositionTolerance}
+								emptyHint=""
+							/>
+						) : null}
+						{piu !== null ? (
+							<ValidationCard
+								observed={piu}
+								observedLabel="PIU"
+								expected={PIU_MIN}
+								expectedLabel="Min"
+								unit="%"
+								tolerance={piuFloor}
+								emptyHint=""
+							/>
+						) : null}
+						{ghosting !== null ? (
+							<ValidationCard
+								observed={ghosting}
+								observedLabel="PSG"
+								expected={PSG_CAP}
+								expectedLabel="Cap"
+								unit="%"
+								tolerance={ghostingCap}
+								emptyHint=""
+							/>
+						) : null}
+						{lowContrast !== null ? (
+							<ValidationCard
+								observed={lowContrast}
+								observedLabel="Spokes"
+								expected={LOW_CONTRAST_MIN}
+								expectedLabel="Min"
+								unit=""
+								tolerance={lowContrastFloor}
+								emptyHint=""
+							/>
+						) : null}
+					</section>
+				</Reveal>
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>SNR = signal-ROI mean / background-noise standard deviation.</p>

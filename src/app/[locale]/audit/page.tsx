@@ -139,7 +139,7 @@ function AuditView() {
 															className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${
 																c.status === "implemented"
 																	? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
-																	: "border border-zinc-300 text-zinc-500 dark:border-zinc-700 dark:text-zinc-500"
+																	: "border border-zinc-300 text-zinc-500 dark:border-zinc-700 dark:text-zinc-400"
 															}`}
 														>
 															{tStatus(c.status)}

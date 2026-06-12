@@ -5,11 +5,20 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { ValidationCard } from "@/components/ValidationCard";
 import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
+import { richTags } from "@/lib/rich";
 import type { Tolerance } from "@/lib/verdict";
 
 const fluoroModes = {
@@ -119,41 +128,45 @@ export default function FluoroscopyPage() {
 				>
 					<Section title={t("sections.operatingMode")}>
 						<Field label={t("fields.mode")} hint={t("fields.modeHint")}>
-							<select
+							<Select
 								value={form.mode}
-								onChange={update("mode")}
-								className={inputCls}
+								onValueChange={(v) =>
+									setForm((f) => ({ ...f, mode: v as Mode }))
+								}
 							>
-								{(Object.keys(fluoroModes) as Mode[]).map((m) => (
-									<option key={m} value={m}>
-										{t("fields.modeOption", {
-											label: t(
-												// biome-ignore lint/suspicious/noExplicitAny: dynamic key
-												`fields.${fluoroModes[m].labelKey}` as any,
-											),
-											cap: fluoroModes[m].capMgyPerMin,
-										})}
-									</option>
-								))}
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									{(Object.keys(fluoroModes) as Mode[]).map((m) => (
+										<SelectItem key={m} value={m}>
+											{t("fields.modeOption", {
+												label: t(
+													// biome-ignore lint/suspicious/noExplicitAny: dynamic key
+													`fields.${fluoroModes[m].labelKey}` as any,
+												),
+												cap: fluoroModes[m].capMgyPerMin,
+											})}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
 						</Field>
 						<div className="grid grid-cols-2 gap-3">
 							<Field label={t("fields.kvp")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.kvp}
 									onChange={update("kvp")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.mA")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.mA}
 									onChange={update("mA")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
@@ -164,45 +177,41 @@ export default function FluoroscopyPage() {
 							label={t("fields.dFocusChamber")}
 							hint={t("fields.dFocusChamberHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.dFocusChamber}
 								onChange={update("dFocusChamber")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field
 							label={t("fields.dFocusSkin")}
 							hint={t("fields.dFocusSkinHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.dFocusSkin}
 								onChange={update("dFocusSkin")}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
 
 					<Section title={t("sections.measurement")}>
 						<Field label={t("fields.chamberMgy")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.chamberMgy}
 								onChange={update("chamberMgy")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field label={t("fields.exposureSeconds")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.exposureSeconds}
 								onChange={update("exposureSeconds")}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
@@ -212,21 +221,14 @@ export default function FluoroscopyPage() {
 							label={t("fields.alarmMinutes")}
 							hint={t("fields.alarmMinutesHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.alarmMinutes}
 								onChange={update("alarmMinutes")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 
@@ -275,10 +277,7 @@ export default function FluoroscopyPage() {
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>{t("footer.l1")}</p>
-					<p
-						// biome-ignore lint/security/noDangerouslySetInnerHtml: formula uses <sub> markup
-						dangerouslySetInnerHTML={{ __html: t.raw("footer.l2") as string }}
-					/>
+					<p>{t.rich("footer.l2", richTags)}</p>
 					<p className="mt-1">{t("footer.l3")}</p>
 				</footer>
 			</main>

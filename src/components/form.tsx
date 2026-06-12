@@ -1,10 +1,11 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-export const inputCls =
-	"w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-radiation-400 focus:ring-1 focus:ring-radiation-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-radiation-400 dark:focus:ring-radiation-400";
-
-export const clearBtnCls =
-	"mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 export function Section({
 	title,
@@ -14,12 +15,14 @@ export function Section({
 	children: ReactNode;
 }) {
 	return (
-		<section className="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-white p-4 dark:border-radiation-400/25 dark:bg-zinc-950">
-			<h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-700 dark:text-radiation-300">
-				{title}
-			</h2>
-			<div className="flex flex-col gap-3">{children}</div>
-		</section>
+		<Card className="gap-3 rounded-lg ring-zinc-200 dark:bg-zinc-950 dark:ring-radiation-400/25">
+			<CardHeader>
+				<CardTitle className="text-sm font-semibold uppercase tracking-wide text-zinc-700 dark:text-radiation-300">
+					{title}
+				</CardTitle>
+			</CardHeader>
+			<CardContent className="flex flex-col gap-3">{children}</CardContent>
+		</Card>
 	);
 }
 
@@ -33,8 +36,7 @@ export function Field({
 	children: ReactNode;
 }) {
 	return (
-		// biome-ignore lint/a11y/noLabelWithoutControl: control is the children prop and is rendered inside the label
-		<label className="flex flex-col gap-1">
+		<Label className="flex flex-col items-stretch gap-1 font-normal">
 			<span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
 				{label}
 			</span>
@@ -44,6 +46,20 @@ export function Field({
 					{hint}
 				</span>
 			) : null}
-		</label>
+		</Label>
+	);
+}
+
+export function ClearButton({ onClick }: { onClick: () => void }) {
+	const t = useTranslations("common");
+	return (
+		<Button
+			type="button"
+			variant="outline"
+			onClick={onClick}
+			className="mt-2 self-start border-radiation-400/40 text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10 hover:text-radiation-300 dark:border-radiation-400/40 dark:bg-zinc-950 dark:hover:bg-radiation-400/10"
+		>
+			{t("clear")}
+		</Button>
 	);
 }

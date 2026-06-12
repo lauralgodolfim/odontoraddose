@@ -5,10 +5,19 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
+import { richTags } from "@/lib/rich";
 import { useVerdictMeta } from "@/lib/useVerdictMeta";
 import type { Verdict } from "@/lib/verdict";
 
@@ -123,76 +132,69 @@ export default function OutputPage() {
 					<Section title={t("sections.beam")}>
 						<div className="grid grid-cols-2 gap-3">
 							<Field label={t("fields.kvpRef")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.kvpRef}
 									onChange={update("kvpRef")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.kvpMeasured")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.kvpMeasured}
 									onChange={update("kvpMeasured")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
 						<Field label={t("fields.applyKvp")} hint={t("fields.applyKvpHint")}>
-							<select
+							<Select
 								value={form.applyKvpCorrection ? "yes" : "no"}
-								onChange={(e) =>
+								onValueChange={(v) =>
 									setForm((f) => ({
 										...f,
-										applyKvpCorrection: e.target.value === "yes",
+										applyKvpCorrection: v === "yes",
 									}))
 								}
-								className={inputCls}
 							>
-								<option value="yes">{t("fields.yes")}</option>
-								<option value="no">{t("fields.no")}</option>
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="yes">{t("fields.yes")}</SelectItem>
+									<SelectItem value="no">{t("fields.no")}</SelectItem>
+								</SelectContent>
+							</Select>
 						</Field>
 					</Section>
 
 					<Section title={t("sections.measurement")}>
 						<Field label={t("fields.doseRate")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.doseRateMgyS}
 								onChange={update("doseRateMgyS")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field label={t("fields.mA")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.mA}
 								onChange={update("mA")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field label={t("fields.dfd")} hint={t("fields.dfdHint")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.dfdCm}
 								onChange={update("dfdCm")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 
@@ -238,10 +240,7 @@ export default function OutputPage() {
 				)}
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
-					<p
-						// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains formula sub/sup tags
-						dangerouslySetInnerHTML={{ __html: t.raw("footer.l1") as string }}
-					/>
+					<p>{t.rich("footer.l1", richTags)}</p>
 					<p className="mt-1">{t("footer.l2")}</p>
 				</footer>
 			</main>

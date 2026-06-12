@@ -5,8 +5,16 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { ValidationCard } from "@/components/ValidationCard";
 import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
@@ -169,77 +177,88 @@ export default function TomographyPage() {
 				>
 					<Section title={t("sections.scanParameters")}>
 						<Field label={t("fields.region")}>
-							<select
+							<Select
 								value={form.region}
-								onChange={update("region")}
-								className={inputCls}
+								onValueChange={(v) =>
+									setForm((f) => ({ ...f, region: v as CtRegion }))
+								}
 							>
-								{(Object.keys(ctEffectiveDoseFactor) as CtRegion[]).map((r) => (
-									<option key={r} value={r}>
-										{t("fields.regionOption", {
-											label: tRegion(r),
-											k: ctEffectiveDoseFactor[r],
-										})}
-									</option>
-								))}
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									{(Object.keys(ctEffectiveDoseFactor) as CtRegion[]).map(
+										(r) => (
+											<SelectItem key={r} value={r}>
+												{t("fields.regionOption", {
+													label: tRegion(r),
+													k: ctEffectiveDoseFactor[r],
+												})}
+											</SelectItem>
+										),
+									)}
+								</SelectContent>
+							</Select>
 						</Field>
 						<Field label={t("fields.mode")}>
-							<select
+							<Select
 								value={form.mode}
-								onChange={update("mode")}
-								className={inputCls}
+								onValueChange={(v) =>
+									setForm((f) => ({ ...f, mode: v as Mode }))
+								}
 							>
-								<option value="helical">{t("fields.modeHelical")}</option>
-								<option value="axial">{t("fields.modeAxial")}</option>
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="helical">
+										{t("fields.modeHelical")}
+									</SelectItem>
+									<SelectItem value="axial">{t("fields.modeAxial")}</SelectItem>
+								</SelectContent>
+							</Select>
 						</Field>
 						<div className="grid grid-cols-2 gap-3">
 							<Field label={t("fields.kvp")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.kvp}
 									onChange={update("kvp")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.mA")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.mA}
 									onChange={update("mA")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
 						<div className="grid grid-cols-3 gap-3">
 							<Field label={t("fields.sliceMm")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.sliceMm}
 									onChange={update("sliceMm")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.channels")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.channels}
 									onChange={update("channels")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.pitch")} hint={t("fields.pitchHint")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.pitch}
 									onChange={update("pitch")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
@@ -247,49 +266,44 @@ export default function TomographyPage() {
 
 					<Section title={t("sections.ctdiReadings")}>
 						<Field label={t("fields.central")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.ctdiCenter}
 								onChange={update("ctdiCenter")}
-								className={inputCls}
 							/>
 						</Field>
 						<div className="grid grid-cols-2 gap-3">
 							<Field label={t("fields.h3")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.ctdi3h}
 									onChange={update("ctdi3h")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.h6")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.ctdi6h}
 									onChange={update("ctdi6h")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.h9")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.ctdi9h}
 									onChange={update("ctdi9h")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.h12")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.ctdi12h}
 									onChange={update("ctdi12h")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
@@ -298,24 +312,22 @@ export default function TomographyPage() {
 								label={t("fields.calibrationFactor")}
 								hint={t("fields.calibrationFactorHint")}
 							>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.calibrationFactor}
 									onChange={update("calibrationFactor")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field
 								label={t("fields.detectorLength")}
 								hint={t("fields.detectorLengthHint")}
 							>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.detectorLengthMm}
 									onChange={update("detectorLengthMm")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
@@ -326,33 +338,25 @@ export default function TomographyPage() {
 							label={t("fields.ctdiVolIndicated")}
 							hint={t("fields.ctdiVolIndicatedHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.ctdiVolIndicated}
 								onChange={update("ctdiVolIndicated")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field
 							label={t("fields.dlpIndicated")}
 							hint={t("fields.dlpIndicatedHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.dlpIndicated}
 								onChange={update("dlpIndicated")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 

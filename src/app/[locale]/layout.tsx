@@ -1,6 +1,6 @@
+import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import { notFound } from "next/navigation";
 import { EquipmentProvider } from "@/components/EquipmentProvider";
 import { HtmlLangSync } from "@/components/HtmlLangSync";
 import { routing } from "@/i18n/routing";

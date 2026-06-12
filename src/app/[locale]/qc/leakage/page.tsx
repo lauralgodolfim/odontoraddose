@@ -5,8 +5,9 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
 import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
@@ -97,64 +98,50 @@ export default function LeakagePage() {
 					<Section title={t("sections.testConditions")}>
 						<div className="grid grid-cols-2 gap-3">
 							<Field label={t("fields.kvp")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.kvp}
 									onChange={update("kvp")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.mA")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.mA}
 									onChange={update("mA")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
 					</Section>
 
 					<Section title={t("sections.measurement")}>
-						<Field
-							label={t("fields.distance")}
-							hint={t("fields.distanceHint")}
-						>
-							<input
+						<Field label={t("fields.distance")} hint={t("fields.distanceHint")}>
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.distanceCm}
 								onChange={update("distanceCm")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field label={t("fields.chamberDose")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.chamberDoseMgy}
 								onChange={update("chamberDoseMgy")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field label={t("fields.exposureSeconds")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.exposureSeconds}
 								onChange={update("exposureSeconds")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 

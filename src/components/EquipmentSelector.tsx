@@ -3,8 +3,17 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Link } from "@/i18n/navigation";
 import { useEquipment } from "./EquipmentProvider";
+
+const NONE = "none";
 
 export function EquipmentSelector({
 	calculatorSlug,
@@ -13,7 +22,7 @@ export function EquipmentSelector({
 }) {
 	const t = useTranslations("common");
 	const { equipments, selection, select } = useEquipment();
-	const selectedId = selection[calculatorSlug] ?? "";
+	const selectedId = selection[calculatorSlug] ?? NONE;
 
 	const prevIdRef = useRef(selectedId);
 	const [flashKey, setFlashKey] = useState(0);
@@ -45,19 +54,28 @@ export function EquipmentSelector({
 			<span className="uppercase tracking-wider text-radiation-400">
 				{t("equipment")}
 			</span>
-			<select
+			<Select
 				value={selectedId}
-				onChange={(e) => select(calculatorSlug, e.target.value || null)}
-				className="bg-transparent text-zinc-200 outline-none [&>option]:bg-zinc-950"
-				aria-label={t("selectEquipmentAria")}
+				onValueChange={(value) =>
+					select(calculatorSlug, value === NONE ? null : value)
+				}
 			>
-				<option value="">{t("none")}</option>
-				{equipments.map((eq) => (
-					<option key={eq.id} value={eq.id}>
-						{eq.name || t("untitled")}
-					</option>
-				))}
-			</select>
+				<SelectTrigger
+					size="sm"
+					aria-label={t("selectEquipmentAria")}
+					className="h-auto gap-1 border-0 bg-transparent p-0 text-xs text-zinc-200 focus-visible:ring-0 dark:bg-transparent dark:hover:bg-transparent"
+				>
+					<SelectValue />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value={NONE}>{t("none")}</SelectItem>
+					{equipments.map((eq) => (
+						<SelectItem key={eq.id} value={eq.id}>
+							{eq.name || t("untitled")}
+						</SelectItem>
+					))}
+				</SelectContent>
+			</Select>
 		</div>
 	);
 }

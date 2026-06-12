@@ -5,10 +5,12 @@ import { useMemo, useState } from "react";
 
 import { ComparisonChart } from "@/components/ComparisonChart";
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
-import { clearBtnCls, Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
 import { parse } from "@/lib/num";
+import { richTags } from "@/lib/rich";
 import { IN_94_PKA } from "@/lib/verdict";
 
 type PkaInputs = {
@@ -64,7 +66,6 @@ const pkaInitial: PkaFormState = {
 
 export function PkaTab() {
 	const t = useTranslations("extraoral");
-	const tCommon = useTranslations("common");
 	const equipment = useSelectedEquipment("extraoral");
 	const [form, setForm] = useState<PkaFormState>(pkaInitial);
 
@@ -77,8 +78,7 @@ export function PkaTab() {
 	}, [form, equipment?.referencePka]);
 
 	const update =
-		(key: keyof PkaFormState) =>
-		(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+		(key: keyof PkaFormState) => (e: React.ChangeEvent<HTMLInputElement>) =>
 			setForm((f) => ({ ...f, [key]: e.target.value }));
 
 	return (
@@ -89,49 +89,44 @@ export function PkaTab() {
 			>
 				<Section title={t("sections.identification")}>
 					<Field label={t("fields.exam")}>
-						<input
+						<Input
 							type="text"
 							value={form.exam}
 							onChange={update("exam")}
 							placeholder={t("fields.examPlaceholder")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field label={t("fields.mode")}>
-						<input
+						<Input
 							type="text"
 							value={form.mode}
 							onChange={update("mode")}
 							placeholder={t("fields.modePlaceholder")}
-							className={inputCls}
 						/>
 					</Field>
 					<div className="grid grid-cols-3 gap-3">
 						<Field label={t("fields.kvp")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.kvp}
 								onChange={update("kvp")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field label={t("fields.mA")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.mA}
 								onChange={update("mA")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field label={t("fields.s")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.s}
 								onChange={update("s")}
-								className={inputCls}
 							/>
 						</Field>
 					</div>
@@ -142,87 +137,74 @@ export function PkaTab() {
 						label={t("fields.dFocusReceptor")}
 						hint={t("fields.dFocusReceptorHint")}
 					>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.dFocusReceptor}
 							onChange={update("dFocusReceptor")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field
 						label={t("fields.dFocusDetector")}
 						hint={t("fields.dFocusDetectorHint")}
 					>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.dFocusDetector}
 							onChange={update("dFocusDetector")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field label={t("fields.fieldHeight")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.fieldHeight}
 							onChange={update("fieldHeight")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field label={t("fields.beamWidth")} hint={t("fields.beamWidthHint")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.beamWidth}
 							onChange={update("beamWidth")}
-							className={inputCls}
 						/>
 					</Field>
 				</Section>
 
 				<Section title={t("sections.measurement")}>
 					<Field label={t("fields.pklMeasured")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.pklMeasured}
 							onChange={update("pklMeasured")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field
 						label={t("fields.correctionFactor")}
 						hint={t("fields.correctionFactorHint")}
 					>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.correctionFactor}
 							onChange={update("correctionFactor")}
-							className={inputCls}
 						/>
 					</Field>
 				</Section>
 
 				<Section title={t("sections.equipmentIndicator")}>
 					<Field label={t("fields.pkaMachine")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.pkaMachine}
 							onChange={update("pkaMachine")}
-							className={inputCls}
 						/>
 					</Field>
-					<button
-						type="button"
-						onClick={() => setForm(pkaInitial)}
-						className={clearBtnCls}
-					>
-						{tCommon("clear")}
-					</button>
+					<ClearButton onClick={() => setForm(pkaInitial)} />
 				</Section>
 			</form>
 
@@ -287,28 +269,14 @@ export function PkaTab() {
 					]}
 				/>
 			) : (
-				<section
-					className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <sub> markup
-					dangerouslySetInnerHTML={{
-						__html: t.raw("empty.pka") as string,
-					}}
-				/>
+				<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+					{t.rich("empty.pka", richTags)}
+				</section>
 			)}
 
 			<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
-				<p
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: translated formula uses <sub> markup
-					dangerouslySetInnerHTML={{
-						__html: t.raw("footer.pkaFormula1") as string,
-					}}
-				/>
-				<p
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: translated formula uses <sub> markup
-					dangerouslySetInnerHTML={{
-						__html: t.raw("footer.pkaFormula2") as string,
-					}}
-				/>
+				<p>{t.rich("footer.pkaFormula1", richTags)}</p>
+				<p>{t.rich("footer.pkaFormula2", richTags)}</p>
 				<p className="mt-1">{t("footer.pkaTolerance")}</p>
 			</footer>
 		</>

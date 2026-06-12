@@ -5,10 +5,12 @@ import { useMemo, useState } from "react";
 
 import { ComparisonChart } from "@/components/ComparisonChart";
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
-import { clearBtnCls, Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
 import { parse } from "@/lib/num";
+import { richTags } from "@/lib/rich";
 import { IN_94_PKA } from "@/lib/verdict";
 
 type CbctFormState = {
@@ -54,7 +56,6 @@ function computeCbct(form: CbctFormState) {
 
 export function CbctTab() {
 	const t = useTranslations("extraoral");
-	const tCommon = useTranslations("common");
 	const equipment = useSelectedEquipment("extraoral");
 	const [form, setForm] = useState<CbctFormState>(cbctInitial);
 
@@ -68,8 +69,7 @@ export function CbctTab() {
 	}, [form, equipment?.referencePka]);
 
 	const update =
-		(key: keyof CbctFormState) =>
-		(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+		(key: keyof CbctFormState) => (e: React.ChangeEvent<HTMLInputElement>) =>
 			setForm((f) => ({ ...f, [key]: e.target.value }));
 
 	return (
@@ -80,69 +80,63 @@ export function CbctTab() {
 			>
 				<Section title={t("sections.measurement")}>
 					<Field label={t("fields.exam")}>
-						<input
+						<Input
 							type="text"
 							value={form.exam}
 							onChange={update("exam")}
 							placeholder={t("fields.examPlaceholder")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field
 						label={t("fields.kermaHorizontal")}
 						hint={t("fields.kermaHorizontalHint")}
 					>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.kermaHorizontal}
 							onChange={update("kermaHorizontal")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field
 						label={t("fields.kermaVertical")}
 						hint={t("fields.kermaVerticalHint")}
 					>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.kermaVertical}
 							onChange={update("kermaVertical")}
-							className={inputCls}
 						/>
 					</Field>
 				</Section>
 
 				<Section title={t("sections.beamGeometry")}>
 					<Field label={t("fields.beamHeight")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.beamHeight}
 							onChange={update("beamHeight")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field label={t("fields.cbctBeamWidth")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.beamWidth}
 							onChange={update("beamWidth")}
-							className={inputCls}
 						/>
 					</Field>
 				</Section>
 
 				<Section title={t("sections.equipmentIndicator")}>
 					<Field label={t("fields.pkaMachine")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.pkaMachine}
 							onChange={update("pkaMachine")}
-							className={inputCls}
 						/>
 					</Field>
 				</Section>
@@ -158,22 +152,15 @@ export function CbctTab() {
 								: t("fields.pkaReferenceHint")
 						}
 					>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.pkaReference}
 							onChange={update("pkaReference")}
 							placeholder={equipment?.referencePka ?? ""}
-							className={inputCls}
 						/>
 					</Field>
-					<button
-						type="button"
-						onClick={() => setForm(cbctInitial)}
-						className={clearBtnCls}
-					>
-						{tCommon("clear")}
-					</button>
+					<ClearButton onClick={() => setForm(cbctInitial)} />
 				</Section>
 			</form>
 
@@ -238,28 +225,14 @@ export function CbctTab() {
 					]}
 				/>
 			) : (
-				<section
-					className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <sub> markup
-					dangerouslySetInnerHTML={{
-						__html: t.raw("empty.cbct") as string,
-					}}
-				/>
+				<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+					{t.rich("empty.cbct", richTags)}
+				</section>
 			)}
 
 			<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
-				<p
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: translated formula uses <sub> markup
-					dangerouslySetInnerHTML={{
-						__html: t.raw("footer.cbctFormula1") as string,
-					}}
-				/>
-				<p
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: translated formula uses <sub> markup
-					dangerouslySetInnerHTML={{
-						__html: t.raw("footer.cbctFormula2") as string,
-					}}
-				/>
+				<p>{t.rich("footer.cbctFormula1", richTags)}</p>
+				<p>{t.rich("footer.cbctFormula2", richTags)}</p>
 				<p className="mt-1">{t("footer.cbctTolerance")}</p>
 			</footer>
 		</>

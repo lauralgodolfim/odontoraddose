@@ -2,6 +2,14 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 import { Link } from "@/i18n/navigation";
 import {
 	type Calculator,
@@ -80,32 +88,32 @@ function AuditView() {
 								</span>
 							</div>
 							<div className="overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-								<table className="w-full text-sm">
-									<thead className="bg-zinc-50 text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
-										<tr>
-											<th className="px-4 py-2 text-left font-medium">
+								<Table className="w-full text-sm">
+									<TableHeader className="bg-zinc-50 text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
+										<TableRow>
+											<TableHead className="px-4 py-2 text-left font-medium">
 												{t("calculator")}
-											</th>
-											<th className="px-4 py-2 text-left font-medium">
+											</TableHead>
+											<TableHead className="px-4 py-2 text-left font-medium">
 												{t("category")}
-											</th>
-											<th className="px-4 py-2 text-right font-medium">
+											</TableHead>
+											<TableHead className="px-4 py-2 text-right font-medium">
 												{t("status")}
-											</th>
-										</tr>
-									</thead>
-									<tbody>
+											</TableHead>
+										</TableRow>
+									</TableHeader>
+									<TableBody>
 										{list.map((c) => {
 											// biome-ignore lint/suspicious/noExplicitAny: dynamic key
 											const title = tCalc(`${c.slug}.title` as any);
 											// biome-ignore lint/suspicious/noExplicitAny: dynamic key
 											const description = tCalc(`${c.slug}.description` as any);
 											return (
-												<tr
+												<TableRow
 													key={c.slug}
 													className="border-t border-zinc-100 dark:border-zinc-900"
 												>
-													<td className="px-4 py-2 align-top">
+													<TableCell className="px-4 py-2 align-top">
 														{c.status === "implemented" ? (
 															<Link
 																href={`/${c.slug}`}
@@ -122,11 +130,11 @@ function AuditView() {
 														<p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-400">
 															{description}
 														</p>
-													</td>
-													<td className="px-4 py-2 align-top text-xs text-zinc-500 dark:text-zinc-400">
+													</TableCell>
+													<TableCell className="px-4 py-2 align-top text-xs text-zinc-500 dark:text-zinc-400">
 														{tCat(c.category)}
-													</td>
-													<td className="px-4 py-2 align-top text-right">
+													</TableCell>
+													<TableCell className="px-4 py-2 align-top text-right">
 														<span
 															className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${
 																c.status === "implemented"
@@ -136,12 +144,12 @@ function AuditView() {
 														>
 															{tStatus(c.status)}
 														</span>
-													</td>
-												</tr>
+													</TableCell>
+												</TableRow>
 											);
 										})}
-									</tbody>
-								</table>
+									</TableBody>
+								</Table>
 							</div>
 						</section>
 					);

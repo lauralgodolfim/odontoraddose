@@ -1,11 +1,11 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { useMemo, useState } from "react";
-
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
+import { Input } from "@/components/ui/input";
+import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
 import { type Verdict, verdictMeta } from "@/lib/verdict";
 
@@ -94,14 +94,13 @@ export default function MammographyPhantomPage() {
 							label={`Visible fibres (max ${ACR_THRESHOLDS.fibers.total})`}
 							hint={`ACR ≥ ${ACR_THRESHOLDS.fibers.min}.`}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="numeric"
 								min={0}
 								max={ACR_THRESHOLDS.fibers.total}
 								value={form.fibers}
 								onChange={update("fibers")}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
@@ -111,14 +110,13 @@ export default function MammographyPhantomPage() {
 							label={`Visible masses (max ${ACR_THRESHOLDS.masses.total})`}
 							hint={`ACR ≥ ${ACR_THRESHOLDS.masses.min}.`}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="numeric"
 								min={0}
 								max={ACR_THRESHOLDS.masses.total}
 								value={form.masses}
 								onChange={update("masses")}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
@@ -128,23 +126,16 @@ export default function MammographyPhantomPage() {
 							label={`Visible speck groups (max ${ACR_THRESHOLDS.specks.total})`}
 							hint={`ACR ≥ ${ACR_THRESHOLDS.specks.min}.`}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="numeric"
 								min={0}
 								max={ACR_THRESHOLDS.specks.total}
 								value={form.specks}
 								onChange={update("specks")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							Clear
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 

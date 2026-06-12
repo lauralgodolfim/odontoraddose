@@ -2,10 +2,12 @@
 
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { type ComponentType, useState } from "react";
+import type { ComponentType } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "@/i18n/navigation";
+import { richTags } from "@/lib/rich";
 import { CbctTab } from "./CbctTab";
 import { DapTab } from "./DapTab";
 import { DfovTab } from "./DfovTab";
@@ -23,7 +25,6 @@ const TABS: { id: TabId; Panel: ComponentType }[] = [
 export default function ExtraoralPage() {
 	const t = useTranslations("extraoral");
 	const tCommon = useTranslations("common");
-	const [tab, setTab] = useState<TabId>("pka");
 
 	return (
 		<div className="flex flex-col flex-1 bg-zinc-50 font-sans dark:bg-black">
@@ -38,52 +39,42 @@ export default function ExtraoralPage() {
 					<h1 className="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl dark:text-zinc-50">
 						{t("title")}
 					</h1>
-					<p
-						className="text-sm text-zinc-600 dark:text-zinc-400"
-						// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <strong>/<sub> markup
-						dangerouslySetInnerHTML={{ __html: t.raw("description") as string }}
-					/>
+					<p className="text-sm text-zinc-600 dark:text-zinc-400">
+						{t.rich("description", richTags)}
+					</p>
 					<div className="pt-1">
 						<EquipmentSelector calculatorSlug="extraoral" />
 					</div>
 				</header>
 
-				<div
-					role="tablist"
-					aria-label={t("tabs.aria")}
-					className="flex flex-wrap gap-2 border-b border-zinc-200 dark:border-radiation-400/20"
-				>
-					{TABS.map((tabItem) => {
-						const active = tabItem.id === tab;
-						return (
-							<button
-								key={tabItem.id}
-								type="button"
-								role="tab"
-								aria-selected={active}
-								onClick={() => setTab(tabItem.id)}
-								className={
-									active
-										? "border-radiation-400 text-radiation-500 border-b-2 -mb-px px-4 py-2 text-sm font-medium dark:text-radiation-300"
-										: "border-transparent text-zinc-500 hover:text-zinc-900 border-b-2 -mb-px px-4 py-2 text-sm font-medium dark:hover:text-zinc-200"
-								}
-							>
-								{t(`tabs.${tabItem.id}`)}
-							</button>
-						);
-					})}
-				</div>
-
-				{TABS.map(({ id, Panel }) => (
-					// Panels stay mounted so entered values survive tab switches.
-					<div
-						key={id}
-						role="tabpanel"
-						className={id === tab ? "flex flex-col gap-8" : "hidden"}
+				<Tabs defaultValue="pka" className="gap-8">
+					<TabsList
+						variant="line"
+						aria-label={t("tabs.aria")}
+						className="h-auto w-full flex-wrap justify-start gap-2 rounded-none border-b border-zinc-200 p-0 dark:border-radiation-400/20"
 					>
-						<Panel />
-					</div>
-				))}
+						{TABS.map(({ id }) => (
+							<TabsTrigger
+								key={id}
+								value={id}
+								className="h-auto flex-none rounded-none px-4 py-2 text-sm font-medium text-zinc-500 after:-bottom-px after:h-0.5 after:bg-radiation-400 hover:text-zinc-900 data-active:text-radiation-500 dark:text-zinc-500 dark:hover:text-zinc-200 dark:data-active:text-radiation-300"
+							>
+								{t(`tabs.${id}`)}
+							</TabsTrigger>
+						))}
+					</TabsList>
+					{TABS.map(({ id, Panel }) => (
+						// forceMount keeps panels mounted so entered values survive tab switches.
+						<TabsContent
+							key={id}
+							value={id}
+							forceMount
+							className="flex flex-col gap-8 data-[state=inactive]:hidden"
+						>
+							<Panel />
+						</TabsContent>
+					))}
+				</Tabs>
 			</main>
 		</div>
 	);

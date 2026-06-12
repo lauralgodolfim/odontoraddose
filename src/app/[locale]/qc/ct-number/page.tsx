@@ -1,13 +1,13 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { useMemo, useState } from "react";
-
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
+import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
 import type { Tolerance } from "@/lib/verdict";
 
@@ -109,21 +109,19 @@ export default function CtNumberPage() {
 				>
 					<Section title="Centre ROI">
 						<Field label="Mean CT number [HU]">
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.centerHu}
 								onChange={update("centerHu")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field label="Standard deviation [HU]" hint="Image noise.">
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.centerSd}
 								onChange={update("centerSd")}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
@@ -131,49 +129,39 @@ export default function CtNumberPage() {
 					<Section title="Peripheral ROIs [HU]">
 						<div className="grid grid-cols-2 gap-3">
 							<Field label="Top">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.topHu}
 									onChange={update("topHu")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label="Right">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.rightHu}
 									onChange={update("rightHu")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label="Bottom">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.bottomHu}
 									onChange={update("bottomHu")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label="Left">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.leftHu}
 									onChange={update("leftHu")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							Clear
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 

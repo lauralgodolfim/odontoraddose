@@ -1,13 +1,13 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { useMemo, useState } from "react";
-
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
+import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
 import type { Tolerance } from "@/lib/verdict";
 
@@ -137,12 +137,11 @@ export default function MriPage() {
 							label="Measured length [mm]"
 							hint="Phantom diameter target: 190 mm. ACR ±2 mm."
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.geomMeasuredMm}
 								onChange={update("geomMeasuredMm")}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
@@ -150,21 +149,19 @@ export default function MriPage() {
 					<Section title="Slice thickness & position">
 						<div className="grid grid-cols-2 gap-3">
 							<Field label="Nominal [mm]">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.sliceNominalMm}
 									onChange={update("sliceNominalMm")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label="Measured [mm]">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.sliceMeasuredMm}
 									onChange={update("sliceMeasuredMm")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
@@ -172,12 +169,11 @@ export default function MriPage() {
 							label="Slice-position displacement [mm]"
 							hint="Signed; ACR ±5 mm of intended position."
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.slicePositionMm}
 								onChange={update("slicePositionMm")}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
@@ -185,21 +181,19 @@ export default function MriPage() {
 					<Section title="SNR">
 						<div className="grid grid-cols-2 gap-3">
 							<Field label="Signal ROI mean">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.signalRoi}
 									onChange={update("signalRoi")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label="Background noise SD">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.noiseSd}
 									onChange={update("noiseSd")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
@@ -210,44 +204,35 @@ export default function MriPage() {
 							label="PIU — image intensity uniformity [%]"
 							hint="ACR ≥ 87.5% at 1.5T (≥ 82% at 3T)."
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.piuPct}
 								onChange={update("piuPct")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field label="PSG — percent-signal ghosting [%]" hint="ACR ≤ 2.5%.">
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.ghostingPct}
 								onChange={update("ghostingPct")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field
 							label="Low-contrast spokes visible (max 40)"
 							hint="ACR ≥ 9 spokes (1.5T) or ≥ 37 (3T)."
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="numeric"
 								min={0}
 								max={40}
 								value={form.lowContrastSpokes}
 								onChange={update("lowContrastSpokes")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							Clear
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 

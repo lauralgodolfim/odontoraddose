@@ -5,9 +5,19 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { useEquipment } from "@/components/EquipmentProvider";
-import { Field, inputCls, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Link } from "@/i18n/navigation";
 import type { Equipment } from "@/lib/equipment";
+import { richTags } from "@/lib/rich";
 import type { Rectifier } from "@/lib/tables/hvl";
 
 export default function EquipmentPage() {
@@ -82,21 +92,20 @@ export default function EquipmentPage() {
 						<h2 className="text-xs font-semibold uppercase tracking-wider text-radiation-300">
 							{t("savedCount", { count: equipments.length })}
 						</h2>
-						<button
+						<Button
 							type="button"
+							variant="outline"
 							onClick={handleAdd}
 							className="inline-flex items-center gap-1.5 rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
 						>
 							<Plus aria-hidden className="h-4 w-4" />
 							{t("addNew")}
-						</button>
+						</Button>
 					</div>
 					{equipments.length === 0 ? (
-						<div
-							className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
-							// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy includes <strong>
-							dangerouslySetInnerHTML={{ __html: t.raw("empty") as string }}
-						/>
+						<div className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+							{t.rich("empty", richTags)}
+						</div>
 					) : (
 						<ul className="flex flex-col gap-2">
 							{equipments.map((eq) => {
@@ -125,8 +134,9 @@ export default function EquipmentPage() {
 												{eq.generatorModel ? ` ${eq.generatorModel}` : ""}
 											</span>
 										</button>
-										<button
+										<Button
 											type="button"
+											variant="destructive"
 											onClick={() => handleRemove(eq.id)}
 											aria-label={t("deleteAria", {
 												name: eq.name || t("defaultName"),
@@ -134,7 +144,7 @@ export default function EquipmentPage() {
 											className="rounded-md border border-transparent p-1.5 text-zinc-400 hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-400"
 										>
 											<Trash2 aria-hidden className="h-4 w-4" />
-										</button>
+										</Button>
 									</li>
 								);
 							})}
@@ -149,65 +159,58 @@ export default function EquipmentPage() {
 					>
 						<Section title={t("sections.identification")}>
 							<Field label={t("fields.name")} hint={t("fields.nameHint")}>
-								<input
+								<Input
 									type="text"
 									value={active.name}
 									onChange={setField("name")}
 									placeholder={t("fields.namePlaceholder")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.client")}>
-								<input
+								<Input
 									type="text"
 									value={active.client ?? ""}
 									onChange={setField("client")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.location")}>
-								<input
+								<Input
 									type="text"
 									value={active.location ?? ""}
 									onChange={setField("location")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.serviceDate")}>
-								<input
+								<Input
 									type="date"
 									value={active.serviceDate ?? ""}
 									onChange={setField("serviceDate")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.responsible")}>
-								<input
+								<Input
 									type="text"
 									value={active.responsible ?? ""}
 									onChange={setField("responsible")}
-									className={inputCls}
 								/>
 							</Field>
 						</Section>
 
 						<Section title={t("sections.dosimeter")}>
 							<Field label={t("fields.dosimeterBrand")}>
-								<input
+								<Input
 									type="text"
 									value={active.dosimeterBrand ?? ""}
 									onChange={setField("dosimeterBrand")}
 									placeholder={t("fields.dosimeterBrandPlaceholder")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.certificate")}>
-								<input
+								<Input
 									type="text"
 									value={active.certificate ?? ""}
 									onChange={setField("certificate")}
 									placeholder={t("fields.certificatePlaceholder")}
-									className={inputCls}
 								/>
 							</Field>
 						</Section>
@@ -217,71 +220,69 @@ export default function EquipmentPage() {
 								label={t("fields.rectifier")}
 								hint={t("fields.rectifierHint")}
 							>
-								<select
+								<Select
 									value={active.rectifier}
-									onChange={(e) =>
+									onValueChange={(v) =>
 										update(active.id, {
-											rectifier: e.target.value as Rectifier,
+											rectifier: v as Rectifier,
 										})
 									}
-									className={inputCls}
 								>
-									{rectifiers.map((r) => (
-										<option key={r.value} value={r.value}>
-											{r.label} — {r.description}
-										</option>
-									))}
-								</select>
+									<SelectTrigger className="w-full">
+										<SelectValue />
+									</SelectTrigger>
+									<SelectContent>
+										{rectifiers.map((r) => (
+											<SelectItem key={r.value} value={r.value}>
+												{r.label} — {r.description}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
 							</Field>
 							<Field label={t("fields.brand")}>
-								<input
+								<Input
 									type="text"
 									value={active.generatorBrand ?? ""}
 									onChange={setField("generatorBrand")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.model")}>
-								<input
+								<Input
 									type="text"
 									value={active.generatorModel ?? ""}
 									onChange={setField("generatorModel")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.serial")}>
-								<input
+								<Input
 									type="text"
 									value={active.generatorSerial ?? ""}
 									onChange={setField("generatorSerial")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.anvisa")}>
-								<input
+								<Input
 									type="text"
 									value={active.generatorAnvisa ?? ""}
 									onChange={setField("generatorAnvisa")}
-									className={inputCls}
 								/>
 							</Field>
 							<div className="grid grid-cols-2 gap-3">
 								<Field label={t("fields.kvNominal")}>
-									<input
+									<Input
 										type="number"
 										inputMode="decimal"
 										value={active.kvNominal ?? ""}
 										onChange={setField("kvNominal")}
-										className={inputCls}
 									/>
 								</Field>
 								<Field label={t("fields.maNominal")}>
-									<input
+									<Input
 										type="number"
 										inputMode="decimal"
 										value={active.maNominal ?? ""}
 										onChange={setField("maNominal")}
-										className={inputCls}
 									/>
 								</Field>
 							</div>
@@ -292,24 +293,22 @@ export default function EquipmentPage() {
 								label={t("fields.referencePka")}
 								hint={t("fields.referencePkaHint")}
 							>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={active.referencePka ?? ""}
 									onChange={setField("referencePka")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field
 								label={t("fields.referenceDfov")}
 								hint={t("fields.referenceDfovHint")}
 							>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={active.referenceDfov ?? ""}
 									onChange={setField("referenceDfov")}
-									className={inputCls}
 								/>
 							</Field>
 						</Section>

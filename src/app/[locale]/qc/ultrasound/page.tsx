@@ -1,11 +1,12 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { useMemo, useState } from "react";
-
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
 import { type Verdict, verdictMeta } from "@/lib/verdict";
 
@@ -125,14 +126,13 @@ export default function UltrasoundPage() {
 						label="Probe identifier"
 						hint="Frequency / model. Each probe has its own baseline."
 					>
-						<input
+						<Input
 							type="text"
 							value={form.probe}
 							onChange={(e) =>
 								setForm((f) => ({ ...f, probe: e.target.value }))
 							}
 							placeholder="e.g. C5-1 convex"
-							className={inputCls}
 						/>
 					</Field>
 				</Section>
@@ -150,7 +150,7 @@ export default function UltrasoundPage() {
 									className="grid grid-cols-1 items-end gap-2 rounded-md border border-zinc-200 p-3 sm:grid-cols-3 dark:border-zinc-800"
 								>
 									<Field label={t.label} hint={t.hint}>
-										<input
+										<Input
 											type="number"
 											inputMode="decimal"
 											value={form.numeric[t.key] ?? ""}
@@ -161,11 +161,10 @@ export default function UltrasoundPage() {
 												}))
 											}
 											placeholder={t.unit}
-											className={inputCls}
 										/>
 									</Field>
 									<Field label="Baseline">
-										<input
+										<Input
 											type="number"
 											inputMode="decimal"
 											value={form.baseline[t.key] ?? ""}
@@ -179,7 +178,6 @@ export default function UltrasoundPage() {
 												}))
 											}
 											placeholder={t.unit}
-											className={inputCls}
 										/>
 									</Field>
 									<div className="text-right text-xs">
@@ -226,13 +224,14 @@ export default function UltrasoundPage() {
 							</label>
 						))}
 					</div>
-					<button
+					<Button
 						type="button"
+						variant="outline"
 						onClick={() => setForm(initial)}
 						className="self-start rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
 					>
 						Clear
-					</button>
+					</Button>
 				</Section>
 
 				{overall ? (

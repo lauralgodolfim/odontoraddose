@@ -5,11 +5,20 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { ValidationCard } from "@/components/ValidationCard";
 import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
+import { richTags } from "@/lib/rich";
 import { conventionalExams } from "@/lib/tables/conventional";
 import { radiationQualityFactor } from "@/lib/tables/dosimetry";
 import type { Tolerance } from "@/lib/verdict";
@@ -122,30 +131,44 @@ export default function ConventionalPage() {
 				>
 					<Section title={t("sections.exam")}>
 						<Field label={t("fields.exam")}>
-							<select
+							<Select
 								value={form.examSlug}
-								onChange={update("examSlug")}
-								className={inputCls}
+								onValueChange={(v) => setForm((f) => ({ ...f, examSlug: v }))}
 							>
-								{conventionalExams.map((e) => (
-									<option key={e.slug} value={e.slug}>
-										{tExams(
-											// biome-ignore lint/suspicious/noExplicitAny: dynamic key
-											e.slug as any,
-										)}
-									</option>
-								))}
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									{conventionalExams.map((e) => (
+										<SelectItem key={e.slug} value={e.slug}>
+											{tExams(
+												// biome-ignore lint/suspicious/noExplicitAny: dynamic key
+												e.slug as any,
+											)}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
 						</Field>
 						<Field label={t("fields.station")}>
-							<select
+							<Select
 								value={form.station}
-								onChange={update("station")}
-								className={inputCls}
+								onValueChange={(v) =>
+									setForm((f) => ({ ...f, station: v as Station }))
+								}
 							>
-								<option value="wallStand">{t("fields.stationWallStand")}</option>
-								<option value="table">{t("fields.stationTable")}</option>
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="wallStand">
+										{t("fields.stationWallStand")}
+									</SelectItem>
+									<SelectItem value="table">
+										{t("fields.stationTable")}
+									</SelectItem>
+								</SelectContent>
+							</Select>
 						</Field>
 						<Field
 							label={t("fields.thickness")}
@@ -158,13 +181,12 @@ export default function ConventionalPage() {
 									: ""
 							}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.thickness}
 								onChange={update("thickness")}
 								placeholder={exam ? String(exam.thicknessCm) : ""}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
@@ -174,78 +196,66 @@ export default function ConventionalPage() {
 							label={t("fields.dFocusDetector")}
 							hint={t("fields.dFocusDetectorHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.dFocusDetector}
 								onChange={update("dFocusDetector")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field label={t("fields.fid")} hint={t("fields.fidHint")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.fid}
 								onChange={update("fid")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field
 							label={t("fields.dTableReceptor")}
 							hint={t("fields.dTableReceptorHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.dTableReceptor}
 								onChange={update("dTableReceptor")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field
 							label={t("fields.dWallStandReceptor")}
 							hint={t("fields.dWallStandReceptorHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.dWallStandReceptor}
 								onChange={update("dWallStandReceptor")}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
 
 					<Section title={t("sections.measurement")}>
 						<Field label={t("fields.chamberDose")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.chamberDose}
 								onChange={update("chamberDose")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field
 							label={t("fields.radiationFactor")}
 							hint={t("fields.radiationFactorHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.radiationFactor}
 								onChange={update("radiationFactor")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 
@@ -256,7 +266,12 @@ export default function ConventionalPage() {
 							value={result.skinFocusDistance}
 							unit="cm"
 						/>
-						<Stat label={t("stats.esd")} value={result.esd} unit="mGy" emphasis />
+						<Stat
+							label={t("stats.esd")}
+							value={result.esd}
+							unit="mGy"
+							emphasis
+						/>
 						<ValidationCard
 							observed={result.esd}
 							observedLabel={t("validation.calc")}
@@ -275,10 +290,7 @@ export default function ConventionalPage() {
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
 					<p>{t("footer.l1")}</p>
-					<p
-						// biome-ignore lint/security/noDangerouslySetInnerHtml: formula uses <sub> markup
-						dangerouslySetInnerHTML={{ __html: t.raw("footer.l2") as string }}
-					/>
+					<p>{t.rich("footer.l2", richTags)}</p>
 					<p className="mt-1">{t("footer.l3")}</p>
 				</footer>
 			</main>

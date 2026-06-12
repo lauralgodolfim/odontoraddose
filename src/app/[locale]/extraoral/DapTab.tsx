@@ -5,10 +5,12 @@ import { useMemo, useState } from "react";
 
 import { ComparisonChart } from "@/components/ComparisonChart";
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
-import { clearBtnCls, Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
 import { parse } from "@/lib/num";
+import { richTags } from "@/lib/rich";
 import type { Tolerance } from "@/lib/verdict";
 
 type DapFormState = {
@@ -31,7 +33,6 @@ const DAP_TOLERANCE: Tolerance = {
 
 export function DapTab() {
 	const t = useTranslations("extraoral");
-	const tCommon = useTranslations("common");
 	const equipment = useSelectedEquipment("extraoral");
 	const [form, setForm] = useState<DapFormState>(dapInitial);
 
@@ -44,8 +45,7 @@ export function DapTab() {
 	}, [form.pkaMeasured, form.pkaReference, equipment?.referencePka]);
 
 	const update =
-		(key: keyof DapFormState) =>
-		(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+		(key: keyof DapFormState) => (e: React.ChangeEvent<HTMLInputElement>) =>
 			setForm((f) => ({ ...f, [key]: e.target.value }));
 
 	return (
@@ -56,24 +56,22 @@ export function DapTab() {
 			>
 				<Section title={t("sections.comparison")}>
 					<Field label={t("fields.exam")}>
-						<input
+						<Input
 							type="text"
 							value={form.exam}
 							onChange={update("exam")}
 							placeholder={t("fields.examPlaceholder")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field
 						label={t("fields.pkaMeasured")}
 						hint={t("fields.pkaMeasuredHint")}
 					>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.pkaMeasured}
 							onChange={update("pkaMeasured")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field
@@ -86,22 +84,15 @@ export function DapTab() {
 								: t("fields.pkaReferenceHint")
 						}
 					>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.pkaReference}
 							onChange={update("pkaReference")}
 							placeholder={equipment?.referencePka ?? ""}
-							className={inputCls}
 						/>
 					</Field>
-					<button
-						type="button"
-						onClick={() => setForm(dapInitial)}
-						className={clearBtnCls}
-					>
-						{tCommon("clear")}
-					</button>
+					<ClearButton onClick={() => setForm(dapInitial)} />
 				</Section>
 			</form>
 
@@ -156,22 +147,13 @@ export function DapTab() {
 					]}
 				/>
 			) : (
-				<section
-					className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <sub> markup
-					dangerouslySetInnerHTML={{
-						__html: t.raw("empty.dap") as string,
-					}}
-				/>
+				<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+					{t.rich("empty.dap", richTags)}
+				</section>
 			)}
 
 			<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
-				<p
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: translated formula uses <sub> markup
-					dangerouslySetInnerHTML={{
-						__html: t.raw("footer.dapFormula") as string,
-					}}
-				/>
+				<p>{t.rich("footer.dapFormula", richTags)}</p>
 				<p className="mt-1">{t("footer.dapTolerance")}</p>
 			</footer>
 		</>

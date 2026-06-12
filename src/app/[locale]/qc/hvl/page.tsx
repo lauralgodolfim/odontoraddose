@@ -6,8 +6,16 @@ import { useMemo, useState } from "react";
 
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { ValidationCard } from "@/components/ValidationCard";
 import { Link } from "@/i18n/navigation";
 import { fmt, parse } from "@/lib/num";
@@ -91,12 +99,11 @@ export default function HvlPage() {
 				>
 					<Section title={t("sections.beam")}>
 						<Field label={t("fields.kvp")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.kvp}
 								onChange={update("kvp")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field
@@ -105,36 +112,44 @@ export default function HvlPage() {
 								label: rectifierLabels[equipment?.rectifier ?? "af"],
 							})}
 						>
-							<select
-								value={form.rectifierOverride}
-								onChange={update("rectifierOverride")}
-								className={inputCls}
+							<Select
+								value={
+									form.rectifierOverride === ""
+										? "none"
+										: form.rectifierOverride
+								}
+								onValueChange={(v) =>
+									setForm((f) => ({
+										...f,
+										rectifierOverride: v === "none" ? "" : (v as Rectifier),
+									}))
+								}
 							>
-								<option value="">{t("fields.useEquipment")}</option>
-								<option value="mono">{t("fields.mono")}</option>
-								<option value="tri">{t("fields.tri")}</option>
-								<option value="af">{t("fields.af")}</option>
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="none">
+										{t("fields.useEquipment")}
+									</SelectItem>
+									<SelectItem value="mono">{t("fields.mono")}</SelectItem>
+									<SelectItem value="tri">{t("fields.tri")}</SelectItem>
+									<SelectItem value="af">{t("fields.af")}</SelectItem>
+								</SelectContent>
+							</Select>
 						</Field>
 					</Section>
 
 					<Section title={t("sections.measurement")}>
 						<Field label={t("fields.measuredHvl")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.measuredHvl}
 								onChange={update("measuredHvl")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 

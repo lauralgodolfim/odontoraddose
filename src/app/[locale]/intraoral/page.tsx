@@ -5,11 +5,20 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { ValidationCard } from "@/components/ValidationCard";
 import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
+import { richTags } from "@/lib/rich";
 import {
 	type IntraoralFfd,
 	intraoralBackscatter,
@@ -115,40 +124,36 @@ export default function IntraoralPage() {
 				>
 					<Section title={t("sections.identification")}>
 						<Field label={t("fields.exam")}>
-							<input
+							<Input
 								type="text"
 								value={form.exam}
 								onChange={update("exam")}
 								placeholder={t("fields.examPlaceholder")}
-								className={inputCls}
 							/>
 						</Field>
 						<div className="grid grid-cols-3 gap-3">
 							<Field label={t("fields.kvp")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.kvp}
 									onChange={update("kvp")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.mA")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.mA}
 									onChange={update("mA")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label={t("fields.timeS")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.timeS}
 									onChange={update("timeS")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
@@ -159,60 +164,62 @@ export default function IntraoralPage() {
 							label={t("fields.dFocusChamber")}
 							hint={t("fields.dFocusChamberHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.dFocusChamber}
 								onChange={update("dFocusChamber")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field
 							label={t("fields.dFocusConeTip")}
 							hint={t("fields.dFocusConeTipHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.dFocusConeTip}
 								onChange={update("dFocusConeTip")}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
 
 					<Section title={t("sections.measurement")}>
 						<Field label={t("fields.chamberDose")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.chamberDose}
 								onChange={update("chamberDose")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field
 							label={t("fields.backscatter")}
 							hint={t("fields.backscatterHint")}
 						>
-							<select
+							<Select
 								value={form.ffd}
-								onChange={update("ffd")}
-								className={inputCls}
+								onValueChange={(v) =>
+									setForm((f) => ({ ...f, ffd: v as FormState["ffd"] }))
+								}
 							>
-								<option value="ffd20">{t("fields.ffd20")}</option>
-								<option value="ffd27_5">{t("fields.ffd275")}</option>
-								<option value="custom">{t("fields.custom")}</option>
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="ffd20">{t("fields.ffd20")}</SelectItem>
+									<SelectItem value="ffd27_5">{t("fields.ffd275")}</SelectItem>
+									<SelectItem value="custom">{t("fields.custom")}</SelectItem>
+								</SelectContent>
+							</Select>
 						</Field>
 						{form.ffd === "custom" ? (
 							<Field label={t("fields.customFr")}>
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.customBackscatter}
 									onChange={update("customBackscatter")}
-									className={inputCls}
 								/>
 							</Field>
 						) : null}
@@ -223,21 +230,14 @@ export default function IntraoralPage() {
 							label={t("fields.referenceEsd")}
 							hint={t("fields.referenceEsdHint")}
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.referenceDose}
 								onChange={update("referenceDose")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 
@@ -248,7 +248,12 @@ export default function IntraoralPage() {
 							value={result.doseAtConeTip}
 							unit={t("stats.doseAtConeTipUnit")}
 						/>
-						<Stat label={t("stats.esd")} value={result.esd} unit="mGy" emphasis />
+						<Stat
+							label={t("stats.esd")}
+							value={result.esd}
+							unit="mGy"
+							emphasis
+						/>
 						<Stat
 							label={t("stats.doseRate")}
 							value={result.doseRate}
@@ -271,10 +276,7 @@ export default function IntraoralPage() {
 				)}
 
 				<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">
-					<p
-						// biome-ignore lint/security/noDangerouslySetInnerHtml: formula uses <sub> markup
-						dangerouslySetInnerHTML={{ __html: t.raw("footer.l1") as string }}
-					/>
+					<p>{t.rich("footer.l1", richTags)}</p>
 					<p>{t("footer.l2")}</p>
 					<p className="mt-1">{t("footer.l3")}</p>
 				</footer>

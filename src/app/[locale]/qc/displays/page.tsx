@@ -1,13 +1,13 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { useMemo, useState } from "react";
-
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
+import { Link } from "@/i18n/navigation";
 import { parse } from "@/lib/num";
 import type { Tolerance } from "@/lib/verdict";
 
@@ -139,49 +139,44 @@ export default function DisplaysPage() {
 				>
 					<Section title="Light box (cd/m²)">
 						<Field label="Centre">
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.lbCenter}
 								onChange={update("lbCenter")}
-								className={inputCls}
 							/>
 						</Field>
 						<div className="grid grid-cols-2 gap-3">
 							<Field label="Top-left">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.lbTopLeft}
 									onChange={update("lbTopLeft")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label="Top-right">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.lbTopRight}
 									onChange={update("lbTopRight")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label="Bottom-left">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.lbBottomLeft}
 									onChange={update("lbBottomLeft")}
-									className={inputCls}
 								/>
 							</Field>
 							<Field label="Bottom-right">
-								<input
+								<Input
 									type="number"
 									inputMode="decimal"
 									value={form.lbBottomRight}
 									onChange={update("lbBottomRight")}
-									className={inputCls}
 								/>
 							</Field>
 						</div>
@@ -192,24 +187,22 @@ export default function DisplaysPage() {
 							label="L max"
 							hint="White-patch luminance at full brightness."
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.monMaxLuminance}
 								onChange={update("monMaxLuminance")}
-								className={inputCls}
 							/>
 						</Field>
 						<Field
 							label="L min"
 							hint="Black-patch luminance with the display on."
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.monMinLuminance}
 								onChange={update("monMinLuminance")}
-								className={inputCls}
 							/>
 						</Field>
 					</Section>
@@ -219,21 +212,14 @@ export default function DisplaysPage() {
 							label="Reading-room ambient"
 							hint="Measured at the monitor face with the monitor off."
 						>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.ambientLux}
 								onChange={update("ambientLux")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							Clear
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 

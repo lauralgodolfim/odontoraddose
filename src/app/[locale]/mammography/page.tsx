@@ -5,8 +5,16 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { ValidationCard } from "@/components/ValidationCard";
 import { Link } from "@/i18n/navigation";
 import { fmt, parse } from "@/lib/num";
@@ -129,73 +137,80 @@ export default function MammographyPage() {
 				>
 					<Section title={t("sections.phantomBeam")}>
 						<Field label={t("fields.pmma")}>
-							<select
+							<Select
 								value={form.pmma}
-								onChange={update("pmma")}
-								className={inputCls}
+								onValueChange={(v) => setForm((f) => ({ ...f, pmma: v }))}
 							>
-								{gcByHvl.rows.map((r) => {
-									const cap = in54Dgm.find((c) => c.pmmaMm === r.pmmaMm);
-									return (
-										<option key={r.pmmaMm} value={r.pmmaMm}>
-											{t("fields.pmmaOption", {
-												pmma: r.pmmaMm,
-												breast: r.breastEqMm,
-												cap: cap ? String(cap.tolerance) : "none",
-											})}
-										</option>
-									);
-								})}
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									{gcByHvl.rows.map((r) => {
+										const cap = in54Dgm.find((c) => c.pmmaMm === r.pmmaMm);
+										return (
+											<SelectItem key={r.pmmaMm} value={String(r.pmmaMm)}>
+												{t("fields.pmmaOption", {
+													pmma: r.pmmaMm,
+													breast: r.breastEqMm,
+													cap: cap ? String(cap.tolerance) : "none",
+												})}
+											</SelectItem>
+										);
+									})}
+								</SelectContent>
+							</Select>
 						</Field>
 						<Field label={t("fields.hvl")} hint={t("fields.hvlHint")}>
-							<select
+							<Select
 								value={form.hvl}
-								onChange={update("hvl")}
-								className={inputCls}
+								onValueChange={(v) => setForm((f) => ({ ...f, hvl: v }))}
 							>
-								{gcByHvl.hvls.map((h) => (
-									<option key={h} value={h}>
-										{h.toFixed(2)} mm Al
-									</option>
-								))}
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									{gcByHvl.hvls.map((h) => (
+										<SelectItem key={h} value={String(h)}>
+											{h.toFixed(2)} mm Al
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
 						</Field>
 						<Field
 							label={t("fields.targetFilter")}
 							hint={t("fields.targetFilterHint")}
 						>
-							<select
+							<Select
 								value={form.targetFilter}
-								onChange={update("targetFilter")}
-								className={inputCls}
+								onValueChange={(v) =>
+									setForm((f) => ({ ...f, targetFilter: v as TargetFilter }))
+								}
 							>
-								{targetFilterOptions.map((tt) => (
-									<option key={tt} value={tt}>
-										{tt}
-									</option>
-								))}
-							</select>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									{targetFilterOptions.map((tt) => (
+										<SelectItem key={tt} value={tt}>
+											{tt}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
 						</Field>
 					</Section>
 
 					<Section title={t("sections.measurement")}>
 						<Field label={t("fields.kit")} hint={t("fields.kitHint")}>
-							<input
+							<Input
 								type="number"
 								inputMode="decimal"
 								value={form.kit}
 								onChange={update("kit")}
-								className={inputCls}
 							/>
 						</Field>
-						<button
-							type="button"
-							onClick={() => setForm(initial)}
-							className="mt-2 self-start rounded-md border border-radiation-400/40 bg-zinc-950 px-3 py-1.5 text-sm text-radiation-300 hover:border-radiation-400 hover:bg-radiation-400/10"
-						>
-							{tCommon("clear")}
-						</button>
+						<ClearButton onClick={() => setForm(initial)} />
 					</Section>
 				</form>
 

@@ -5,8 +5,18 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { EquipmentSelector } from "@/components/EquipmentSelector";
-import { Field, inputCls, Section } from "@/components/form";
+import { Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 import { VerdictCard } from "@/components/VerdictCard";
 import { Link } from "@/i18n/navigation";
 import { fmt, parse } from "@/lib/num";
@@ -139,45 +149,48 @@ export default function TimerPage() {
 									</span>
 									<div className="grid grid-cols-2 gap-2">
 										<Field label={t("fields.selected")}>
-											<input
+											<Input
 												type="number"
 												inputMode="decimal"
 												value={p.selected}
 												onChange={(e) =>
 													updatePair(idx, "selected")(e.target.value)
 												}
-												className={inputCls}
 											/>
 										</Field>
 										<Field label={t("fields.measured")}>
-											<input
+											<Input
 												type="number"
 												inputMode="decimal"
 												value={p.measured}
 												onChange={(e) =>
 													updatePair(idx, "measured")(e.target.value)
 												}
-												className={inputCls}
 											/>
 										</Field>
 									</div>
 								</div>
 							))}
 						</div>
-						<button
+						<Button
 							type="button"
+							variant="outline"
 							onClick={() => setForm(initial)}
 							className="self-start rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
 						>
 							{tCommon("clear")}
-						</button>
+						</Button>
 					</Section>
 				</form>
 
 				{result ? (
 					<>
 						<section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-							<Stat label={t("stats.meanMeasured")} value={result.avg} unit="s" />
+							<Stat
+								label={t("stats.meanMeasured")}
+								value={result.avg}
+								unit="s"
+							/>
 							<Stat
 								label={t("stats.reproducibility")}
 								value={`${(result.reproducibility * 100).toFixed(1)}%`}
@@ -191,61 +204,61 @@ export default function TimerPage() {
 							/>
 						</section>
 						<section className="overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-							<table className="w-full text-sm">
-								<thead className="bg-zinc-50 text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
-									<tr>
-										<th className="px-4 py-2 text-left font-medium">
+							<Table className="w-full text-sm">
+								<TableHeader className="bg-zinc-50 text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
+									<TableRow>
+										<TableHead className="px-4 py-2 text-left font-medium">
 											{t("table.shot")}
-										</th>
-										<th className="px-4 py-2 text-right font-medium">
+										</TableHead>
+										<TableHead className="px-4 py-2 text-right font-medium">
 											{t("table.selected")}
-										</th>
-										<th className="px-4 py-2 text-right font-medium">
+										</TableHead>
+										<TableHead className="px-4 py-2 text-right font-medium">
 											{t("table.measured")}
-										</th>
-										<th className="px-4 py-2 text-right font-medium">
+										</TableHead>
+										<TableHead className="px-4 py-2 text-right font-medium">
 											{t("table.deviation")}
-										</th>
-										<th className="px-4 py-2 text-right font-medium">
+										</TableHead>
+										<TableHead className="px-4 py-2 text-right font-medium">
 											{t("table.in56")}
-										</th>
-									</tr>
-								</thead>
-								<tbody>
+										</TableHead>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
 									{result.pairs.map((p, idx) => {
 										const dev = result.deviations[idx];
 										const verdict = classifyDeviation(dev, timerTolerance);
 										const meta = verdictMeta(verdict, timerTolerance);
 										return (
-											<tr
+											<TableRow
 												// biome-ignore lint/suspicious/noArrayIndexKey: pairs are positional shot rows; index matches the input slot above
 												key={idx}
 												className="border-t border-zinc-100 dark:border-zinc-900"
 											>
-												<td className="px-4 py-2 text-zinc-700 dark:text-zinc-300">
+												<TableCell className="px-4 py-2 text-zinc-700 dark:text-zinc-300">
 													{idx + 1}
-												</td>
-												<td className="px-4 py-2 text-right font-mono tabular-nums">
+												</TableCell>
+												<TableCell className="px-4 py-2 text-right font-mono tabular-nums">
 													{fmt(p.selected)}
-												</td>
-												<td className="px-4 py-2 text-right font-mono tabular-nums">
+												</TableCell>
+												<TableCell className="px-4 py-2 text-right font-mono tabular-nums">
 													{fmt(p.measured)}
-												</td>
-												<td className="px-4 py-2 text-right font-mono tabular-nums">
+												</TableCell>
+												<TableCell className="px-4 py-2 text-right font-mono tabular-nums">
 													{(dev * 100).toFixed(1)}%
-												</td>
-												<td className="px-4 py-2 text-right">
+												</TableCell>
+												<TableCell className="px-4 py-2 text-right">
 													<span
 														className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${meta.tone}`}
 													>
 														{meta.label}
 													</span>
-												</td>
-											</tr>
+												</TableCell>
+											</TableRow>
 										);
 									})}
-								</tbody>
-							</table>
+								</TableBody>
+							</Table>
 						</section>
 						<section>
 							<VerdictCard

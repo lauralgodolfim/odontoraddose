@@ -5,10 +5,12 @@ import { useMemo, useState } from "react";
 
 import { ComparisonChart } from "@/components/ComparisonChart";
 import { useSelectedEquipment } from "@/components/EquipmentProvider";
-import { clearBtnCls, Field, inputCls, Section } from "@/components/form";
+import { ClearButton, Field, Section } from "@/components/form";
 import { Stat } from "@/components/Stat";
+import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
 import { fmt, parse } from "@/lib/num";
+import { richTags } from "@/lib/rich";
 import { DIN_6868_161_DFOV } from "@/lib/verdict";
 
 type DfovFormState = {
@@ -33,7 +35,6 @@ const DFOV_ACTION_LEVEL_MGY = 50;
 
 export function DfovTab() {
 	const t = useTranslations("extraoral");
-	const tCommon = useTranslations("common");
 	const equipment = useSelectedEquipment("extraoral");
 	const [form, setForm] = useState<DfovFormState>(dfovInitial);
 
@@ -56,8 +57,7 @@ export function DfovTab() {
 	}, [form, equipment?.referenceDfov]);
 
 	const update =
-		(key: keyof DfovFormState) =>
-		(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+		(key: keyof DfovFormState) => (e: React.ChangeEvent<HTMLInputElement>) =>
 			setForm((f) => ({ ...f, [key]: e.target.value }));
 
 	return (
@@ -68,51 +68,46 @@ export function DfovTab() {
 			>
 				<Section title={t("sections.beamAndGeometry")}>
 					<Field label={t("fields.ka")} hint={t("fields.kaHint")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.ka}
 							onChange={update("ka")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field label={t("fields.a")} hint={t("fields.aHint")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.a}
 							onChange={update("a")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field label={t("fields.b")} hint={t("fields.bHint")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.b}
 							onChange={update("b")}
-							className={inputCls}
 						/>
 					</Field>
 				</Section>
 
 				<Section title={t("sections.fieldOfView")}>
 					<Field label={t("fields.c")} hint={t("fields.cHint")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.c}
 							onChange={update("c")}
-							className={inputCls}
 						/>
 					</Field>
 					<Field label={t("fields.d")} hint={t("fields.dHint")}>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.d}
 							onChange={update("d")}
-							className={inputCls}
 						/>
 					</Field>
 				</Section>
@@ -128,22 +123,15 @@ export function DfovTab() {
 								: undefined
 						}
 					>
-						<input
+						<Input
 							type="number"
 							inputMode="decimal"
 							value={form.reference}
 							onChange={update("reference")}
 							placeholder={equipment?.referenceDfov ?? ""}
-							className={inputCls}
 						/>
 					</Field>
-					<button
-						type="button"
-						onClick={() => setForm(dfovInitial)}
-						className={clearBtnCls}
-					>
-						{tCommon("clear")}
-					</button>
+					<ClearButton onClick={() => setForm(dfovInitial)} />
 				</Section>
 			</form>
 
@@ -192,13 +180,9 @@ export function DfovTab() {
 					]}
 				/>
 			) : (
-				<section
-					className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40"
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: translated copy contains inline <sub> markup
-					dangerouslySetInnerHTML={{
-						__html: t.raw("empty.dfov") as string,
-					}}
-				/>
+				<section className="rounded-lg border border-dashed border-zinc-300 bg-white/40 p-6 text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950/40">
+					{t.rich("empty.dfov", richTags)}
+				</section>
 			)}
 
 			<footer className="border-t border-radiation-400/20 pt-4 text-xs text-zinc-400">

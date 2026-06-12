@@ -1,11 +1,19 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { useMemo, useState } from "react";
-
 import { EquipmentSelector } from "@/components/EquipmentSelector";
 import { Section } from "@/components/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { Link } from "@/i18n/navigation";
 import { type Verdict, verdictMeta } from "@/lib/verdict";
 
 type AccessoryKind =
@@ -109,13 +117,14 @@ export default function AcessoriosPage() {
 								onRemove={() => remove(a.id)}
 							/>
 						))}
-						<button
+						<Button
 							type="button"
+							variant="outline"
 							onClick={() => setItems((arr) => [...arr, makeAccessory()])}
 							className="self-start rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
 						>
 							+ Add accessory
-						</button>
+						</Button>
 					</div>
 				</Section>
 
@@ -176,44 +185,54 @@ function AccessoryRow({
 			}`}
 		>
 			<div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-				<label className="flex flex-col gap-1">
+				<div className="flex flex-col gap-1">
 					<span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
 						Type
 					</span>
-					<select
+					<Select
 						value={item.kind}
-						onChange={(e) => onUpdate("kind", e.target.value as AccessoryKind)}
-						className={selectCls}
+						onValueChange={(v) => onUpdate("kind", v as AccessoryKind)}
 					>
-						{(Object.keys(accessoryLabels) as AccessoryKind[]).map((k) => (
-							<option key={k} value={k}>
-								{accessoryLabels[k]}
-							</option>
-						))}
-					</select>
-				</label>
-				<label className="flex flex-col gap-1">
+						<SelectTrigger className="w-full" aria-label="Type">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{(Object.keys(accessoryLabels) as AccessoryKind[]).map((k) => (
+								<SelectItem key={k} value={k}>
+									{accessoryLabels[k]}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+				</div>
+				<label
+					className="flex flex-col gap-1"
+					htmlFor={`accessory-identifier-${item.id}`}
+				>
 					<span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
 						Identifier
 					</span>
-					<input
+					<Input
+						id={`accessory-identifier-${item.id}`}
 						type="text"
 						value={item.identifier}
 						onChange={(e) => onUpdate("identifier", e.target.value)}
 						placeholder="e.g. AP-002"
-						className={selectCls}
 					/>
 				</label>
-				<label className="flex flex-col gap-1">
+				<label
+					className="flex flex-col gap-1"
+					htmlFor={`accessory-pb-${item.id}`}
+				>
 					<span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
 						Pb equivalent [mm]
 					</span>
-					<input
+					<Input
+						id={`accessory-pb-${item.id}`}
 						type="number"
 						inputMode="decimal"
 						value={item.pbEquivalent}
 						onChange={(e) => onUpdate("pbEquivalent", e.target.value)}
-						className={selectCls}
 					/>
 				</label>
 			</div>
@@ -236,24 +255,21 @@ function AccessoryRow({
 					/>
 					<span>Radiographic OK</span>
 				</label>
-				<button
+				<Button
 					type="button"
+					variant="outline"
 					onClick={onRemove}
 					className="ml-auto text-xs text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400"
 				>
 					Remove
-				</button>
+				</Button>
 			</div>
-			<input
+			<Input
 				type="text"
 				value={item.notes}
 				onChange={(e) => onUpdate("notes", e.target.value)}
 				placeholder="Notes"
-				className={selectCls}
 			/>
 		</div>
 	);
 }
-
-const selectCls =
-	"w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none transition focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-100 dark:focus:ring-zinc-100";

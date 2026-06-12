@@ -46,7 +46,7 @@ export function LocaleSwitcher() {
 				<SelectTrigger
 					size="sm"
 					aria-label={t("language")}
-					className="h-auto gap-1 border-0 bg-transparent p-0 text-xs text-zinc-200 focus-visible:ring-0 dark:bg-transparent dark:hover:bg-transparent"
+					className="h-auto gap-1 border-0 bg-transparent p-0 text-xs text-zinc-200 focus-visible:ring-0 data-[size=sm]:h-auto dark:bg-transparent dark:hover:bg-transparent"
 				>
 					<SelectValue />
 				</SelectTrigger>

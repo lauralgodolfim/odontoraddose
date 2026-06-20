@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
 import { parse } from "@/lib/num";
 import { richTags } from "@/lib/rich";
-import { IN_94_PKA } from "@/lib/verdict";
+import { IN_94 } from "@/lib/verdict";
 
 type PkaInputs = {
 	pklMeasured: string;
@@ -234,7 +234,7 @@ export function PkaTab() {
 							expected={result.pkaMach}
 							expectedLabel={t("validation.machine")}
 							unit="mGy·cm²"
-							tolerance={IN_94_PKA}
+							tolerance={IN_94}
 							emptyHint={t("validation.hintMachine")}
 						/>
 						<ValidationCard
@@ -243,7 +243,7 @@ export function PkaTab() {
 							expected={result.pkaRef}
 							expectedLabel={t("validation.equipment")}
 							unit="mGy·cm²"
-							tolerance={IN_94_PKA}
+							tolerance={IN_94}
 							emptyHint={t("validation.hintEquipment")}
 						/>
 					</section>

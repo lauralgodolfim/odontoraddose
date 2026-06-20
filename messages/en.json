@@ -295,7 +295,7 @@
 			"cbctFormula2": "Estimated P<sub>KA</sub> = mean kerma × beam area (AAPM Report 261)",
 			"cbctTolerance": "IN 94 tolerance: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dfovFormula": "DFOV = K_a,i(FDD) × (b / a) × (d / c)",
-			"dfovTolerance": "DIN 6868-161 deviation vs reference: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
+			"dfovTolerance": "IN 94 deviation vs reference: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dfovAction": "Action level (DIN 6868-161): DFOV ≤ {threshold} mGy — compliant; above that, dose-reduction action required."
 		},
 		"actionLevel": {

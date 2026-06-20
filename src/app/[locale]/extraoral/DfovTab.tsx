@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
 import { fmt, parse } from "@/lib/num";
 import { richTags } from "@/lib/rich";
-import { DIN_6868_161_DFOV } from "@/lib/verdict";
+import { IN_94 } from "@/lib/verdict";
 
 type DfovFormState = {
 	ka: string;
@@ -151,7 +151,7 @@ export function DfovTab() {
 							expected={result.reference}
 							expectedLabel={t("validation.reference")}
 							unit="mGy"
-							tolerance={DIN_6868_161_DFOV}
+							tolerance={IN_94}
 							emptyHint={t("validation.hintDfovRef")}
 						/>
 						<ActionLevelCard dfov={result.dfov} />

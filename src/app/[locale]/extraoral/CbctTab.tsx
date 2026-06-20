@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
 import { parse } from "@/lib/num";
 import { richTags } from "@/lib/rich";
-import { IN_94_PKA } from "@/lib/verdict";
+import { IN_94 } from "@/lib/verdict";
 
 type CbctFormState = {
 	exam: string;
@@ -190,7 +190,7 @@ export function CbctTab() {
 							expected={result.pkaMach}
 							expectedLabel={t("validation.machine")}
 							unit="mGy·cm²"
-							tolerance={IN_94_PKA}
+							tolerance={IN_94}
 							emptyHint={t("validation.hintMachine")}
 						/>
 						<ValidationCard
@@ -199,7 +199,7 @@ export function CbctTab() {
 							expected={result.pkaRef}
 							expectedLabel={t("validation.reference")}
 							unit="mGy·cm²"
-							tolerance={IN_94_PKA}
+							tolerance={IN_94}
 							emptyHint={t("validation.hintReference")}
 						/>
 					</section>

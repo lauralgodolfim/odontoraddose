@@ -88,12 +88,14 @@ export function ComparisonChart({
 	tolerance,
 	threshold,
 	thresholdLabel,
+	title,
 }: {
 	series: ComparisonSeries[];
 	unit: string;
 	tolerance?: Tolerance;
 	threshold?: number;
 	thresholdLabel?: string;
+	title?: string;
 }) {
 	const t = useTranslations("chart");
 
@@ -113,13 +115,14 @@ export function ComparisonChart({
 			color: TONE_COLORS[s.tone ?? "neutral"],
 		}));
 
-	if (!primary || comparisons.length === 0 || !tolerance) return null;
+	if (!primary || (comparisons.length === 0 && threshold === undefined))
+		return null;
 
 	const tabValue = primary.value;
 
 	const bounds: number[] = [tabValue];
 	for (const c of comparisons) {
-		if (c.tone === "equipment") {
+		if (c.tone === "equipment" || !tolerance) {
 			bounds.push(c.value);
 		} else {
 			bounds.push(
@@ -139,7 +142,7 @@ export function ComparisonChart({
 		<section className="animate-fade-up rounded-lg border border-zinc-200 bg-white p-4 dark:border-radiation-400/20 dark:bg-zinc-950">
 			<div className="mb-2 flex items-baseline justify-between gap-2">
 				<h3 className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-					{t("title")}
+					{title ?? t("title")}
 				</h3>
 				<span className="text-[11px] text-zinc-500 dark:text-zinc-400">
 					{unit}
@@ -160,7 +163,7 @@ export function ComparisonChart({
 					/>
 					{comparisons.map((c, ci) => {
 						const base = ci * 120;
-						if (c.tone === "equipment") {
+						if (c.tone === "equipment" || !tolerance) {
 							return (
 								<ReferenceLine
 									key={c.label}
@@ -267,22 +270,26 @@ export function ComparisonChart({
 					<span className="font-medium">{primary.label}</span>
 					<span className="font-mono tabular-nums">{fmt(tabValue)}</span>
 				</span>
-				<span className="inline-flex items-center gap-1.5">
-					<span
-						aria-hidden
-						className="inline-block h-0.5 w-4"
-						style={{ background: BAND_COLORS.fail }}
-					/>
-					<span>±{pct(tolerance.fail)}</span>
-				</span>
-				<span className="inline-flex items-center gap-1.5">
-					<span
-						aria-hidden
-						className="inline-block h-0.5 w-4"
-						style={{ background: BAND_COLORS.restricted }}
-					/>
-					<span>±{pct(tolerance.restricted)}</span>
-				</span>
+				{tolerance && (
+					<>
+						<span className="inline-flex items-center gap-1.5">
+							<span
+								aria-hidden
+								className="inline-block h-0.5 w-4"
+								style={{ background: BAND_COLORS.fail }}
+							/>
+							<span>±{pct(tolerance.fail)}</span>
+						</span>
+						<span className="inline-flex items-center gap-1.5">
+							<span
+								aria-hidden
+								className="inline-block h-0.5 w-4"
+								style={{ background: BAND_COLORS.restricted }}
+							/>
+							<span>±{pct(tolerance.restricted)}</span>
+						</span>
+					</>
+				)}
 				{comparisons.map((c) => (
 					<span key={c.label} className="inline-flex items-center gap-1.5">
 						<span className="font-medium" style={{ color: c.color }}>

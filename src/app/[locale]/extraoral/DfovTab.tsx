@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
 import { fmt, parse } from "@/lib/num";
 import { richTags } from "@/lib/rich";
-import type { Tolerance } from "@/lib/verdict";
+import { IN_94 } from "@/lib/verdict";
 
 type DfovFormState = {
 	ka: string;
@@ -20,7 +20,7 @@ type DfovFormState = {
 	b: string;
 	c: string;
 	d: string;
-	reference: string;
+	machine: string;
 };
 
 const dfovInitial: DfovFormState = {
@@ -29,16 +29,10 @@ const dfovInitial: DfovFormState = {
 	b: "",
 	c: "",
 	d: "",
-	reference: "",
+	machine: "",
 };
 
 const DFOV_ACTION_LEVEL_MGY = 50;
-
-const DFOV_TOLERANCE: Tolerance = {
-	fail: 0.2,
-	restricted: 0.4,
-	reference: "IN94/2021",
-};
 
 export function DfovTab() {
 	const t = useTranslations("extraoral");
@@ -51,8 +45,8 @@ export function DfovTab() {
 		const b = parse(form.b);
 		const c = parse(form.c);
 		const d = parse(form.d);
-		const reference =
-			parse(form.reference) ?? parse(equipment?.referenceDfov ?? "");
+		const machine = parse(form.machine);
+		const manufacturer = parse(equipment?.referenceDfov ?? "");
 
 		if (ka === null || a === null || b === null || c === null || d === null) {
 			return null;
@@ -60,7 +54,7 @@ export function DfovTab() {
 		if (a === 0 || c === 0) return null;
 
 		const dfov = ka * (b / a) * (d / c);
-		return { dfov, reference };
+		return { dfov, machine, manufacturer };
 	}, [form, equipment?.referenceDfov]);
 
 	const update =
@@ -119,23 +113,16 @@ export function DfovTab() {
 					</Field>
 				</Section>
 
-				<Section title={t("sections.manufacturerReference")}>
+				<Section title={t("sections.equipmentIndicator")}>
 					<Field
-						label={t("fields.reference")}
-						hint={
-							equipment?.referenceDfov
-								? t("fields.referenceDefault", {
-										value: equipment.referenceDfov,
-									})
-								: undefined
-						}
+						label={t("fields.dfovMachine")}
+						hint={t("fields.dfovMachineHint")}
 					>
 						<Input
 							type="number"
 							inputMode="decimal"
-							value={form.reference}
-							onChange={update("reference")}
-							placeholder={equipment?.referenceDfov ?? ""}
+							value={form.machine}
+							onChange={update("machine")}
 						/>
 					</Field>
 					<ClearButton onClick={() => setForm(dfovInitial)} />
@@ -154,10 +141,19 @@ export function DfovTab() {
 						<ValidationCard
 							observed={result.dfov}
 							observedLabel={t("validation.calc")}
-							expected={result.reference}
-							expectedLabel={t("validation.reference")}
+							expected={result.machine}
+							expectedLabel={t("validation.machine")}
 							unit="mGy"
-							tolerance={DFOV_TOLERANCE}
+							tolerance={IN_94}
+							emptyHint={t("validation.hintDfovMachine")}
+						/>
+						<ValidationCard
+							observed={result.dfov}
+							observedLabel={t("validation.calc")}
+							expected={result.manufacturer}
+							expectedLabel={t("validation.equipment")}
+							unit="mGy"
+							tolerance={IN_94}
 							emptyHint={t("validation.hintDfovRef")}
 						/>
 						<ActionLevelCard dfov={result.dfov} />
@@ -167,29 +163,52 @@ export function DfovTab() {
 
 			<Reveal when={!!result}>
 				{result ? (
-					<ComparisonChart
-						unit="mGy"
-						tolerance={DFOV_TOLERANCE}
-						threshold={DFOV_ACTION_LEVEL_MGY}
-						thresholdLabel={t("actionLevel.label")}
-						series={[
-							{
-								label: t("validation.calc"),
-								value: result.dfov,
-								tone: "primary",
-							},
-							{
-								label: t("validation.reference"),
-								value: parse(form.reference),
-								tone: "neutral",
-							},
-							{
-								label: t("validation.equipment"),
-								value: parse(equipment?.referenceDfov ?? ""),
-								tone: "equipment",
-							},
-						]}
-					/>
+					<section className="grid animate-fade-up grid-cols-1 gap-4 lg:grid-cols-2">
+						<ComparisonChart
+							title={t("charts.in94")}
+							unit="mGy"
+							tolerance={IN_94}
+							series={[
+								{
+									label: t("validation.calc"),
+									value: result.dfov,
+									tone: "primary",
+								},
+								{
+									label: t("validation.machine"),
+									value: result.machine,
+									tone: "machine",
+								},
+								{
+									label: t("validation.equipment"),
+									value: result.manufacturer,
+									tone: "equipment",
+								},
+							]}
+						/>
+						<ComparisonChart
+							title={t("charts.din")}
+							unit="mGy"
+							threshold={DFOV_ACTION_LEVEL_MGY}
+							series={[
+								{
+									label: t("validation.calc"),
+									value: result.dfov,
+									tone: "primary",
+								},
+								{
+									label: t("validation.machine"),
+									value: result.machine,
+									tone: "machine",
+								},
+								{
+									label: t("validation.equipment"),
+									value: result.manufacturer,
+									tone: "equipment",
+								},
+							]}
+						/>
+					</section>
 				) : null}
 			</Reveal>
 			<Reveal when={!result}>

@@ -212,8 +212,7 @@
 			"equipmentIndicator": "Equipment indicator",
 			"comparison": "Comparison",
 			"beamAndGeometry": "Beam & geometry",
-			"fieldOfView": "Field of view",
-			"manufacturerReference": "Manufacturer reference"
+			"fieldOfView": "Field of view"
 		},
 		"fields": {
 			"exam": "Exam",
@@ -249,8 +248,8 @@
 			"cHint": "Horizontal diameter of the scanned volume.",
 			"d": "d — Radiation field diameter at measurement [cm]",
 			"dHint": "Horizontal diameter of the radiation field at the measurement point.",
-			"reference": "Reference DFOV [mGy]",
-			"referenceDefault": "Default from equipment: {value} mGy.",
+			"dfovMachine": "Machine-indicated DFOV [mGy]",
+			"dfovMachineHint": "DFOV dose value shown on the equipment console.",
 			"kermaHorizontal": "Horizontal measurement [mGy]",
 			"kermaHorizontalHint": "Kerma measured with the chamber in the horizontal orientation.",
 			"kermaVertical": "Vertical measurement [mGy]",
@@ -277,7 +276,8 @@
 			"hintMachine": "Enter the machine-reported P_KA to compare.",
 			"hintReference": "Enter the manufacturer reference P_KA to compare.",
 			"hintEquipment": "Set the manufacturer reference P_KA on the selected equipment to compare.",
-			"hintDfovRef": "Enter the manufacturer reference DFOV to compare."
+			"hintDfovRef": "Set the manufacturer reference DFOV on the selected equipment to compare.",
+			"hintDfovMachine": "Enter the machine-indicated DFOV to compare."
 		},
 		"empty": {
 			"pka": "Enter measured P<sub>KL</sub>, focus–receptor and focus–detector distances, and field height to see the calculation.",
@@ -303,6 +303,10 @@
 			"compliant": "Compliant",
 			"aboveActionLevel": "Above action level",
 			"threshold": "Threshold: DFOV ≤ {threshold} mGy per DIN 6868-161."
+		},
+		"charts": {
+			"in94": "IN 94 deviation",
+			"din": "DIN 6868-161 action level"
 		}
 	},
 	"intraoral": {

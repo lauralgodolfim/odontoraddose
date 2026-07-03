@@ -21,7 +21,6 @@ type CbctFormState = {
 	beamHeight: string;
 	beamWidth: string;
 	pkaMachine: string;
-	pkaReference: string;
 };
 
 const cbctInitial: CbctFormState = {
@@ -31,7 +30,6 @@ const cbctInitial: CbctFormState = {
 	beamHeight: "",
 	beamWidth: "",
 	pkaMachine: "",
-	pkaReference: "",
 };
 
 function computeCbct(form: CbctFormState) {
@@ -64,8 +62,7 @@ export function CbctTab() {
 		const base = computeCbct(form);
 		if (!base) return null;
 		const pkaMach = parse(form.pkaMachine);
-		const pkaRef =
-			parse(form.pkaReference) ?? parse(equipment?.referencePka ?? "");
+		const pkaRef = parse(equipment?.referencePka ?? "");
 		return { ...base, pkaMach, pkaRef };
 	}, [form, equipment?.referencePka]);
 
@@ -140,27 +137,6 @@ export function CbctTab() {
 							onChange={update("pkaMachine")}
 						/>
 					</Field>
-				</Section>
-
-				<Section title={t("sections.manufacturerReference")}>
-					<Field
-						label={t("fields.pkaReference")}
-						hint={
-							equipment?.referencePka
-								? t("fields.pkaReferenceDefault", {
-										value: equipment.referencePka,
-									})
-								: t("fields.pkaReferenceHint")
-						}
-					>
-						<Input
-							type="number"
-							inputMode="decimal"
-							value={form.pkaReference}
-							onChange={update("pkaReference")}
-							placeholder={equipment?.referencePka ?? ""}
-						/>
-					</Field>
 					<ClearButton onClick={() => setForm(cbctInitial)} />
 				</Section>
 			</form>
@@ -197,10 +173,10 @@ export function CbctTab() {
 							observed={result.pkaEstimated}
 							observedLabel={t("validation.calc")}
 							expected={result.pkaRef}
-							expectedLabel={t("validation.reference")}
+							expectedLabel={t("validation.equipment")}
 							unit="mGy·cm²"
 							tolerance={IN_94}
-							emptyHint={t("validation.hintReference")}
+							emptyHint={t("validation.hintEquipment")}
 						/>
 					</section>
 				) : null}
@@ -223,7 +199,7 @@ export function CbctTab() {
 								tone: "machine",
 							},
 							{
-								label: t("validation.reference"),
+								label: t("validation.equipment"),
 								value: result.pkaRef,
 								tone: "equipment",
 							},

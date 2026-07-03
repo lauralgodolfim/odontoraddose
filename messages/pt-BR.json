@@ -212,8 +212,7 @@
 			"equipmentIndicator": "Indicador do equipamento",
 			"comparison": "Comparação",
 			"beamAndGeometry": "Feixe e geometria",
-			"fieldOfView": "Campo de visão",
-			"manufacturerReference": "Referência do fabricante"
+			"fieldOfView": "Campo de visão"
 		},
 		"fields": {
 			"exam": "Exame",
@@ -249,8 +248,8 @@
 			"cHint": "Diâmetro horizontal do volume escaneado.",
 			"d": "d — Diâmetro do campo de radiação na medição [cm]",
 			"dHint": "Diâmetro horizontal do campo de radiação no ponto de medição.",
-			"reference": "DFOV de referência [mGy]",
-			"referenceDefault": "Padrão do equipamento: {value} mGy.",
+			"dfovMachine": "DFOV indicado pelo aparelho [mGy]",
+			"dfovMachineHint": "Valor de dose DFOV exibido no console do equipamento.",
 			"kermaHorizontal": "Medida horizontal [mGy]",
 			"kermaHorizontalHint": "Kerma medido com a câmara na orientação horizontal.",
 			"kermaVertical": "Medida vertical [mGy]",
@@ -277,7 +276,8 @@
 			"hintMachine": "Insira o P_KA indicado pelo equipamento para comparar.",
 			"hintReference": "Insira o P_KA de referência do fabricante para comparar.",
 			"hintEquipment": "Defina o P_KA de referência do fabricante no equipamento selecionado para comparar.",
-			"hintDfovRef": "Insira o DFOV de referência do fabricante para comparar."
+			"hintDfovRef": "Defina o DFOV de referência do fabricante no equipamento selecionado para comparar.",
+			"hintDfovMachine": "Insira o DFOV indicado pelo aparelho para comparar."
 		},
 		"empty": {
 			"pka": "Insira o P<sub>KL</sub> medido, distâncias foco–receptor e foco–detector, e a altura do campo para ver o cálculo.",
@@ -303,6 +303,10 @@
 			"compliant": "Conforme",
 			"aboveActionLevel": "Acima do nível de ação",
 			"threshold": "Limite: DFOV ≤ {threshold} mGy conforme DIN 6868-161."
+		},
+		"charts": {
+			"in94": "Desvio IN 94",
+			"din": "Nível de ação DIN 6868-161"
 		}
 	},
 	"intraoral": {

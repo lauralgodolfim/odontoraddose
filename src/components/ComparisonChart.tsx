@@ -17,13 +17,14 @@ import { pct, type Tolerance } from "@/lib/verdict";
 export type ComparisonSeries = {
 	label: string;
 	value: number | null;
-	tone?: "primary" | "neutral" | "equipment";
+	tone?: "primary" | "neutral" | "equipment" | "machine";
 };
 
 const TONE_COLORS: Record<NonNullable<ComparisonSeries["tone"]>, string> = {
 	primary: "var(--color-radiation-400)",
 	neutral: "#71717a",
 	equipment: "#10b981",
+	machine: "#c084fc",
 };
 
 const BAND_COLORS = {
@@ -183,6 +184,12 @@ export function ComparisonChart({
 							`${refTip} · ${sign}${pct(level)}: ${fmt(value)} ${unit}`;
 						return (
 							<Fragment key={c.label}>
+								{c.tone === "machine" && (
+									<ReferenceLine
+										y={c.value}
+										shape={makeBandShape(c.color, "0", 0.95, refTip, base)}
+									/>
+								)}
 								<ReferenceLine
 									y={lowerRestricted}
 									shape={makeBandShape(

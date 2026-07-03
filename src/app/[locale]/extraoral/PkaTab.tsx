@@ -264,7 +264,7 @@ export function PkaTab() {
 							{
 								label: t("validation.machine"),
 								value: result.pkaMach,
-								tone: "neutral",
+								tone: "machine",
 							},
 							{
 								label: t("validation.equipment"),

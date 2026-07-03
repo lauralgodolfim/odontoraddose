@@ -220,7 +220,7 @@ export function CbctTab() {
 							{
 								label: t("validation.machine"),
 								value: result.pkaMach,
-								tone: "neutral",
+								tone: "machine",
 							},
 							{
 								label: t("validation.reference"),

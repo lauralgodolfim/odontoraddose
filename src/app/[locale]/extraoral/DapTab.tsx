@@ -132,6 +132,7 @@ export function DapTab() {
 				{result ? (
 					<ComparisonChart
 						unit="mGy·cm²"
+						tolerance={DAP_TOLERANCE}
 						series={[
 							{
 								label: t("validation.measured"),

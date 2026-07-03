@@ -254,6 +254,7 @@ export function PkaTab() {
 				{result ? (
 					<ComparisonChart
 						unit="mGy·cm²"
+						tolerance={IN_94}
 						series={[
 							{
 								label: t("validation.calc"),

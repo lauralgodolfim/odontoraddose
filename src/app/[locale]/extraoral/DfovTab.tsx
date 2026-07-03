@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { ValidationCard } from "@/components/ValidationCard";
 import { fmt, parse } from "@/lib/num";
 import { richTags } from "@/lib/rich";
-import { IN_94 } from "@/lib/verdict";
+import type { Tolerance } from "@/lib/verdict";
 
 type DfovFormState = {
 	ka: string;
@@ -33,6 +33,12 @@ const dfovInitial: DfovFormState = {
 };
 
 const DFOV_ACTION_LEVEL_MGY = 50;
+
+const DFOV_TOLERANCE: Tolerance = {
+	fail: 0.2,
+	restricted: 0.4,
+	reference: "IN94/2021",
+};
 
 export function DfovTab() {
 	const t = useTranslations("extraoral");
@@ -151,7 +157,7 @@ export function DfovTab() {
 							expected={result.reference}
 							expectedLabel={t("validation.reference")}
 							unit="mGy"
-							tolerance={IN_94}
+							tolerance={DFOV_TOLERANCE}
 							emptyHint={t("validation.hintDfovRef")}
 						/>
 						<ActionLevelCard dfov={result.dfov} />
@@ -163,6 +169,7 @@ export function DfovTab() {
 				{result ? (
 					<ComparisonChart
 						unit="mGy"
+						tolerance={DFOV_TOLERANCE}
 						threshold={DFOV_ACTION_LEVEL_MGY}
 						thresholdLabel={t("actionLevel.label")}
 						series={[

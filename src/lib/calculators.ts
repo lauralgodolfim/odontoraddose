@@ -19,7 +19,7 @@ export const calculators: Calculator[] = [
 		slug: "extraoral",
 		title: "Extraoral — PKA / CBCT / DAP / DFOV",
 		description:
-			"PKA indicator accuracy and representative DAP comparison (IN 94), plus CBCT DFOV vs reference and the DIN 6868-161 action level.",
+			"PKA indicator accuracy, representative DAP and AAPM TG 261 pencil-chamber PKA for CBCT (IN 94), plus CBCT DFOV vs reference and the DIN 6868-161 action level.",
 		phase: 1,
 		status: "implemented",
 		category: "dose",

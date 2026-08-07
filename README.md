@@ -15,7 +15,7 @@ All routes are statically prerendered and run entirely in the browser.
 
 | Route | Calculator | Standard |
 | ----- | ---------- | -------- |
-| `/extraoral` | P<sub>KA</sub> indicator + DAP reference + DFOV (CBCT) | IN 94 + DIN 6868-161 |
+| `/extraoral` | P<sub>KA</sub> estimated + measured + CBCT chamber P<sub>KA</sub> + DFOV | IN 94 + AAPM 261 + DIN 6868-161 |
 | `/intraoral` | ESD at the cone tip | local protocol |
 | `/tomography` | CTDIw → CTDIvol → DLP → E | IN 55 |
 | `/conventional` | Per-exam ESD | IN 90/2021 Annex II |
@@ -59,41 +59,70 @@ All routes are statically prerendered and run entirely in the browser.
 
 ### Dose
 
-#### `/extraoral` — P<sub>KA</sub>, DAP, DFOV (CBCT)
+#### `/extraoral` — P<sub>KA</sub>, DAP, CBCT, DFOV
 
-Three QC checks for extraoral dental imaging:
+Four QC checks for extraoral dental imaging, one per tab:
 
-- **Indicator accuracy** — does the equipment's reported P<sub>KA</sub> match a
-  value computed from a P<sub>KL</sub> measurement? Panoramic / cephalometric,
-  IN 94.
-- **Representative DAP** — is a measured P<sub>KA</sub> close to the
-  manufacturer's representative value for the protocol? IN 94 with editable
-  tolerance for site-specific procedures.
+- **Estimated P<sub>KA</sub>** (*indicator accuracy*) — does the equipment's
+  reported P<sub>KA</sub> match a value computed from a P<sub>KL</sub>
+  measurement? Panoramic / cephalometric, IN 94.
+- **Measured P<sub>KA</sub>** (*representative DAP*) — is a measured
+  P<sub>KA</sub> close to the manufacturer's representative value for the
+  protocol? IN 94.
+- **Estimated P<sub>KA</sub> AAPM 261 (CBCT)** — does a P<sub>KA</sub> built
+  from pencil-chamber readings in two orientations match the console and the
+  manufacturer reference? IN 94.
 - **DFOV (CBCT)** — does cone-beam dose meet the manufacturer reference and the
   DIN 6868-161 action level?
 
-Both P<sub>KA</sub> tabs share the same calculation:
+The estimated-P<sub>KA</sub> tab derives the dose–area product from a
+P<sub>KL</sub> measurement:
 
 ```
 Corrected P_KL = P_KL × (D_focus-detector / D_focus-receptor)²
 P_KA           = Corrected P_KL × field height × correction factor
 ```
 
-**Indicator accuracy tab.** Inputs: focus–detector distance, focus–receptor
-distance, field height, correction factor, measured P<sub>KL</sub> (mGy·cm),
-machine-reported P<sub>KA</sub>. Validation:
+**Estimated P<sub>KA</sub> tab.** Inputs: focus–detector distance,
+focus–receptor distance, field height, correction factor, measured
+P<sub>KL</sub> (mGy·cm), machine-reported P<sub>KA</sub>. Validation:
 |P<sub>KA,calc</sub> / P<sub>KA,machine</sub> − 1| against the IN 94 band —
 ≤ 20% pass, 20–40% fail, &gt; 40% restricted. Corresponds to *Exatidão do
 Indicador de Dose* in the source spreadsheet.
 
-**Representative DAP tab.** Simple comparison form — no geometry inputs.
-Takes a measured P<sub>KA</sub> (entered directly, or carried over from the
-indicator tab), a manufacturer reference P<sub>KA</sub>, and the
-machine-indicated P<sub>KA</sub> from the console, then reports
+**Measured P<sub>KA</sub> tab.** Simple comparison form — no geometry inputs.
+Takes a measured P<sub>KA</sub>, a manufacturer reference P<sub>KA</sub>, and
+the machine-indicated P<sub>KA</sub> from the console, then reports
 |P<sub>KA,measured</sub> / P<sub>KA,expected</sub> − 1| against the 20% / 40%
 IN 94 tolerance for each comparison — machine indicator, entered reference, and
 the reference stored on the selected equipment. Corresponds to *Valor
 representativo de dose (DAP)* in the source spreadsheet.
+
+**Estimated P<sub>KA</sub> AAPM 261 (CBCT) tab.** Builds P<sub>KA</sub> from
+two pencil-chamber readings instead of a P<sub>KL</sub> measurement. Because
+the chamber averages its reading over its whole active length while the
+cone-beam field only covers part of it, each reading is normalised by the
+fraction of the chamber the field actually irradiated, then the two
+orientations are averaged.
+
+Inputs: corrected chamber readings M<sub>H</sub> / M<sub>V</sub> (mGy) with the
+chamber horizontal and vertical, chamber active length L<sub>c</sub> (mm,
+defaults to 100), the field extent sampled along the chamber axis in each
+orientation b<sub>H</sub> / b<sub>V</sub> (mm), field width W and length L (cm),
+machine-indicated P<sub>KA</sub>.
+
+```
+K_H   = M_H × (L_c / b_H)        [mGy]        Eq. (3a)
+K_V   = M_V × (L_c / b_V)        [mGy]        Eq. (3b)
+K_air = (K_H + K_V) / 2          [mGy]        Eq. (3c)
+P_KA  = K_air × W × L            [mGy·cm²]    Eq. (4)
+```
+
+Formalism from AAPM Task Group Report 261 (Mihailidis et al., 2024), mirroring
+`docs/KAP AAPM 261 - corrigido.xlsx`. Validation: |P<sub>KA,calc</sub> /
+P<sub>KA,expected</sub> − 1| against the 20% / 40% IN 94 band, once against the
+machine indicator and once against the reference stored on the selected
+equipment.
 
 **DFOV (CBCT) tab.** Inputs: incident kerma K<sub>a,i</sub>(FDD) in mGy,
 focus–isocenter `a`, focus–measurement-point `b`, scanned-volume horizontal

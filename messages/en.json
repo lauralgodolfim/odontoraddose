@@ -49,7 +49,7 @@
 	"calculators": {
 		"extraoral": {
 			"title": "Extraoral — PKA / CBCT / DAP / DFOV",
-			"description": "PKA indicator accuracy and representative DAP comparison (IN 94), plus CBCT DFOV vs reference and the DIN 6868-161 action level."
+			"description": "PKA indicator accuracy, representative DAP and AAPM TG 261 pencil-chamber PKA for CBCT (IN 94), plus CBCT DFOV vs reference and the DIN 6868-161 action level."
 		},
 		"intraoral": {
 			"title": "Intraoral — ESD",
@@ -304,7 +304,7 @@
 			"dapTolerance": "IN 94 tolerance: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"cbctFormula1": "K<sub>H</sub> = M<sub>H</sub> × (L<sub>c</sub> / b<sub>H</sub>) and K<sub>V</sub> = M<sub>V</sub> × (L<sub>c</sub> / b<sub>V</sub>) — Eq. (3a) / (3b)",
 			"cbctFormula2": "K<sub>air</sub> = (K<sub>H</sub> + K<sub>V</sub>) / 2 — Eq. (3c)",
-			"cbctFormula3": "Estimated P<sub>KA</sub> = K<sub>air</sub> × W × L — Eq. (4) (AAPM Report 261; normalization per Mihailidis et al., 2024)",
+			"cbctFormula3": "Estimated P<sub>KA</sub> = K<sub>air</sub> × W × L — Eq. (4) (AAPM TG 261, Mihailidis et al., 2024)",
 			"cbctTolerance": "IN 94 tolerance: ≤ 20% pass; 20%–40% fail; > 40% restriction.",
 			"dfovFormula": "DFOV = K_a,i(FDD) × (b / a) × (d / c)",
 			"dfovTolerance": "IN 94 deviation vs reference: ≤ 20% pass; 20%–40% fail; > 40% restriction.",

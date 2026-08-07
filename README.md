@@ -88,10 +88,12 @@ Indicador de Dose* in the source spreadsheet.
 
 **Representative DAP tab.** Simple comparison form — no geometry inputs.
 Takes a measured P<sub>KA</sub> (entered directly, or carried over from the
-indicator tab) and a manufacturer reference P<sub>KA</sub>, then reports
-|P<sub>KA,measured</sub> / P<sub>KA,reference</sub> − 1| against an editable
-20% / 40% IN 94 tolerance. Corresponds to *Valor representativo de dose
-(DAP)* in the source spreadsheet.
+indicator tab), a manufacturer reference P<sub>KA</sub>, and the
+machine-indicated P<sub>KA</sub> from the console, then reports
+|P<sub>KA,measured</sub> / P<sub>KA,expected</sub> − 1| against the 20% / 40%
+IN 94 tolerance for each comparison — machine indicator, entered reference, and
+the reference stored on the selected equipment. Corresponds to *Valor
+representativo de dose (DAP)* in the source spreadsheet.
 
 **DFOV (CBCT) tab.** Inputs: incident kerma K<sub>a,i</sub>(FDD) in mGy,
 focus–isocenter `a`, focus–measurement-point `b`, scanned-volume horizontal

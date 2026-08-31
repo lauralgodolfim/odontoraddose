@@ -28,6 +28,9 @@ export function Header() {
 						className="h-6 w-6 rounded-md"
 					/>
 					<span>RadQC</span>
+					<span className="font-normal tabular-nums normal-case tracking-normal text-[0.625rem] text-zinc-500">
+						v{process.env.NEXT_PUBLIC_APP_VERSION}
+					</span>
 				</Link>
 				<div className="flex items-center gap-2">
 					<LocaleSwitcher />

@@ -91,12 +91,11 @@ P<sub>KL</sub> (mGy·cm), machine-reported P<sub>KA</sub>. Validation:
 Indicador de Dose* in the source spreadsheet.
 
 **Measured P<sub>KA</sub> tab.** Simple comparison form — no geometry inputs.
-Takes a measured P<sub>KA</sub>, a manufacturer reference P<sub>KA</sub>, and
-the machine-indicated P<sub>KA</sub> from the console, then reports
-|P<sub>KA,measured</sub> / P<sub>KA,expected</sub> − 1| against the 20% / 40%
-IN 94 tolerance for each comparison — machine indicator, entered reference, and
-the reference stored on the selected equipment. Corresponds to *Valor
-representativo de dose (DAP)* in the source spreadsheet.
+Takes a measured P<sub>KA</sub> and the machine-indicated P<sub>KA</sub> from
+the console, then reports |P<sub>KA,measured</sub> / P<sub>KA,expected</sub>
+− 1| against the 20% / 40% IN 94 tolerance for each comparison — machine
+indicator and the manufacturer reference stored on the selected equipment.
+Corresponds to *Valor representativo de dose (DAP)* in the source spreadsheet.
 
 **Estimated P<sub>KA</sub> AAPM 261 (CBCT) tab.** Builds P<sub>KA</sub> from
 two pencil-chamber readings instead of a P<sub>KL</sub> measurement. Because

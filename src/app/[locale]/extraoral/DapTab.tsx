@@ -17,14 +17,12 @@ import type { Tolerance } from "@/lib/verdict";
 type DapFormState = {
 	exam: string;
 	pkaMeasured: string;
-	pkaReference: string;
 	pkaMachine: string;
 };
 
 const dapInitial: DapFormState = {
 	exam: "",
 	pkaMeasured: "",
-	pkaReference: "",
 	pkaMachine: "",
 };
 
@@ -42,16 +40,10 @@ export function DapTab() {
 	const result = useMemo(() => {
 		const measured = parse(form.pkaMeasured);
 		if (measured === null) return null;
-		const reference = parse(form.pkaReference);
 		const machine = parse(form.pkaMachine);
 		const equipmentReference = parse(equipment?.referencePka ?? "");
-		return { measured, reference, machine, equipmentReference };
-	}, [
-		form.pkaMeasured,
-		form.pkaReference,
-		form.pkaMachine,
-		equipment?.referencePka,
-	]);
+		return { measured, machine, equipmentReference };
+	}, [form.pkaMeasured, form.pkaMachine, equipment?.referencePka]);
 
 	const update =
 		(key: keyof DapFormState) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -83,24 +75,6 @@ export function DapTab() {
 							onChange={update("pkaMeasured")}
 						/>
 					</Field>
-					<Field
-						label={t("fields.pkaReference")}
-						hint={
-							equipment?.referencePka
-								? t("fields.pkaReferenceDefault", {
-										value: equipment.referencePka,
-									})
-								: t("fields.pkaReferenceHint")
-						}
-					>
-						<Input
-							type="number"
-							inputMode="decimal"
-							value={form.pkaReference}
-							onChange={update("pkaReference")}
-							placeholder={equipment?.referencePka ?? ""}
-						/>
-					</Field>
 				</Section>
 
 				<Section title={t("sections.equipmentIndicator")}>
@@ -118,7 +92,7 @@ export function DapTab() {
 
 			<Reveal when={!!result}>
 				{result ? (
-					<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+					<section className="grid animate-fade-up grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						<Stat
 							label={t("stats.measuredPka")}
 							value={result.measured}
@@ -133,15 +107,6 @@ export function DapTab() {
 							unit="mGy·cm²"
 							tolerance={DAP_TOLERANCE}
 							emptyHint={t("validation.hintMachine")}
-						/>
-						<ValidationCard
-							observed={result.measured}
-							observedLabel={t("validation.measured")}
-							expected={result.reference}
-							expectedLabel={t("validation.reference")}
-							unit="mGy·cm²"
-							tolerance={DAP_TOLERANCE}
-							emptyHint={t("validation.hintReference")}
 						/>
 						<ValidationCard
 							observed={result.measured}
@@ -171,11 +136,6 @@ export function DapTab() {
 								label: t("validation.machine"),
 								value: result.machine,
 								tone: "machine",
-							},
-							{
-								label: t("validation.reference"),
-								value: result.reference,
-								tone: "neutral",
 							},
 							{
 								label: t("validation.equipment"),
